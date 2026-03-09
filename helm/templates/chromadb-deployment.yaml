@@ -1,0 +1,99 @@
+{{- $fullName := include "partner-agent.fullname" . -}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $fullName }}-chromadb
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "partner-agent.labels" . | nindent 4 }}
+    app: {{ $fullName }}-chromadb
+    component: chromadb
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "partner-agent.selectorLabels" . | nindent 6 }}
+      app: {{ $fullName }}-chromadb
+  template:
+    metadata:
+      labels:
+        {{- include "partner-agent.labels" . | nindent 8 }}
+        app: {{ $fullName }}-chromadb
+        component: chromadb
+    spec:
+      serviceAccountName: {{ include "partner-agent.serviceAccountName" . }}
+      containers:
+      - name: chromadb
+        image: {{ .Values.chromadb.image }}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+          protocol: TCP
+          name: http
+        volumeMounts:
+        - name: data
+          mountPath: /chroma/chroma
+        {{- if .Values.chromadb.resources }}
+        resources:
+          {{- toYaml .Values.chromadb.resources | nindent 10 }}
+        {{- end }}
+        livenessProbe:
+          httpGet:
+            path: /api/v1/heartbeat
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /api/v1/heartbeat
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: {{ $fullName }}-chromadb
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $fullName }}-chromadb
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "partner-agent.labels" . | nindent 4 }}
+    app: {{ $fullName }}-chromadb
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.chromadb.storage | default "5Gi" }}
+  {{- if .Values.chromadb.storageClass }}
+  storageClassName: {{ .Values.chromadb.storageClass }}
+  {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $fullName }}-chromadb
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "partner-agent.labels" . | nindent 4 }}
+    app: {{ $fullName }}-chromadb
+spec:
+  type: ClusterIP
+  selector:
+    {{- include "partner-agent.selectorLabels" . | nindent 4 }}
+    app: {{ $fullName }}-chromadb
+  ports:
+  - name: http
+    port: 8000
+    targetPort: 8000
+    protocol: TCP

@@ -1,0 +1,227 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: partner-postgres-adk
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: partner_agent
+    ports:
+      - "5432:5432"
+    volumes:
+      - partner-postgres-data:/var/lib/postgresql/data
+    networks:
+      - partner-agent-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d partner_agent"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ChromaDB Vector Database
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: partner-chromadb-adk
+    ports:
+      - "8100:8000"
+    volumes:
+      - partner-chromadb-data:/chroma/chroma
+    networks:
+      - partner-agent-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # RAG API Service
+  rag-api:
+    build:
+      context: .
+      dockerfile: rag-service/Containerfile
+    container_name: partner-rag-api-adk
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+      - EMBEDDING_MODEL=models/gemini-embedding-001
+      - LLM_MODEL=gemini-2.5-flash
+    ports:
+      - "8080:8080"
+    networks:
+      - partner-agent-network
+    depends_on:
+      chromadb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # Data Ingestion (One-time)
+  ingest-data:
+    image: python:3.11-slim
+    container_name: partner-ingest-data-adk
+    volumes:
+      - ./data:/app/data:ro
+      - ./rag-service:/app/rag-service:ro
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+      - EMBEDDING_MODEL=models/gemini-embedding-001
+    working_dir: /app
+    command: >
+      bash -c "
+      pip install -q chromadb google-genai numpy &&
+      python3 rag-service/ingest_knowledge.py
+      "
+    networks:
+      - partner-agent-network
+    depends_on:
+      chromadb:
+        condition: service_healthy
+    restart: "no"
+
+  # Agent Service
+  agent-service:
+    build:
+      context: .
+      dockerfile: agent-service/Containerfile
+    container_name: partner-agent-service-adk
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://user:pass@postgres:5432/partner_agent
+      - LLM_BACKEND=gemini
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - GEMINI_MODEL=gemini-2.5-flash
+      - COMMUNICATION_MODE=http
+      - LOG_LEVEL=INFO
+      - RAG_API_ENDPOINT=http://rag-api:8080/answer
+    ports:
+      - "8001:8080"
+    networks:
+      - partner-agent-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rag-api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Request Manager
+  request-manager:
+    build:
+      context: .
+      dockerfile: request-manager/Containerfile
+    container_name: partner-request-manager-adk
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://user:pass@postgres:5432/partner_agent
+      - LLM_BACKEND=gemini
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - GEMINI_MODEL=gemini-2.5-flash
+      - COMMUNICATION_MODE=http
+      - AGENT_SERVICE_URL=http://agent-service:8080
+      - AGENT_TIMEOUT=120
+      - LOG_LEVEL=INFO
+      - STRUCTURED_CONTEXT_ENABLED=true
+    ports:
+      - "8000:8080"
+    networks:
+      partner-agent-network:
+        aliases:
+          - partner-request-manager-full
+    depends_on:
+      postgres:
+        condition: service_healthy
+      agent-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # AAA Setup (Database migrations + User creation)
+  aaa-setup:
+    build:
+      context: .
+      dockerfile: request-manager/Containerfile
+    container_name: partner-aaa-setup
+    volumes:
+      - ./scripts:/app/scripts:ro
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://user:pass@postgres:5432/partner_agent
+    working_dir: /app
+    command: >
+      bash -c "
+      echo 'Running database migrations...' &&
+      cd /app/shared-models &&
+      python3 -m alembic upgrade head &&
+      echo 'Creating users...' &&
+      python3 /app/scripts/setup_aaa_users.py &&
+      echo 'Fixing user permissions...' &&
+      python3 -c \"
+      import asyncio, sys
+      sys.path.insert(0, '/app/shared-models/src')
+      from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+      from sqlalchemy.orm import sessionmaker
+      from shared_models.aaa_service import AAAService
+      from shared_models.auth_service import AuthService
+      from shared_models.models import UserRole
+      async def fix():
+          import os
+          engine = create_async_engine(os.environ['DATABASE_URL'], echo=False)
+          async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+          async with async_session() as db:
+              await AAAService.update_user_permissions(db, user_email='carlos@example.com', allowed_agents=['software-support'])
+              await AAAService.get_or_create_user(db, email='josh@example.com', role=UserRole.USER, organization='Customer', department='Intern')
+              await AAAService.update_user_permissions(db, user_email='josh@example.com', allowed_agents=[])
+              await AuthService.set_user_password(db, 'josh@example.com', 'josh123')
+          await engine.dispose()
+      asyncio.run(fix())
+      \" &&
+      echo 'AAA setup complete!'
+      "
+    networks:
+      - partner-agent-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      request-manager:
+        condition: service_healthy
+    restart: "no"
+
+  # ADK Web UI
+  adk-web-ui:
+    image: nginx:alpine
+    container_name: partner-adk-web-ui
+    volumes:
+      - ./pf-chat-ui/static:/usr/share/nginx/html:ro
+      - ./pf-chat-ui/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "3000:80"
+    networks:
+      - partner-agent-network
+    depends_on:
+      - request-manager
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+networks:
+  partner-agent-network:
+    driver: bridge
+
+volumes:
+  partner-postgres-data:
+  partner-chromadb-data:

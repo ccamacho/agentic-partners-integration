@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en" class="pf-v6-theme-dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partner Agent Login</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@patternfly/patternfly@6/patternfly.min.css">
+    <style>
+        :root {
+            --pf-bg-base:       #292929;
+            --pf-bg-raised:     #151515;
+            --pf-bg-elevated:   #383838;
+            --pf-text:          #f2f2f2;
+            --pf-text-subtle:   #c7c7c7;
+            --pf-text-muted:    #a3a3a3;
+            --pf-border:        #4d4d4d;
+            --pf-brand:         #92c5f9;
+            --pf-brand-bg:      #06c;
+            --pf-success:       #87bb62;
+            --pf-success-bg:    rgba(135,187,98,0.10);
+            --pf-danger:        #f56e6e;
+            --pf-danger-bg:     rgba(245,110,110,0.10);
+            --pf-font-body:     'RedHatText', 'Helvetica Neue', helvetica, arial, sans-serif;
+            --pf-font-heading:  'RedHatDisplay', 'Helvetica Neue', helvetica, arial, sans-serif;
+            --pf-radius-sm:     4px;
+            --pf-radius-md:     8px;
+            --pf-radius-lg:     12px;
+        }
+
+        html:not(.pf-v6-theme-dark) {
+            --pf-bg-base:       #ffffff;
+            --pf-bg-raised:     #f2f2f2;
+            --pf-bg-elevated:   #e0e0e0;
+            --pf-text:          #151515;
+            --pf-text-subtle:   #4d4d4d;
+            --pf-text-muted:    #707070;
+            --pf-border:        #e0e0e0;
+            --pf-brand:         #06c;
+            --pf-brand-bg:      #06c;
+            --pf-success:       #3d7317;
+            --pf-success-bg:    rgba(61,115,23,0.08);
+            --pf-danger:        #a60000;
+            --pf-danger-bg:     rgba(166,0,0,0.06);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html, body {
+            margin: 0; padding: 0; height: 100%;
+            font-family: var(--pf-font-body);
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: var(--pf-bg-base);
+            color: var(--pf-text);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 8px 12px;
+            background: var(--pf-bg-raised);
+            border: 1px solid var(--pf-border);
+            border-radius: var(--pf-radius-sm);
+            cursor: pointer;
+            font-size: 18px;
+            color: var(--pf-text);
+        }
+
+        .theme-toggle:hover {
+            background: var(--pf-bg-elevated);
+        }
+
+        .login-container {
+            background: var(--pf-bg-raised);
+            border: 1px solid var(--pf-border);
+            border-radius: var(--pf-radius-lg);
+            max-width: 440px;
+            width: 100%;
+            overflow: hidden;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-header {
+            background: var(--pf-brand-bg);
+            color: #fff;
+            padding: 36px 30px;
+            text-align: center;
+        }
+
+        .login-header h1 {
+            font-family: var(--pf-font-heading);
+            font-size: 24px;
+            margin: 0 0 8px;
+            font-weight: 700;
+        }
+
+        .login-header p {
+            margin: 0;
+            opacity: 0.85;
+            font-size: 13px;
+        }
+
+        .form-section { padding: 32px 30px; }
+
+        .form-group { margin-bottom: 20px; }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--pf-text);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--pf-border);
+            border-radius: var(--pf-radius-sm);
+            font-size: 14px;
+            font-family: var(--pf-font-body);
+            background: var(--pf-bg-base);
+            color: var(--pf-text);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--pf-brand);
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.25);
+        }
+
+        .form-group input::placeholder {
+            color: var(--pf-text-muted);
+        }
+
+        form { margin-bottom: 0; }
+
+        .test-users {
+            background: var(--pf-bg-base);
+            border: 1px solid var(--pf-border);
+            border-radius: var(--pf-radius-md);
+            padding: 16px;
+            margin-top: 16px;
+            margin-bottom: 20px;
+        }
+
+        .test-users h4 {
+            margin: 0 0 12px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--pf-text);
+        }
+
+        .test-users button {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            padding: 10px 14px;
+            margin-bottom: 8px;
+            border: 1px solid var(--pf-border);
+            border-radius: var(--pf-radius-sm);
+            background: var(--pf-bg-raised);
+            color: var(--pf-text);
+            font-size: 12px;
+            font-family: var(--pf-font-body);
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .test-users button:hover {
+            background: var(--pf-brand-bg);
+            color: #fff;
+            border-color: var(--pf-brand-bg);
+        }
+
+        .test-users button:last-child { margin-bottom: 0; }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 0;
+            border: none;
+            border-radius: var(--pf-radius-sm);
+            font-size: 14px;
+            font-weight: 700;
+            font-family: var(--pf-font-body);
+            cursor: pointer;
+            background: var(--pf-brand-bg);
+            color: #fff;
+        }
+
+        .btn-login:hover:not(:disabled) { filter: brightness(1.15); }
+        .btn-login:disabled { opacity: 0.35; cursor: not-allowed; }
+
+        .alert {
+            padding: 14px;
+            border-radius: var(--pf-radius-sm);
+            margin-top: 16px;
+            display: none;
+            font-size: 13px;
+        }
+
+        .alert-error {
+            background: var(--pf-danger-bg);
+            color: var(--pf-danger);
+            border: 1px solid var(--pf-danger);
+        }
+
+        .alert-success {
+            background: var(--pf-success-bg);
+            color: var(--pf-success);
+            border: 1px solid var(--pf-success);
+        }
+
+        .alert.active { display: block; }
+
+        .info-banner {
+            margin-top: 20px;
+            padding: 14px;
+            background: var(--pf-bg-base);
+            border-left: 3px solid var(--pf-brand);
+            border-radius: var(--pf-radius-sm);
+            font-size: 12px;
+            color: var(--pf-text-muted);
+            line-height: 1.7;
+        }
+
+        .info-banner strong { color: var(--pf-text); }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 14px; height: 14px;
+            border: 2px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            margin-left: 8px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle dark/light theme">
+        <span id="themeIcon"></span>
+    </button>
+
+    <div class="login-container">
+        <div class="login-header">
+            <h1>Partner Agent System</h1>
+            <p>Secure Authentication Required</p>
+        </div>
+
+        <div class="form-section">
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required placeholder="your.email@example.com" autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required placeholder="Enter your password" autocomplete="current-password">
+                </div>
+
+                <button type="submit" class="btn-login" id="loginBtn" aria-label="Sign in to your account">
+                    <span id="btnText">Sign In</span>
+                </button>
+            </form>
+
+            <div class="test-users">
+                <h4>Test Users (Development Only)</h4>
+                <button onclick="fillCredentials('carlos@example.com', 'carlos123')">
+                    <span id="iconCarlos"></span>
+                    <div><strong>Carlos</strong> &mdash; Software Support Only</div>
+                </button>
+                <button onclick="fillCredentials('luis@example.com', 'luis123')">
+                    <span id="iconLuis"></span>
+                    <div><strong>Luis</strong> &mdash; Network Support Only</div>
+                </button>
+                <button onclick="fillCredentials('sharon@example.com', 'sharon123')">
+                    <span id="iconSharon"></span>
+                    <div><strong>Sharon</strong> &mdash; Admin (All Agents)</div>
+                </button>
+                <button onclick="fillCredentials('josh@example.com', 'josh123')">
+                    <span id="iconJosh"></span>
+                    <div><strong>Josh</strong> &mdash; No Agent Access</div>
+                </button>
+            </div>
+
+            <div id="error" class="alert alert-error" role="alert" aria-live="assertive"></div>
+            <div id="success" class="alert alert-success" role="status" aria-live="polite"></div>
+
+            <div class="info-banner">
+                <strong>Authentication Flow:</strong><br>
+                1. Login to receive JWT token<br>
+                2. Token stored securely in browser<br>
+                3. Redirected to chat interface<br>
+                4. Auto-refresh before expiration
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_ENDPOINT = window.location.hostname === 'localhost'
+            ? 'http://localhost:8000'
+            : '';
+
+        let pfIcons = null;
+
+        function pfIcon(name, size) {
+            if (!pfIcons || !pfIcons[name]) return '';
+            const icon = pfIcons[name];
+            const s = size || 14;
+            return `<svg width="${s}" height="${s}" viewBox="0 0 ${icon.width} ${icon.height}" fill="currentColor" style="vertical-align:-2px"><path d="${icon.svgPathData}"/></svg>`;
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains('pf-v6-theme-dark');
+            if (isDark) {
+                html.classList.remove('pf-v6-theme-dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('pf-v6-theme-dark');
+                localStorage.setItem('theme', 'dark');
+            }
+            document.getElementById('themeIcon').innerHTML = pfIcon('asleep', 18);
+        }
+
+        window.addEventListener('load', async () => {
+            try {
+                const mod = await import('https://cdn.jsdelivr.net/npm/@patternfly/patternfly@6/icons/pficons.mjs');
+                pfIcons = mod.pfIcons;
+            } catch (e) {
+                console.warn('Failed to load PF icons:', e);
+            }
+
+            document.getElementById('themeIcon').innerHTML = pfIcon('asleep', 18);
+            document.getElementById('iconCarlos').innerHTML = pfIcon('screen', 16);
+            document.getElementById('iconLuis').innerHTML = pfIcon('network', 16);
+            document.getElementById('iconSharon').innerHTML = pfIcon('security', 16);
+            document.getElementById('iconJosh').innerHTML = pfIcon('locked', 16);
+
+            const saved = localStorage.getItem('theme') || 'dark';
+            if (saved === 'light') {
+                document.documentElement.classList.remove('pf-v6-theme-dark');
+            }
+            if (localStorage.getItem('jwt_token')) {
+                showSuccess('Already logged in. Redirecting...');
+                setTimeout(() => { window.location.href = '/chat.html'; }, 1000);
+            } else {
+                document.getElementById('email').focus();
+            }
+        });
+
+        function fillCredentials(email, password) {
+            document.getElementById('email').value = email;
+            document.getElementById('password').value = password;
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('loginBtn');
+            const btnT = document.getElementById('btnText');
+
+            hideError(); hideSuccess();
+            btn.disabled = true;
+            btnT.innerHTML = 'Signing in<span class="loading-spinner"></span>';
+
+            try {
+                const r = await fetch(`${API_ENDPOINT}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                if (!r.ok) { const e = await r.json(); throw new Error(e.detail || 'Login failed'); }
+
+                const d = await r.json();
+                localStorage.setItem('jwt_token', d.token);
+                localStorage.setItem('user_email', d.user.email);
+                localStorage.setItem('user_role', d.user.role);
+                localStorage.setItem('allowed_agents', JSON.stringify(d.user.allowed_agents));
+
+                showSuccess('Welcome ' + d.user.email + '! Redirecting...');
+                setTimeout(() => { window.location.href = '/chat.html'; }, 1000);
+            } catch (e) {
+                showError('Login failed: ' + e.message);
+                btn.disabled = false;
+                btnT.textContent = 'Sign In';
+            }
+        }
+
+        function showError(m) { const e = document.getElementById('error'); e.textContent = m; e.classList.add('active'); }
+        function hideError() { document.getElementById('error').classList.remove('active'); }
+        function showSuccess(m) { const e = document.getElementById('success'); e.textContent = m; e.classList.add('active'); }
+        function hideSuccess() { document.getElementById('success').classList.remove('active'); }
+    </script>
+</body>
+</html>

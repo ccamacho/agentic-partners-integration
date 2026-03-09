@@ -1,0 +1,71 @@
+{{- if .Values.networkPolicies.enabled }}
+{{- $fullName := include "partner-agent.fullname" . -}}
+---
+# Default deny-all ingress for all pods in the namespace
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ $fullName }}-default-deny-ingress
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "partner-agent.labels" . | nindent 4 }}
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+---
+# Allow all pods within the namespace to communicate with each other
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ $fullName }}-allow-same-namespace
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "partner-agent.labels" . | nindent 4 }}
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector: {}
+{{- if ne .Values.networkPolicies.platform "none" }}
+---
+# Allow ingress from ingress controller for external routes
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ $fullName }}-allow-ingress-controller
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "partner-agent.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "partner-agent.selectorLabels" . | nindent 6 }}
+  policyTypes:
+  - Ingress
+  ingress:
+{{- if eq .Values.networkPolicies.platform "openshift" }}
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          network.openshift.io/policy-group: ingress
+    ports:
+    - protocol: TCP
+      port: 8080
+    - protocol: TCP
+      port: 80
+{{- else if eq .Values.networkPolicies.platform "kind" }}
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: ingress-nginx
+    ports:
+    - protocol: TCP
+      port: 8080
+    - protocol: TCP
+      port: 80
+{{- end }}
+{{- end }}
+{{- end }}

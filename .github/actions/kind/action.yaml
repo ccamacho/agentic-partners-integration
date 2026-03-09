@@ -1,0 +1,65 @@
+name: Initialize cluster and deploy application
+description: Initialize cluster and deploy application
+
+inputs:
+  namespace:
+    description: The namespace to deploy the application to
+    required: false
+    default: test
+  llm:
+    description: The LLM to use
+    required: true
+  llm_id:
+    description: The LLM ID
+    required: true
+  llm_url:
+    description: The LLM URL
+    required: true
+  replica_count:
+    description: Number of replicas for scalable services
+    required: false
+    default: "1"
+  use_pip_install:
+    description: "Use pip install from requirements.txt instead of uv sync (default: false)"
+    required: false
+    default: "false"
+
+runs:
+  using: composite
+  steps:
+
+    - name: Install Kind
+      run: go install sigs.k8s.io/kind@v0.30.0
+      shell: bash
+
+    - name: Create Kind Cluster
+      run: bash ./scripts/ci/kind-with-registry.sh
+      shell: bash
+
+    - name: Helm Depend
+      run: make helm-depend
+      shell: bash
+
+    - name: Build local images
+      run: make build-all-images REGISTRY=localhost:5001 USE_PIP_INSTALL=${{inputs.use_pip_install}}
+      shell: bash
+
+    - name: Push local images to the local registry
+      run: make push-all-images REGISTRY=localhost:5001 PUSH_EXTRA_AGRS="--tls-verify=false"
+      shell: bash
+
+    - name: Create namespace
+      run: make namespace NAMESPACE=${{inputs.namespace}}
+      shell: bash
+
+    - name: Validate namespace exists
+      run: |
+        if ! kubectl get namespace ${{inputs.namespace}}; then
+          echo "Error: Namespace ${{inputs.namespace}} does not exist"
+          exit 1
+        fi
+      shell: bash
+
+    - name: Helm Install (using local registry)
+      run: make helm-install-test NAMESPACE=${{inputs.namespace}} REGISTRY=localhost:5001 LLM=${{inputs.llm}} LLM_ID=${{inputs.llm_id}} LLM_URL=${{inputs.llm_url}} LLM_API_TOKEN=$LLM_API_TOKEN REPLICA_COUNT=${{inputs.replica_count}} EXTRA_HELM_ARGS="--set requestManagement.networkPolicies.platform=kind --set requestManagement.requestManager.externalAccess.enabled=false --set requestManagement.integrationDispatcher.externalAccess.enabled=false"
+      shell: bash

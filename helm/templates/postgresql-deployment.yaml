@@ -1,0 +1,116 @@
+{{- $fullName := include "partner-agent.fullname" . -}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $fullName }}-postgresql
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "partner-agent.labels" . | nindent 4 }}
+    app: {{ $fullName }}-postgresql
+    component: postgresql
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "partner-agent.selectorLabels" . | nindent 6 }}
+      app: {{ $fullName }}-postgresql
+  template:
+    metadata:
+      labels:
+        {{- include "partner-agent.labels" . | nindent 8 }}
+        app: {{ $fullName }}-postgresql
+        component: postgresql
+    spec:
+      serviceAccountName: {{ include "partner-agent.serviceAccountName" . }}
+      containers:
+      - name: postgresql
+        image: {{ .Values.postgresql.image }}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5432
+          protocol: TCP
+          name: postgresql
+        env:
+        - name: POSTGRES_USER
+          value: {{ .Values.postgresql.user | quote }}
+        - name: POSTGRES_PASSWORD
+          value: {{ .Values.postgresql.password | quote }}
+        - name: POSTGRES_DB
+          value: {{ .Values.postgresql.database | quote }}
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/postgresql/data
+        {{- if .Values.postgresql.resources }}
+        resources:
+          {{- toYaml .Values.postgresql.resources | nindent 10 }}
+        {{- end }}
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - {{ .Values.postgresql.user }}
+            - -d
+            - {{ .Values.postgresql.database }}
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - {{ .Values.postgresql.user }}
+            - -d
+            - {{ .Values.postgresql.database }}
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: {{ $fullName }}-postgresql
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $fullName }}-postgresql
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "partner-agent.labels" . | nindent 4 }}
+    app: {{ $fullName }}-postgresql
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.postgresql.storage | default "5Gi" }}
+  {{- if .Values.postgresql.storageClass }}
+  storageClassName: {{ .Values.postgresql.storageClass }}
+  {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $fullName }}-postgresql
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "partner-agent.labels" . | nindent 4 }}
+    app: {{ $fullName }}-postgresql
+spec:
+  type: ClusterIP
+  selector:
+    {{- include "partner-agent.selectorLabels" . | nindent 4 }}
+    app: {{ $fullName }}-postgresql
+  ports:
+  - name: postgresql
+    port: 5432
+    targetPort: 5432
+    protocol: TCP

@@ -1,0 +1,4 @@
+name: "routing-agent"
+llm_backend: "gemini"  # Options: openai, gemini, ollama
+llm_model: "gemini-2.5-flash"  # Model name for the selected backend
+system_message: "You are a routing agent specializing in getting users to the correct specialist agent. Be helpful, friendly, and efficient in determining their needs."

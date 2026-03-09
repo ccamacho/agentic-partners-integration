@@ -1,0 +1,1022 @@
+[
+  {
+    "id": "NET-TICKET-010",
+    "content": "Issue: SSL termination issues\n\nSymptoms:\n- Component: LOAD_BALANCER\n- Issue type: hardware\n- Degraded performance\n- Random devices affected\n\nRoot Cause:\nSSL certificate expired\n\nDiagnostic Steps:\n1. Check service status\n2. Check firewall rules\n3. Check routing\n\nSolution:\nUpdate health check to correct endpoint\n\nSteps to Resolve:\n1. Take screenshots\n2. Update health check to correct endpoint\n3. Test connectivity\n4. Verify logs\n5. Notify users\n\nVerification:\n- curl https://example.com\n- Check latency < 50ms\n\nPrevention:\n- Set up alerts\n- Review quarterly\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "NET-TICKET-010",
+      "category": "network",
+      "subcategory": "load_balancer",
+      "component": "load_balancer",
+      "issue_type": "hardware",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2025-12-23",
+      "resolved_date": "2026-02-24",
+      "affected_users": 231,
+      "resolution_type": "upgrade"
+    }
+  },
+  {
+    "id": "NET-TICKET-011",
+    "content": "Issue: Slow WiFi performance\n\nSymptoms:\n- Component: WIFI\n- Issue type: connectivity\n- Complete failure\n- Random devices affected\n\nRoot Cause:\nChannel congestion (too many APs on same channel)\n\nDiagnostic Steps:\n1. Verify configuration\n2. Review logs\n3. Verify DNS resolution\n\nSolution:\nUse WPA2 instead of WPA3\n\nSteps to Resolve:\n1. Take screenshots\n2. Use WPA2 instead of WPA3\n3. Verify resolution\n4. Check metrics\n5. Update runbook\n\nVerification:\n- ping 8.8.8.8\n- Verify throughput\n\nPrevention:\n- Set up alerts\n- Implement redundancy\n\nStatus: Resolved\nResolution Time: 2 hours",
+    "metadata": {
+      "ticket_id": "NET-TICKET-011",
+      "category": "network",
+      "subcategory": "wifi",
+      "component": "wifi",
+      "issue_type": "connectivity",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2025-12-29",
+      "resolved_date": "2026-03-05",
+      "affected_users": 289,
+      "resolution_type": "upgrade"
+    }
+  },
+  {
+    "id": "NET-TICKET-012",
+    "content": "Issue: WiFi connected but no internet\n\nSymptoms:\n- Component: ROUTER\n- Issue type: security\n- Degraded performance\n- All devices affected\n\nRoot Cause:\nRouter firmware crash\n\nDiagnostic Steps:\n1. Test connectivity\n2. Test from different device\n3. Run network diagnostics\n\nSolution:\nContact ISP for connection issues\n\nSteps to Resolve:\n1. Document current state\n2. Contact ISP for connection issues\n3. Verify resolution\n4. Verify logs\n5. Notify users\n\nVerification:\n- traceroute google.com\n- Check latency < 50ms\n\nPrevention:\n- Monitor network metrics\n- Keep firmware updated\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "NET-TICKET-012",
+      "category": "network",
+      "subcategory": "router",
+      "component": "router",
+      "issue_type": "security",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-03-01",
+      "resolved_date": "2026-02-26",
+      "affected_users": 85,
+      "resolution_type": "workaround"
+    }
+  },
+  {
+    "id": "NET-TICKET-013",
+    "content": "Issue: Slow DNS resolution\n\nSymptoms:\n- Component: DNS\n- Issue type: performance\n- Complete failure\n- Random devices affected\n\nRoot Cause:\nDNSSEC chain broken\n\nDiagnostic Steps:\n1. Check service status\n2. Check firewall rules\n3. Verify DNS resolution\n\nSolution:\nUpdate /etc/resolv.conf with valid nameservers (8.8.8.8, 1.1.1.1)\n\nSteps to Resolve:\n1. Take screenshots\n2. Update /etc/resolv.conf with valid nameservers (8.8.8.8, 1.1.1.1)\n3. Test connectivity\n4. Verify logs\n5. Notify users\n\nVerification:\n- traceroute google.com\n- Check latency < 50ms\n\nPrevention:\n- Regular health checks\n- Review quarterly\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "NET-TICKET-013",
+      "category": "network",
+      "subcategory": "dns",
+      "component": "dns",
+      "issue_type": "performance",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2025-12-29",
+      "resolved_date": "2026-02-15",
+      "affected_users": 13,
+      "resolution_type": "restart"
+    }
+  },
+  {
+    "id": "NET-TICKET-014",
+    "content": "Issue: Load balancer not distributing traffic\n\nSymptoms:\n- Component: LOAD_BALANCER\n- Issue type: security\n- Degraded performance\n- Specific devices affected\n\nRoot Cause:\nConnection limits reached\n\nDiagnostic Steps:\n1. Check service status\n2. Check firewall rules\n3. Run network diagnostics\n\nSolution:\nRenew SSL certificate\n\nSteps to Resolve:\n1. Document current state\n2. Renew SSL certificate\n3. Check performance\n4. Monitor for issues\n5. Notify users\n\nVerification:\n- curl https://example.com\n- Test from multiple clients\n\nPrevention:\n- Regular health checks\n- Document procedures\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-014",
+      "category": "network",
+      "subcategory": "load_balancer",
+      "component": "load_balancer",
+      "issue_type": "security",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2026-01-07",
+      "resolved_date": "2026-02-08",
+      "affected_users": 266,
+      "resolution_type": "restart"
+    }
+  },
+  {
+    "id": "NET-TICKET-015",
+    "content": "Issue: DHCP not assigning IPs\n\nSymptoms:\n- Component: ROUTER\n- Issue type: security\n- Complete failure\n- Specific devices affected\n\nRoot Cause:\nRouter overheating\n\nDiagnostic Steps:\n1. Verify configuration\n2. Check firewall rules\n3. Run network diagnostics\n\nSolution:\nFactory reset router\n\nSteps to Resolve:\n1. Document current state\n2. Factory reset router\n3. Test connectivity\n4. Verify logs\n5. Document solution\n\nVerification:\n- curl https://example.com\n- Verify throughput\n\nPrevention:\n- Set up alerts\n- Document procedures\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "NET-TICKET-015",
+      "category": "network",
+      "subcategory": "router",
+      "component": "router",
+      "issue_type": "security",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2026-02-06",
+      "resolved_date": "2026-02-13",
+      "affected_users": 20,
+      "resolution_type": "restart"
+    }
+  },
+  {
+    "id": "NET-TICKET-016",
+    "content": "Issue: WiFi signal weak or dropping\n\nSymptoms:\n- Component: WIFI\n- Issue type: security\n- Degraded performance\n- Random devices affected\n\nRoot Cause:\nInterference from 2.4GHz devices (microwave, Bluetooth)\n\nDiagnostic Steps:\n1. Check service status\n2. Check firewall rules\n3. Verify DNS resolution\n\nSolution:\nSwitch to 5GHz band to avoid interference\n\nSteps to Resolve:\n1. Take screenshots\n2. Switch to 5GHz band to avoid interference\n3. Test connectivity\n4. Check metrics\n5. Document solution\n\nVerification:\n- nslookup google.com\n- Test from multiple clients\n\nPrevention:\n- Monitor network metrics\n- Implement redundancy\n\nStatus: Resolved\nResolution Time: 2 hours",
+    "metadata": {
+      "ticket_id": "NET-TICKET-016",
+      "category": "network",
+      "subcategory": "wifi",
+      "component": "wifi",
+      "issue_type": "security",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-01-21",
+      "resolved_date": "2026-02-16",
+      "affected_users": 202,
+      "resolution_type": "workaround"
+    }
+  },
+  {
+    "id": "NET-TICKET-017",
+    "content": "Issue: Backend servers marked down\n\nSymptoms:\n- Component: LOAD_BALANCER\n- Issue type: connectivity\n- Degraded performance\n- All devices affected\n\nRoot Cause:\nLoad balancing algorithm misconfigured\n\nDiagnostic Steps:\n1. Test connectivity\n2. Review logs\n3. Run network diagnostics\n\nSolution:\nChange algorithm to round-robin or least-connections\n\nSteps to Resolve:\n1. Backup configuration\n2. Change algorithm to round-robin or least-connections\n3. Verify resolution\n4. Monitor for issues\n5. Notify users\n\nVerification:\n- ping 8.8.8.8\n- Check latency < 50ms\n\nPrevention:\n- Set up alerts\n- Document procedures\n\nStatus: Resolved\nResolution Time: 2 hours",
+    "metadata": {
+      "ticket_id": "NET-TICKET-017",
+      "category": "network",
+      "subcategory": "load_balancer",
+      "component": "load_balancer",
+      "issue_type": "connectivity",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2026-01-22",
+      "resolved_date": "2026-02-13",
+      "affected_users": 68,
+      "resolution_type": "restart"
+    }
+  },
+  {
+    "id": "NET-TICKET-018",
+    "content": "Issue: DHCP not assigning IPs\n\nSymptoms:\n- Component: ROUTER\n- Issue type: performance\n- Complete failure\n- Specific devices affected\n\nRoot Cause:\nISP connection down\n\nDiagnostic Steps:\n1. Verify configuration\n2. Test from different device\n3. Verify DNS resolution\n\nSolution:\nReplace ethernet cable\n\nSteps to Resolve:\n1. Document current state\n2. Replace ethernet cable\n3. Test connectivity\n4. Verify logs\n5. Notify users\n\nVerification:\n- curl https://example.com\n- Verify throughput\n\nPrevention:\n- Automated testing\n- Document procedures\n\nStatus: Resolved\nResolution Time: 10 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-018",
+      "category": "network",
+      "subcategory": "router",
+      "component": "router",
+      "issue_type": "performance",
+      "severity": "critical",
+      "status": "resolved",
+      "created_date": "2026-02-20",
+      "resolved_date": "2026-02-10",
+      "affected_users": 93,
+      "resolution_type": "configuration"
+    }
+  },
+  {
+    "id": "NET-TICKET-019",
+    "content": "Issue: SSL termination issues\n\nSymptoms:\n- Component: LOAD_BALANCER\n- Issue type: security\n- Complete failure\n- Specific devices affected\n\nRoot Cause:\nSession persistence configuration error\n\nDiagnostic Steps:\n1. Test connectivity\n2. Review logs\n3. Check routing\n\nSolution:\nRenew SSL certificate\n\nSteps to Resolve:\n1. Take screenshots\n2. Renew SSL certificate\n3. Test connectivity\n4. Check metrics\n5. Notify users\n\nVerification:\n- traceroute google.com\n- Verify throughput\n\nPrevention:\n- Automated testing\n- Keep firmware updated\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "NET-TICKET-019",
+      "category": "network",
+      "subcategory": "load_balancer",
+      "component": "load_balancer",
+      "issue_type": "security",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-01-20",
+      "resolved_date": "2026-02-05",
+      "affected_users": 217,
+      "resolution_type": "configuration"
+    }
+  },
+  {
+    "id": "NET-TICKET-020",
+    "content": "Issue: Health checks failing incorrectly\n\nSymptoms:\n- Component: LOAD_BALANCER\n- Issue type: connectivity\n- Intermittent issues\n- Specific devices affected\n\nRoot Cause:\nSSL certificate expired\n\nDiagnostic Steps:\n1. Test connectivity\n2. Check firewall rules\n3. Run network diagnostics\n\nSolution:\nChange algorithm to round-robin or least-connections\n\nSteps to Resolve:\n1. Backup configuration\n2. Change algorithm to round-robin or least-connections\n3. Check performance\n4. Monitor for issues\n5. Update runbook\n\nVerification:\n- ping 8.8.8.8\n- Verify throughput\n\nPrevention:\n- Set up alerts\n- Keep firmware updated\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-020",
+      "category": "network",
+      "subcategory": "load_balancer",
+      "component": "load_balancer",
+      "issue_type": "connectivity",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2026-01-16",
+      "resolved_date": "2026-02-04",
+      "affected_users": 185,
+      "resolution_type": "restart"
+    }
+  },
+  {
+    "id": "NET-TICKET-021",
+    "content": "Issue: Broadcast storm detected\n\nSymptoms:\n- Component: SWITCH\n- Issue type: security\n- Intermittent issues\n- Random devices affected\n\nRoot Cause:\nMAC address table overflow\n\nDiagnostic Steps:\n1. Test connectivity\n2. Review logs\n3. Run network diagnostics\n\nSolution:\nClear MAC address table\n\nSteps to Resolve:\n1. Take screenshots\n2. Clear MAC address table\n3. Test connectivity\n4. Verify logs\n5. Notify users\n\nVerification:\n- traceroute google.com\n- Check latency < 50ms\n\nPrevention:\n- Regular health checks\n- Review quarterly\n\nStatus: Resolved\nResolution Time: 2 hours",
+    "metadata": {
+      "ticket_id": "NET-TICKET-021",
+      "category": "network",
+      "subcategory": "switch",
+      "component": "switch",
+      "issue_type": "security",
+      "severity": "critical",
+      "status": "resolved",
+      "created_date": "2026-01-14",
+      "resolved_date": "2026-02-19",
+      "affected_users": 279,
+      "resolution_type": "replacement"
+    }
+  },
+  {
+    "id": "NET-TICKET-022",
+    "content": "Issue: VPN disconnects randomly\n\nSymptoms:\n- Component: VPN\n- Issue type: hardware\n- Intermittent issues\n- All devices affected\n\nRoot Cause:\nDNS not working over VPN\n\nDiagnostic Steps:\n1. Verify configuration\n2. Test from different device\n3. Verify DNS resolution\n\nSolution:\nConfigure DNS push settings\n\nSteps to Resolve:\n1. Backup configuration\n2. Configure DNS push settings\n3. Verify resolution\n4. Verify logs\n5. Notify users\n\nVerification:\n- traceroute google.com\n- Check latency < 50ms\n\nPrevention:\n- Regular health checks\n- Review quarterly\n\nStatus: Resolved\nResolution Time: 10 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-022",
+      "category": "network",
+      "subcategory": "vpn",
+      "component": "vpn",
+      "issue_type": "hardware",
+      "severity": "critical",
+      "status": "resolved",
+      "created_date": "2026-02-18",
+      "resolved_date": "2026-02-24",
+      "affected_users": 256,
+      "resolution_type": "replacement"
+    }
+  },
+  {
+    "id": "NET-TICKET-023",
+    "content": "Issue: Proxy bypass not working\n\nSymptoms:\n- Component: PROXY\n- Issue type: connectivity\n- Complete failure\n- Specific devices affected\n\nRoot Cause:\nUpstream proxy unreachable\n\nDiagnostic Steps:\n1. Test connectivity\n2. Review logs\n3. Check routing\n\nSolution:\nInstall proxy SSL certificate in browser\n\nSteps to Resolve:\n1. Backup configuration\n2. Install proxy SSL certificate in browser\n3. Verify resolution\n4. Check metrics\n5. Update runbook\n\nVerification:\n- ping 8.8.8.8\n- Verify throughput\n\nPrevention:\n- Set up alerts\n- Keep firmware updated\n\nStatus: Resolved\nResolution Time: 2 hours",
+    "metadata": {
+      "ticket_id": "NET-TICKET-023",
+      "category": "network",
+      "subcategory": "proxy",
+      "component": "proxy",
+      "issue_type": "connectivity",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2025-12-19",
+      "resolved_date": "2026-02-13",
+      "affected_users": 82,
+      "resolution_type": "workaround"
+    }
+  },
+  {
+    "id": "NET-TICKET-024",
+    "content": "Issue: Firewall rules not persisting\n\nSymptoms:\n- Component: FIREWALL\n- Issue type: security\n- Degraded performance\n- Random devices affected\n\nRoot Cause:\nPort forwarding rule incorrect\n\nDiagnostic Steps:\n1. Test connectivity\n2. Review logs\n3. Verify DNS resolution\n\nSolution:\nAdd connection tracking: iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT\n\nSteps to Resolve:\n1. Take screenshots\n2. Add connection tracking: iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT\n3. Check performance\n4. Verify logs\n5. Update runbook\n\nVerification:\n- nslookup google.com\n- Check latency < 50ms\n\nPrevention:\n- Regular health checks\n- Review quarterly\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-024",
+      "category": "network",
+      "subcategory": "firewall",
+      "component": "firewall",
+      "issue_type": "security",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-01-19",
+      "resolved_date": "2026-02-11",
+      "affected_users": 152,
+      "resolution_type": "configuration"
+    }
+  },
+  {
+    "id": "NET-TICKET-025",
+    "content": "Issue: NAT traversal issues\n\nSymptoms:\n- Component: FIREWALL\n- Issue type: hardware\n- Complete failure\n- Random devices affected\n\nRoot Cause:\nFirewall zones misconfigured\n\nDiagnostic Steps:\n1. Verify configuration\n2. Check firewall rules\n3. Check routing\n\nSolution:\nSave rules: iptables-save > /etc/iptables/rules.v4\n\nSteps to Resolve:\n1. Document current state\n2. Save rules: iptables-save > /etc/iptables/rules.v4\n3. Test connectivity\n4. Verify logs\n5. Notify users\n\nVerification:\n- nslookup google.com\n- Verify throughput\n\nPrevention:\n- Monitor network metrics\n- Document procedures\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "NET-TICKET-025",
+      "category": "network",
+      "subcategory": "firewall",
+      "component": "firewall",
+      "issue_type": "hardware",
+      "severity": "critical",
+      "status": "resolved",
+      "created_date": "2026-02-17",
+      "resolved_date": "2026-02-11",
+      "affected_users": 115,
+      "resolution_type": "workaround"
+    }
+  },
+  {
+    "id": "NET-TICKET-026",
+    "content": "Issue: SSL interception issues\n\nSymptoms:\n- Component: PROXY\n- Issue type: configuration\n- Intermittent issues\n- Specific devices affected\n\nRoot Cause:\nProxy service crashed or stopped\n\nDiagnostic Steps:\n1. Test connectivity\n2. Check firewall rules\n3. Verify DNS resolution\n\nSolution:\nRestart proxy service: systemctl restart squid\n\nSteps to Resolve:\n1. Take screenshots\n2. Restart proxy service: systemctl restart squid\n3. Test connectivity\n4. Check metrics\n5. Update runbook\n\nVerification:\n- traceroute google.com\n- Check latency < 50ms\n\nPrevention:\n- Regular health checks\n- Document procedures\n\nStatus: Resolved\nResolution Time: 10 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-026",
+      "category": "network",
+      "subcategory": "proxy",
+      "component": "proxy",
+      "issue_type": "configuration",
+      "severity": "critical",
+      "status": "resolved",
+      "created_date": "2025-12-13",
+      "resolved_date": "2026-02-21",
+      "affected_users": 249,
+      "resolution_type": "replacement"
+    }
+  },
+  {
+    "id": "NET-TICKET-027",
+    "content": "Issue: Proxy bypass not working\n\nSymptoms:\n- Component: PROXY\n- Issue type: configuration\n- Complete failure\n- All devices affected\n\nRoot Cause:\nSSL certificate trust issue\n\nDiagnostic Steps:\n1. Test connectivity\n2. Test from different device\n3. Verify DNS resolution\n\nSolution:\nFix PAC file syntax\n\nSteps to Resolve:\n1. Take screenshots\n2. Fix PAC file syntax\n3. Verify resolution\n4. Monitor for issues\n5. Update runbook\n\nVerification:\n- nslookup google.com\n- Check latency < 50ms\n\nPrevention:\n- Set up alerts\n- Review quarterly\n\nStatus: Resolved\nResolution Time: 2 hours",
+    "metadata": {
+      "ticket_id": "NET-TICKET-027",
+      "category": "network",
+      "subcategory": "proxy",
+      "component": "proxy",
+      "issue_type": "configuration",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2025-12-27",
+      "resolved_date": "2026-02-10",
+      "affected_users": 123,
+      "resolution_type": "configuration"
+    }
+  },
+  {
+    "id": "NET-TICKET-028",
+    "content": "Issue: NAT traversal issues\n\nSymptoms:\n- Component: FIREWALL\n- Issue type: configuration\n- Complete failure\n- Random devices affected\n\nRoot Cause:\nPort forwarding rule incorrect\n\nDiagnostic Steps:\n1. Test connectivity\n2. Review logs\n3. Check routing\n\nSolution:\nFix port forwarding: iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 192.168.1.10:80\n\nSteps to Resolve:\n1. Document current state\n2. Fix port forwarding: iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 192.168.1.10:80\n3. Test connectivity\n4. Monitor for issues\n5. Notify users\n\nVerification:\n- ping 8.8.8.8\n- Test from multiple clients\n\nPrevention:\n- Regular health checks\n- Keep firmware updated\n\nStatus: Resolved\nResolution Time: 10 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-028",
+      "category": "network",
+      "subcategory": "firewall",
+      "component": "firewall",
+      "issue_type": "configuration",
+      "severity": "critical",
+      "status": "resolved",
+      "created_date": "2026-02-11",
+      "resolved_date": "2026-03-04",
+      "affected_users": 171,
+      "resolution_type": "restart"
+    }
+  },
+  {
+    "id": "NET-TICKET-029",
+    "content": "Issue: Cannot resolve domain names\n\nSymptoms:\n- Component: DNS\n- Issue type: connectivity\n- Complete failure\n- Random devices affected\n\nRoot Cause:\nDNS cache corruption\n\nDiagnostic Steps:\n1. Test connectivity\n2. Test from different device\n3. Run network diagnostics\n\nSolution:\nDisable DNSSEC temporarily\n\nSteps to Resolve:\n1. Backup configuration\n2. Disable DNSSEC temporarily\n3. Test connectivity\n4. Verify logs\n5. Notify users\n\nVerification:\n- nslookup google.com\n- Verify throughput\n\nPrevention:\n- Regular health checks\n- Implement redundancy\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-029",
+      "category": "network",
+      "subcategory": "dns",
+      "component": "dns",
+      "issue_type": "connectivity",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2026-01-15",
+      "resolved_date": "2026-02-19",
+      "affected_users": 186,
+      "resolution_type": "configuration"
+    }
+  },
+  {
+    "id": "NET-TICKET-030",
+    "content": "Issue: Router not responding, network down\n\nSymptoms:\n- Component: ROUTER\n- Issue type: configuration\n- Intermittent issues\n- Specific devices affected\n\nRoot Cause:\nRouter configuration corrupted\n\nDiagnostic Steps:\n1. Test connectivity\n2. Check firewall rules\n3. Verify DNS resolution\n\nSolution:\nImprove router ventilation\n\nSteps to Resolve:\n1. Document current state\n2. Improve router ventilation\n3. Test connectivity\n4. Monitor for issues\n5. Notify users\n\nVerification:\n- traceroute google.com\n- Verify throughput\n\nPrevention:\n- Monitor network metrics\n- Implement redundancy\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-030",
+      "category": "network",
+      "subcategory": "router",
+      "component": "router",
+      "issue_type": "configuration",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2026-01-23",
+      "resolved_date": "2026-02-13",
+      "affected_users": 1,
+      "resolution_type": "restart"
+    }
+  },
+  {
+    "id": "NET-TICKET-031",
+    "content": "Issue: VLAN configuration issues\n\nSymptoms:\n- Component: SWITCH\n- Issue type: security\n- Intermittent issues\n- All devices affected\n\nRoot Cause:\nSpanning Tree Protocol loop\n\nDiagnostic Steps:\n1. Verify configuration\n2. Test from different device\n3. Verify DNS resolution\n\nSolution:\nFix VLAN configuration\n\nSteps to Resolve:\n1. Document current state\n2. Fix VLAN configuration\n3. Check performance\n4. Monitor for issues\n5. Update runbook\n\nVerification:\n- traceroute google.com\n- Test from multiple clients\n\nPrevention:\n- Regular health checks\n- Document procedures\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-031",
+      "category": "network",
+      "subcategory": "switch",
+      "component": "switch",
+      "issue_type": "security",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2025-12-19",
+      "resolved_date": "2026-02-03",
+      "affected_users": 167,
+      "resolution_type": "configuration"
+    }
+  },
+  {
+    "id": "NET-TICKET-032",
+    "content": "Issue: Proxy server not responding\n\nSymptoms:\n- Component: PROXY\n- Issue type: configuration\n- Intermittent issues\n- Random devices affected\n\nRoot Cause:\nSSL certificate trust issue\n\nDiagnostic Steps:\n1. Verify configuration\n2. Test from different device\n3. Run network diagnostics\n\nSolution:\nInstall proxy SSL certificate in browser\n\nSteps to Resolve:\n1. Document current state\n2. Install proxy SSL certificate in browser\n3. Verify resolution\n4. Check metrics\n5. Update runbook\n\nVerification:\n- nslookup google.com\n- Test from multiple clients\n\nPrevention:\n- Set up alerts\n- Review quarterly\n\nStatus: Resolved\nResolution Time: 2 hours",
+    "metadata": {
+      "ticket_id": "NET-TICKET-032",
+      "category": "network",
+      "subcategory": "proxy",
+      "component": "proxy",
+      "issue_type": "configuration",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2026-01-17",
+      "resolved_date": "2026-02-04",
+      "affected_users": 261,
+      "resolution_type": "restart"
+    }
+  },
+  {
+    "id": "NET-TICKET-033",
+    "content": "Issue: Router admin panel inaccessible\n\nSymptoms:\n- Component: ROUTER\n- Issue type: hardware\n- Intermittent issues\n- All devices affected\n\nRoot Cause:\nFaulty ethernet cable\n\nDiagnostic Steps:\n1. Check service status\n2. Test from different device\n3. Check routing\n\nSolution:\nContact ISP for connection issues\n\nSteps to Resolve:\n1. Take screenshots\n2. Contact ISP for connection issues\n3. Verify resolution\n4. Check metrics\n5. Update runbook\n\nVerification:\n- nslookup google.com\n- Verify throughput\n\nPrevention:\n- Regular health checks\n- Review quarterly\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "NET-TICKET-033",
+      "category": "network",
+      "subcategory": "router",
+      "component": "router",
+      "issue_type": "hardware",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-03-04",
+      "resolved_date": "2026-02-08",
+      "affected_users": 177,
+      "resolution_type": "upgrade"
+    }
+  },
+  {
+    "id": "NET-TICKET-034",
+    "content": "Issue: Cannot connect to WiFi\n\nSymptoms:\n- Component: WIFI\n- Issue type: configuration\n- Complete failure\n- Specific devices affected\n\nRoot Cause:\nInterference from 2.4GHz devices (microwave, Bluetooth)\n\nDiagnostic Steps:\n1. Test connectivity\n2. Review logs\n3. Verify DNS resolution\n\nSolution:\nVerify WiFi password\n\nSteps to Resolve:\n1. Document current state\n2. Verify WiFi password\n3. Test connectivity\n4. Verify logs\n5. Update runbook\n\nVerification:\n- traceroute google.com\n- Test from multiple clients\n\nPrevention:\n- Regular health checks\n- Document procedures\n\nStatus: Resolved\nResolution Time: 10 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-034",
+      "category": "network",
+      "subcategory": "wifi",
+      "component": "wifi",
+      "issue_type": "configuration",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2026-02-04",
+      "resolved_date": "2026-03-04",
+      "affected_users": 154,
+      "resolution_type": "configuration"
+    }
+  },
+  {
+    "id": "NET-TICKET-035",
+    "content": "Issue: WiFi connected but no internet\n\nSymptoms:\n- Component: ROUTER\n- Issue type: connectivity\n- Complete failure\n- Specific devices affected\n\nRoot Cause:\nDHCP pool exhausted\n\nDiagnostic Steps:\n1. Test connectivity\n2. Check firewall rules\n3. Run network diagnostics\n\nSolution:\nImprove router ventilation\n\nSteps to Resolve:\n1. Document current state\n2. Improve router ventilation\n3. Verify resolution\n4. Verify logs\n5. Document solution\n\nVerification:\n- traceroute google.com\n- Verify throughput\n\nPrevention:\n- Regular health checks\n- Review quarterly\n\nStatus: Resolved\nResolution Time: 2 hours",
+    "metadata": {
+      "ticket_id": "NET-TICKET-035",
+      "category": "network",
+      "subcategory": "router",
+      "component": "router",
+      "issue_type": "connectivity",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2025-12-30",
+      "resolved_date": "2026-02-15",
+      "affected_users": 18,
+      "resolution_type": "workaround"
+    }
+  },
+  {
+    "id": "NET-TICKET-036",
+    "content": "Issue: Proxy authentication failures\n\nSymptoms:\n- Component: PROXY\n- Issue type: hardware\n- Intermittent issues\n- Specific devices affected\n\nRoot Cause:\nSSL certificate trust issue\n\nDiagnostic Steps:\n1. Verify configuration\n2. Review logs\n3. Verify DNS resolution\n\nSolution:\nInstall proxy SSL certificate in browser\n\nSteps to Resolve:\n1. Take screenshots\n2. Install proxy SSL certificate in browser\n3. Test connectivity\n4. Monitor for issues\n5. Document solution\n\nVerification:\n- curl https://example.com\n- Check latency < 50ms\n\nPrevention:\n- Regular health checks\n- Review quarterly\n\nStatus: Resolved\nResolution Time: 2 hours",
+    "metadata": {
+      "ticket_id": "NET-TICKET-036",
+      "category": "network",
+      "subcategory": "proxy",
+      "component": "proxy",
+      "issue_type": "hardware",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2026-02-11",
+      "resolved_date": "2026-02-03",
+      "affected_users": 163,
+      "resolution_type": "replacement"
+    }
+  },
+  {
+    "id": "NET-TICKET-037",
+    "content": "Issue: Port forwarding not working\n\nSymptoms:\n- Component: FIREWALL\n- Issue type: performance\n- Complete failure\n- Random devices affected\n\nRoot Cause:\nRules not saved after reboot\n\nDiagnostic Steps:\n1. Test connectivity\n2. Review logs\n3. Check routing\n\nSolution:\nAdd iptables rule: iptables -A INPUT -p tcp --dport 443 -j ACCEPT\n\nSteps to Resolve:\n1. Document current state\n2. Add iptables rule: iptables -A INPUT -p tcp --dport 443 -j ACCEPT\n3. Check performance\n4. Monitor for issues\n5. Update runbook\n\nVerification:\n- ping 8.8.8.8\n- Verify throughput\n\nPrevention:\n- Regular health checks\n- Implement redundancy\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-037",
+      "category": "network",
+      "subcategory": "firewall",
+      "component": "firewall",
+      "issue_type": "performance",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-01-19",
+      "resolved_date": "2026-02-03",
+      "affected_users": 88,
+      "resolution_type": "workaround"
+    }
+  },
+  {
+    "id": "NET-TICKET-038",
+    "content": "Issue: Cannot resolve domain names\n\nSymptoms:\n- Component: DNS\n- Issue type: performance\n- Intermittent issues\n- Specific devices affected\n\nRoot Cause:\nDNSSEC chain broken\n\nDiagnostic Steps:\n1. Test connectivity\n2. Check firewall rules\n3. Run network diagnostics\n\nSolution:\nFlush DNS cache: systemctl restart systemd-resolved\n\nSteps to Resolve:\n1. Backup configuration\n2. Flush DNS cache: systemctl restart systemd-resolved\n3. Check performance\n4. Check metrics\n5. Document solution\n\nVerification:\n- traceroute google.com\n- Check latency < 50ms\n\nPrevention:\n- Regular health checks\n- Keep firmware updated\n\nStatus: Resolved\nResolution Time: 3 hours",
+    "metadata": {
+      "ticket_id": "NET-TICKET-038",
+      "category": "network",
+      "subcategory": "dns",
+      "component": "dns",
+      "issue_type": "performance",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2025-12-15",
+      "resolved_date": "2026-02-23",
+      "affected_users": 78,
+      "resolution_type": "upgrade"
+    }
+  },
+  {
+    "id": "NET-TICKET-039",
+    "content": "Issue: DHCP not assigning IPs\n\nSymptoms:\n- Component: ROUTER\n- Issue type: configuration\n- Complete failure\n- Specific devices affected\n\nRoot Cause:\nFaulty ethernet cable\n\nDiagnostic Steps:\n1. Check service status\n2. Check firewall rules\n3. Run network diagnostics\n\nSolution:\nFactory reset router\n\nSteps to Resolve:\n1. Take screenshots\n2. Factory reset router\n3. Verify resolution\n4. Verify logs\n5. Document solution\n\nVerification:\n- nslookup google.com\n- Test from multiple clients\n\nPrevention:\n- Monitor network metrics\n- Keep firmware updated\n\nStatus: Resolved\nResolution Time: 10 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-039",
+      "category": "network",
+      "subcategory": "router",
+      "component": "router",
+      "issue_type": "configuration",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2026-01-16",
+      "resolved_date": "2026-02-27",
+      "affected_users": 201,
+      "resolution_type": "configuration"
+    }
+  },
+  {
+    "id": "NET-TICKET-040",
+    "content": "Issue: WiFi signal weak or dropping\n\nSymptoms:\n- Component: WIFI\n- Issue type: configuration\n- Intermittent issues\n- Specific devices affected\n\nRoot Cause:\nInterference from 2.4GHz devices (microwave, Bluetooth)\n\nDiagnostic Steps:\n1. Verify configuration\n2. Test from different device\n3. Check routing\n\nSolution:\nAdd WiFi extender or move AP\n\nSteps to Resolve:\n1. Backup configuration\n2. Add WiFi extender or move AP\n3. Test connectivity\n4. Check metrics\n5. Update runbook\n\nVerification:\n- curl https://example.com\n- Check latency < 50ms\n\nPrevention:\n- Regular health checks\n- Review quarterly\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-040",
+      "category": "network",
+      "subcategory": "wifi",
+      "component": "wifi",
+      "issue_type": "configuration",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2025-12-30",
+      "resolved_date": "2026-02-08",
+      "affected_users": 274,
+      "resolution_type": "workaround"
+    }
+  },
+  {
+    "id": "NET-TICKET-041",
+    "content": "Issue: Too restrictive firewall causing timeouts\n\nSymptoms:\n- Component: FIREWALL\n- Issue type: security\n- Degraded performance\n- Specific devices affected\n\nRoot Cause:\nRules not saved after reboot\n\nDiagnostic Steps:\n1. Verify configuration\n2. Test from different device\n3. Check routing\n\nSolution:\nAdd connection tracking: iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT\n\nSteps to Resolve:\n1. Take screenshots\n2. Add connection tracking: iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT\n3. Verify resolution\n4. Monitor for issues\n5. Document solution\n\nVerification:\n- nslookup google.com\n- Verify throughput\n\nPrevention:\n- Set up alerts\n- Keep firmware updated\n\nStatus: Resolved\nResolution Time: 3 hours",
+    "metadata": {
+      "ticket_id": "NET-TICKET-041",
+      "category": "network",
+      "subcategory": "firewall",
+      "component": "firewall",
+      "issue_type": "security",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2025-12-12",
+      "resolved_date": "2026-02-13",
+      "affected_users": 229,
+      "resolution_type": "workaround"
+    }
+  },
+  {
+    "id": "NET-TICKET-042",
+    "content": "Issue: Slow network throughput\n\nSymptoms:\n- Component: ROUTER\n- Issue type: hardware\n- Intermittent issues\n- Random devices affected\n\nRoot Cause:\nFaulty ethernet cable\n\nDiagnostic Steps:\n1. Test connectivity\n2. Test from different device\n3. Check routing\n\nSolution:\nIncrease DHCP pool range\n\nSteps to Resolve:\n1. Document current state\n2. Increase DHCP pool range\n3. Verify resolution\n4. Monitor for issues\n5. Document solution\n\nVerification:\n- ping 8.8.8.8\n- Verify throughput\n\nPrevention:\n- Regular health checks\n- Keep firmware updated\n\nStatus: Resolved\nResolution Time: 2 hours",
+    "metadata": {
+      "ticket_id": "NET-TICKET-042",
+      "category": "network",
+      "subcategory": "router",
+      "component": "router",
+      "issue_type": "hardware",
+      "severity": "critical",
+      "status": "resolved",
+      "created_date": "2026-02-07",
+      "resolved_date": "2026-02-19",
+      "affected_users": 217,
+      "resolution_type": "restart"
+    }
+  },
+  {
+    "id": "NET-TICKET-043",
+    "content": "Issue: VLAN configuration issues\n\nSymptoms:\n- Component: SWITCH\n- Issue type: security\n- Intermittent issues\n- All devices affected\n\nRoot Cause:\nIncorrect VLAN tagging\n\nDiagnostic Steps:\n1. Test connectivity\n2. Test from different device\n3. Run network diagnostics\n\nSolution:\nUpdate switch firmware\n\nSteps to Resolve:\n1. Document current state\n2. Update switch firmware\n3. Test connectivity\n4. Check metrics\n5. Document solution\n\nVerification:\n- curl https://example.com\n- Test from multiple clients\n\nPrevention:\n- Monitor network metrics\n- Review quarterly\n\nStatus: Resolved\nResolution Time: 10 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-043",
+      "category": "network",
+      "subcategory": "switch",
+      "component": "switch",
+      "issue_type": "security",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2026-03-04",
+      "resolved_date": "2026-02-28",
+      "affected_users": 253,
+      "resolution_type": "restart"
+    }
+  },
+  {
+    "id": "NET-TICKET-044",
+    "content": "Issue: Router admin panel inaccessible\n\nSymptoms:\n- Component: ROUTER\n- Issue type: configuration\n- Intermittent issues\n- Random devices affected\n\nRoot Cause:\nRouter firmware crash\n\nDiagnostic Steps:\n1. Check service status\n2. Test from different device\n3. Run network diagnostics\n\nSolution:\nReplace ethernet cable\n\nSteps to Resolve:\n1. Take screenshots\n2. Replace ethernet cable\n3. Test connectivity\n4. Monitor for issues\n5. Document solution\n\nVerification:\n- curl https://example.com\n- Verify throughput\n\nPrevention:\n- Automated testing\n- Review quarterly\n\nStatus: Resolved\nResolution Time: 10 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-044",
+      "category": "network",
+      "subcategory": "router",
+      "component": "router",
+      "issue_type": "configuration",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2026-01-04",
+      "resolved_date": "2026-02-25",
+      "affected_users": 32,
+      "resolution_type": "replacement"
+    }
+  },
+  {
+    "id": "NET-TICKET-045",
+    "content": "Issue: Too restrictive firewall causing timeouts\n\nSymptoms:\n- Component: FIREWALL\n- Issue type: hardware\n- Degraded performance\n- All devices affected\n\nRoot Cause:\nFirewall zones misconfigured\n\nDiagnostic Steps:\n1. Test connectivity\n2. Check firewall rules\n3. Run network diagnostics\n\nSolution:\nSave rules: iptables-save > /etc/iptables/rules.v4\n\nSteps to Resolve:\n1. Take screenshots\n2. Save rules: iptables-save > /etc/iptables/rules.v4\n3. Verify resolution\n4. Monitor for issues\n5. Update runbook\n\nVerification:\n- ping 8.8.8.8\n- Check latency < 50ms\n\nPrevention:\n- Automated testing\n- Implement redundancy\n\nStatus: Resolved\nResolution Time: 2 hours",
+    "metadata": {
+      "ticket_id": "NET-TICKET-045",
+      "category": "network",
+      "subcategory": "firewall",
+      "component": "firewall",
+      "issue_type": "hardware",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2026-02-03",
+      "resolved_date": "2026-03-02",
+      "affected_users": 57,
+      "resolution_type": "restart"
+    }
+  },
+  {
+    "id": "NET-TICKET-046",
+    "content": "Issue: Port mirroring not working\n\nSymptoms:\n- Component: SWITCH\n- Issue type: connectivity\n- Intermittent issues\n- All devices affected\n\nRoot Cause:\nMAC address table overflow\n\nDiagnostic Steps:\n1. Test connectivity\n2. Check firewall rules\n3. Verify DNS resolution\n\nSolution:\nSet port to auto-negotiate\n\nSteps to Resolve:\n1. Document current state\n2. Set port to auto-negotiate\n3. Verify resolution\n4. Verify logs\n5. Document solution\n\nVerification:\n- nslookup google.com\n- Check latency < 50ms\n\nPrevention:\n- Automated testing\n- Review quarterly\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "NET-TICKET-046",
+      "category": "network",
+      "subcategory": "switch",
+      "component": "switch",
+      "issue_type": "connectivity",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2026-01-19",
+      "resolved_date": "2026-02-05",
+      "affected_users": 189,
+      "resolution_type": "configuration"
+    }
+  },
+  {
+    "id": "NET-TICKET-047",
+    "content": "Issue: WiFi authentication failures\n\nSymptoms:\n- Component: WIFI\n- Issue type: performance\n- Degraded performance\n- All devices affected\n\nRoot Cause:\nWPA2/WPA3 compatibility issue\n\nDiagnostic Steps:\n1. Verify configuration\n2. Review logs\n3. Run network diagnostics\n\nSolution:\nChange WiFi channel to 1, 6, or 11 (2.4GHz) or non-DFS (5GHz)\n\nSteps to Resolve:\n1. Take screenshots\n2. Change WiFi channel to 1, 6, or 11 (2.4GHz) or non-DFS (5GHz)\n3. Verify resolution\n4. Monitor for issues\n5. Notify users\n\nVerification:\n- nslookup google.com\n- Test from multiple clients\n\nPrevention:\n- Monitor network metrics\n- Keep firmware updated\n\nStatus: Resolved\nResolution Time: 2 hours",
+    "metadata": {
+      "ticket_id": "NET-TICKET-047",
+      "category": "network",
+      "subcategory": "wifi",
+      "component": "wifi",
+      "issue_type": "performance",
+      "severity": "critical",
+      "status": "resolved",
+      "created_date": "2026-01-24",
+      "resolved_date": "2026-02-15",
+      "affected_users": 187,
+      "resolution_type": "configuration"
+    }
+  },
+  {
+    "id": "NET-TICKET-048",
+    "content": "Issue: VPN connected but no traffic flows\n\nSymptoms:\n- Component: VPN\n- Issue type: hardware\n- Degraded performance\n- All devices affected\n\nRoot Cause:\nFirewall blocking VPN ports (UDP 1194, TCP 443, UDP 500/4500)\n\nDiagnostic Steps:\n1. Check service status\n2. Test from different device\n3. Run network diagnostics\n\nSolution:\nReset VPN credentials\n\nSteps to Resolve:\n1. Take screenshots\n2. Reset VPN credentials\n3. Test connectivity\n4. Check metrics\n5. Document solution\n\nVerification:\n- ping 8.8.8.8\n- Verify throughput\n\nPrevention:\n- Monitor network metrics\n- Document procedures\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-048",
+      "category": "network",
+      "subcategory": "vpn",
+      "component": "vpn",
+      "issue_type": "hardware",
+      "severity": "critical",
+      "status": "resolved",
+      "created_date": "2026-01-13",
+      "resolved_date": "2026-02-13",
+      "affected_users": 71,
+      "resolution_type": "configuration"
+    }
+  },
+  {
+    "id": "NET-TICKET-049",
+    "content": "Issue: Too restrictive firewall causing timeouts\n\nSymptoms:\n- Component: FIREWALL\n- Issue type: connectivity\n- Complete failure\n- Random devices affected\n\nRoot Cause:\nNAT configuration error\n\nDiagnostic Steps:\n1. Check service status\n2. Test from different device\n3. Check routing\n\nSolution:\nAdd connection tracking: iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT\n\nSteps to Resolve:\n1. Backup configuration\n2. Add connection tracking: iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT\n3. Check performance\n4. Monitor for issues\n5. Update runbook\n\nVerification:\n- nslookup google.com\n- Check latency < 50ms\n\nPrevention:\n- Set up alerts\n- Review quarterly\n\nStatus: Resolved\nResolution Time: 10 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-049",
+      "category": "network",
+      "subcategory": "firewall",
+      "component": "firewall",
+      "issue_type": "connectivity",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2025-12-08",
+      "resolved_date": "2026-02-10",
+      "affected_users": 163,
+      "resolution_type": "restart"
+    }
+  },
+  {
+    "id": "NET-TICKET-050",
+    "content": "Issue: VPN authentication errors\n\nSymptoms:\n- Component: VPN\n- Issue type: configuration\n- Complete failure\n- Random devices affected\n\nRoot Cause:\nFirewall blocking VPN ports (UDP 1194, TCP 443, UDP 500/4500)\n\nDiagnostic Steps:\n1. Verify configuration\n2. Review logs\n3. Check routing\n\nSolution:\nConfigure firewall to allow VPN ports\n\nSteps to Resolve:\n1. Document current state\n2. Configure firewall to allow VPN ports\n3. Test connectivity\n4. Monitor for issues\n5. Update runbook\n\nVerification:\n- curl https://example.com\n- Check latency < 50ms\n\nPrevention:\n- Monitor network metrics\n- Review quarterly\n\nStatus: Resolved\nResolution Time: 2 hours",
+    "metadata": {
+      "ticket_id": "NET-TICKET-050",
+      "category": "network",
+      "subcategory": "vpn",
+      "component": "vpn",
+      "issue_type": "configuration",
+      "severity": "critical",
+      "status": "resolved",
+      "created_date": "2025-12-12",
+      "resolved_date": "2026-02-28",
+      "affected_users": 276,
+      "resolution_type": "restart"
+    }
+  },
+  {
+    "id": "NET-TICKET-051",
+    "content": "Issue: Backend servers marked down\n\nSymptoms:\n- Component: LOAD_BALANCER\n- Issue type: performance\n- Intermittent issues\n- Specific devices affected\n\nRoot Cause:\nSSL certificate expired\n\nDiagnostic Steps:\n1. Test connectivity\n2. Review logs\n3. Run network diagnostics\n\nSolution:\nRenew SSL certificate\n\nSteps to Resolve:\n1. Take screenshots\n2. Renew SSL certificate\n3. Test connectivity\n4. Verify logs\n5. Update runbook\n\nVerification:\n- traceroute google.com\n- Verify throughput\n\nPrevention:\n- Set up alerts\n- Keep firmware updated\n\nStatus: Resolved\nResolution Time: 3 hours",
+    "metadata": {
+      "ticket_id": "NET-TICKET-051",
+      "category": "network",
+      "subcategory": "load_balancer",
+      "component": "load_balancer",
+      "issue_type": "performance",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2025-12-16",
+      "resolved_date": "2026-03-05",
+      "affected_users": 283,
+      "resolution_type": "restart"
+    }
+  },
+  {
+    "id": "NET-TICKET-052",
+    "content": "Issue: Router admin panel inaccessible\n\nSymptoms:\n- Component: ROUTER\n- Issue type: configuration\n- Complete failure\n- Random devices affected\n\nRoot Cause:\nDHCP pool exhausted\n\nDiagnostic Steps:\n1. Test connectivity\n2. Test from different device\n3. Run network diagnostics\n\nSolution:\nReplace ethernet cable\n\nSteps to Resolve:\n1. Document current state\n2. Replace ethernet cable\n3. Verify resolution\n4. Verify logs\n5. Notify users\n\nVerification:\n- ping 8.8.8.8\n- Check latency < 50ms\n\nPrevention:\n- Monitor network metrics\n- Implement redundancy\n\nStatus: Resolved\nResolution Time: 10 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-052",
+      "category": "network",
+      "subcategory": "router",
+      "component": "router",
+      "issue_type": "configuration",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2026-02-06",
+      "resolved_date": "2026-02-04",
+      "affected_users": 100,
+      "resolution_type": "configuration"
+    }
+  },
+  {
+    "id": "NET-TICKET-053",
+    "content": "Issue: DNSSEC validation failures\n\nSymptoms:\n- Component: DNS\n- Issue type: configuration\n- Intermittent issues\n- Random devices affected\n\nRoot Cause:\nDNSSEC chain broken\n\nDiagnostic Steps:\n1. Check service status\n2. Check firewall rules\n3. Check routing\n\nSolution:\nDisable DNSSEC temporarily\n\nSteps to Resolve:\n1. Document current state\n2. Disable DNSSEC temporarily\n3. Test connectivity\n4. Monitor for issues\n5. Notify users\n\nVerification:\n- curl https://example.com\n- Test from multiple clients\n\nPrevention:\n- Monitor network metrics\n- Implement redundancy\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "NET-TICKET-053",
+      "category": "network",
+      "subcategory": "dns",
+      "component": "dns",
+      "issue_type": "configuration",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2026-03-01",
+      "resolved_date": "2026-02-06",
+      "affected_users": 157,
+      "resolution_type": "workaround"
+    }
+  },
+  {
+    "id": "NET-TICKET-054",
+    "content": "Issue: Network switch not forwarding traffic\n\nSymptoms:\n- Component: SWITCH\n- Issue type: security\n- Complete failure\n- All devices affected\n\nRoot Cause:\nIncorrect VLAN tagging\n\nDiagnostic Steps:\n1. Verify configuration\n2. Test from different device\n3. Check routing\n\nSolution:\nReplace faulty port/module\n\nSteps to Resolve:\n1. Document current state\n2. Replace faulty port/module\n3. Test connectivity\n4. Check metrics\n5. Update runbook\n\nVerification:\n- ping 8.8.8.8\n- Check latency < 50ms\n\nPrevention:\n- Automated testing\n- Keep firmware updated\n\nStatus: Resolved\nResolution Time: 3 hours",
+    "metadata": {
+      "ticket_id": "NET-TICKET-054",
+      "category": "network",
+      "subcategory": "switch",
+      "component": "switch",
+      "issue_type": "security",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-01-26",
+      "resolved_date": "2026-03-02",
+      "affected_users": 126,
+      "resolution_type": "upgrade"
+    }
+  },
+  {
+    "id": "NET-TICKET-055",
+    "content": "Issue: WiFi connected but no internet\n\nSymptoms:\n- Component: ROUTER\n- Issue type: hardware\n- Intermittent issues\n- All devices affected\n\nRoot Cause:\nISP connection down\n\nDiagnostic Steps:\n1. Verify configuration\n2. Review logs\n3. Verify DNS resolution\n\nSolution:\nImprove router ventilation\n\nSteps to Resolve:\n1. Take screenshots\n2. Improve router ventilation\n3. Verify resolution\n4. Check metrics\n5. Document solution\n\nVerification:\n- curl https://example.com\n- Test from multiple clients\n\nPrevention:\n- Regular health checks\n- Review quarterly\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "NET-TICKET-055",
+      "category": "network",
+      "subcategory": "router",
+      "component": "router",
+      "issue_type": "hardware",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2025-12-05",
+      "resolved_date": "2026-02-19",
+      "affected_users": 229,
+      "resolution_type": "replacement"
+    }
+  },
+  {
+    "id": "NET-TICKET-056",
+    "content": "Issue: Proxy bypass not working\n\nSymptoms:\n- Component: PROXY\n- Issue type: configuration\n- Degraded performance\n- Specific devices affected\n\nRoot Cause:\nProxy service crashed or stopped\n\nDiagnostic Steps:\n1. Check service status\n2. Test from different device\n3. Check routing\n\nSolution:\nClear proxy cache: rm -rf /var/spool/squid/cache/*\n\nSteps to Resolve:\n1. Document current state\n2. Clear proxy cache: rm -rf /var/spool/squid/cache/*\n3. Check performance\n4. Check metrics\n5. Document solution\n\nVerification:\n- nslookup google.com\n- Check latency < 50ms\n\nPrevention:\n- Automated testing\n- Keep firmware updated\n\nStatus: Resolved\nResolution Time: 2 hours",
+    "metadata": {
+      "ticket_id": "NET-TICKET-056",
+      "category": "network",
+      "subcategory": "proxy",
+      "component": "proxy",
+      "issue_type": "configuration",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-01-20",
+      "resolved_date": "2026-02-05",
+      "affected_users": 197,
+      "resolution_type": "replacement"
+    }
+  },
+  {
+    "id": "NET-TICKET-057",
+    "content": "Issue: WiFi connected but no internet\n\nSymptoms:\n- Component: ROUTER\n- Issue type: security\n- Degraded performance\n- All devices affected\n\nRoot Cause:\nFaulty ethernet cable\n\nDiagnostic Steps:\n1. Verify configuration\n2. Test from different device\n3. Run network diagnostics\n\nSolution:\nContact ISP for connection issues\n\nSteps to Resolve:\n1. Take screenshots\n2. Contact ISP for connection issues\n3. Test connectivity\n4. Verify logs\n5. Notify users\n\nVerification:\n- traceroute google.com\n- Test from multiple clients\n\nPrevention:\n- Set up alerts\n- Implement redundancy\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-057",
+      "category": "network",
+      "subcategory": "router",
+      "component": "router",
+      "issue_type": "security",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2026-02-20",
+      "resolved_date": "2026-02-17",
+      "affected_users": 126,
+      "resolution_type": "restart"
+    }
+  },
+  {
+    "id": "NET-TICKET-058",
+    "content": "Issue: Slow WiFi performance\n\nSymptoms:\n- Component: WIFI\n- Issue type: hardware\n- Complete failure\n- Specific devices affected\n\nRoot Cause:\nWiFi password incorrect or changed\n\nDiagnostic Steps:\n1. Test connectivity\n2. Test from different device\n3. Verify DNS resolution\n\nSolution:\nSwitch to 5GHz band to avoid interference\n\nSteps to Resolve:\n1. Document current state\n2. Switch to 5GHz band to avoid interference\n3. Test connectivity\n4. Check metrics\n5. Update runbook\n\nVerification:\n- traceroute google.com\n- Verify throughput\n\nPrevention:\n- Automated testing\n- Keep firmware updated\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-058",
+      "category": "network",
+      "subcategory": "wifi",
+      "component": "wifi",
+      "issue_type": "hardware",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2025-12-11",
+      "resolved_date": "2026-02-05",
+      "affected_users": 50,
+      "resolution_type": "workaround"
+    }
+  },
+  {
+    "id": "NET-TICKET-059",
+    "content": "Issue: Slow network throughput\n\nSymptoms:\n- Component: ROUTER\n- Issue type: security\n- Complete failure\n- Specific devices affected\n\nRoot Cause:\nISP connection down\n\nDiagnostic Steps:\n1. Check service status\n2. Review logs\n3. Check routing\n\nSolution:\nContact ISP for connection issues\n\nSteps to Resolve:\n1. Backup configuration\n2. Contact ISP for connection issues\n3. Verify resolution\n4. Verify logs\n5. Document solution\n\nVerification:\n- nslookup google.com\n- Check latency < 50ms\n\nPrevention:\n- Set up alerts\n- Keep firmware updated\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "NET-TICKET-059",
+      "category": "network",
+      "subcategory": "router",
+      "component": "router",
+      "issue_type": "security",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2025-12-09",
+      "resolved_date": "2026-02-15",
+      "affected_users": 117,
+      "resolution_type": "workaround"
+    }
+  },
+  {
+    "id": "NET-TICKET-060",
+    "content": "Issue: WiFi signal weak or dropping\n\nSymptoms:\n- Component: WIFI\n- Issue type: connectivity\n- Complete failure\n- Random devices affected\n\nRoot Cause:\nWPA2/WPA3 compatibility issue\n\nDiagnostic Steps:\n1. Test connectivity\n2. Check firewall rules\n3. Run network diagnostics\n\nSolution:\nUpdate WiFi drivers\n\nSteps to Resolve:\n1. Document current state\n2. Update WiFi drivers\n3. Test connectivity\n4. Check metrics\n5. Update runbook\n\nVerification:\n- nslookup google.com\n- Test from multiple clients\n\nPrevention:\n- Monitor network metrics\n- Review quarterly\n\nStatus: Resolved\nResolution Time: 10 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-060",
+      "category": "network",
+      "subcategory": "wifi",
+      "component": "wifi",
+      "issue_type": "connectivity",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2026-02-07",
+      "resolved_date": "2026-02-11",
+      "affected_users": 270,
+      "resolution_type": "restart"
+    }
+  },
+  {
+    "id": "NET-TICKET-061",
+    "content": "Issue: Slow network throughput\n\nSymptoms:\n- Component: ROUTER\n- Issue type: hardware\n- Degraded performance\n- Random devices affected\n\nRoot Cause:\nISP connection down\n\nDiagnostic Steps:\n1. Verify configuration\n2. Review logs\n3. Check routing\n\nSolution:\nContact ISP for connection issues\n\nSteps to Resolve:\n1. Take screenshots\n2. Contact ISP for connection issues\n3. Verify resolution\n4. Verify logs\n5. Notify users\n\nVerification:\n- traceroute google.com\n- Test from multiple clients\n\nPrevention:\n- Regular health checks\n- Keep firmware updated\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-061",
+      "category": "network",
+      "subcategory": "router",
+      "component": "router",
+      "issue_type": "hardware",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-02-13",
+      "resolved_date": "2026-02-28",
+      "affected_users": 269,
+      "resolution_type": "workaround"
+    }
+  },
+  {
+    "id": "NET-TICKET-062",
+    "content": "Issue: Router not responding, network down\n\nSymptoms:\n- Component: ROUTER\n- Issue type: connectivity\n- Intermittent issues\n- Specific devices affected\n\nRoot Cause:\nFaulty ethernet cable\n\nDiagnostic Steps:\n1. Verify configuration\n2. Review logs\n3. Run network diagnostics\n\nSolution:\nImprove router ventilation\n\nSteps to Resolve:\n1. Backup configuration\n2. Improve router ventilation\n3. Check performance\n4. Check metrics\n5. Update runbook\n\nVerification:\n- nslookup google.com\n- Check latency < 50ms\n\nPrevention:\n- Monitor network metrics\n- Document procedures\n\nStatus: Resolved\nResolution Time: 10 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-062",
+      "category": "network",
+      "subcategory": "router",
+      "component": "router",
+      "issue_type": "connectivity",
+      "severity": "critical",
+      "status": "resolved",
+      "created_date": "2026-02-25",
+      "resolved_date": "2026-02-23",
+      "affected_users": 173,
+      "resolution_type": "restart"
+    }
+  },
+  {
+    "id": "NET-TICKET-063",
+    "content": "Issue: Broadcast storm detected\n\nSymptoms:\n- Component: SWITCH\n- Issue type: connectivity\n- Degraded performance\n- All devices affected\n\nRoot Cause:\nSwitch firmware bug\n\nDiagnostic Steps:\n1. Test connectivity\n2. Test from different device\n3. Check routing\n\nSolution:\nEnable STP: enable spanning-tree\n\nSteps to Resolve:\n1. Document current state\n2. Enable STP: enable spanning-tree\n3. Test connectivity\n4. Monitor for issues\n5. Document solution\n\nVerification:\n- traceroute google.com\n- Check latency < 50ms\n\nPrevention:\n- Regular health checks\n- Document procedures\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-063",
+      "category": "network",
+      "subcategory": "switch",
+      "component": "switch",
+      "issue_type": "connectivity",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2026-01-07",
+      "resolved_date": "2026-02-13",
+      "affected_users": 185,
+      "resolution_type": "configuration"
+    }
+  },
+  {
+    "id": "NET-TICKET-064",
+    "content": "Issue: Slow DNS resolution\n\nSymptoms:\n- Component: DNS\n- Issue type: performance\n- Complete failure\n- Specific devices affected\n\nRoot Cause:\nDNS server unreachable\n\nDiagnostic Steps:\n1. Verify configuration\n2. Review logs\n3. Verify DNS resolution\n\nSolution:\nFlush DNS cache: systemctl restart systemd-resolved\n\nSteps to Resolve:\n1. Backup configuration\n2. Flush DNS cache: systemctl restart systemd-resolved\n3. Check performance\n4. Check metrics\n5. Document solution\n\nVerification:\n- ping 8.8.8.8\n- Test from multiple clients\n\nPrevention:\n- Automated testing\n- Document procedures\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "NET-TICKET-064",
+      "category": "network",
+      "subcategory": "dns",
+      "component": "dns",
+      "issue_type": "performance",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2025-12-08",
+      "resolved_date": "2026-03-03",
+      "affected_users": 84,
+      "resolution_type": "replacement"
+    }
+  },
+  {
+    "id": "NET-TICKET-065",
+    "content": "Issue: DNS cache poisoning suspected\n\nSymptoms:\n- Component: DNS\n- Issue type: security\n- Complete failure\n- Specific devices affected\n\nRoot Cause:\nDNS forwarder misconfigured\n\nDiagnostic Steps:\n1. Check service status\n2. Review logs\n3. Check routing\n\nSolution:\nFlush DNS cache: systemctl restart systemd-resolved\n\nSteps to Resolve:\n1. Backup configuration\n2. Flush DNS cache: systemctl restart systemd-resolved\n3. Check performance\n4. Check metrics\n5. Document solution\n\nVerification:\n- ping 8.8.8.8\n- Verify throughput\n\nPrevention:\n- Monitor network metrics\n- Implement redundancy\n\nStatus: Resolved\nResolution Time: 2 hours",
+    "metadata": {
+      "ticket_id": "NET-TICKET-065",
+      "category": "network",
+      "subcategory": "dns",
+      "component": "dns",
+      "issue_type": "security",
+      "severity": "critical",
+      "status": "resolved",
+      "created_date": "2026-02-14",
+      "resolved_date": "2026-02-09",
+      "affected_users": 228,
+      "resolution_type": "upgrade"
+    }
+  },
+  {
+    "id": "NET-TICKET-066",
+    "content": "Issue: Slow VPN performance\n\nSymptoms:\n- Component: VPN\n- Issue type: security\n- Degraded performance\n- Specific devices affected\n\nRoot Cause:\nMTU size mismatch\n\nDiagnostic Steps:\n1. Verify configuration\n2. Review logs\n3. Check routing\n\nSolution:\nConfigure DNS push settings\n\nSteps to Resolve:\n1. Backup configuration\n2. Configure DNS push settings\n3. Check performance\n4. Verify logs\n5. Document solution\n\nVerification:\n- traceroute google.com\n- Verify throughput\n\nPrevention:\n- Set up alerts\n- Implement redundancy\n\nStatus: Resolved\nResolution Time: 10 minutes",
+    "metadata": {
+      "ticket_id": "NET-TICKET-066",
+      "category": "network",
+      "subcategory": "vpn",
+      "component": "vpn",
+      "issue_type": "security",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2026-01-29",
+      "resolved_date": "2026-03-03",
+      "affected_users": 295,
+      "resolution_type": "replacement"
+    }
+  },
+  {
+    "id": "NET-TICKET-067",
+    "content": "Issue: VPN authentication errors\n\nSymptoms:\n- Component: VPN\n- Issue type: connectivity\n- Complete failure\n- All devices affected\n\nRoot Cause:\nMTU size mismatch\n\nDiagnostic Steps:\n1. Check service status\n2. Test from different device\n3. Check routing\n\nSolution:\nAdjust MTU size to 1400\n\nSteps to Resolve:\n1. Backup configuration\n2. Adjust MTU size to 1400\n3. Test connectivity\n4. Verify logs\n5. Update runbook\n\nVerification:\n- traceroute google.com\n- Verify throughput\n\nPrevention:\n- Regular health checks\n- Implement redundancy\n\nStatus: Resolved\nResolution Time: 2 hours",
+    "metadata": {
+      "ticket_id": "NET-TICKET-067",
+      "category": "network",
+      "subcategory": "vpn",
+      "component": "vpn",
+      "issue_type": "connectivity",
+      "severity": "critical",
+      "status": "resolved",
+      "created_date": "2025-12-10",
+      "resolved_date": "2026-02-27",
+      "affected_users": 98,
+      "resolution_type": "upgrade"
+    }
+  },
+  {
+    "id": "NET-TICKET-068",
+    "content": "Issue: Intermittent DNS failures\n\nSymptoms:\n- Component: DNS\n- Issue type: configuration\n- Complete failure\n- Random devices affected\n\nRoot Cause:\nDNS forwarder misconfigured\n\nDiagnostic Steps:\n1. Test connectivity\n2. Check firewall rules\n3. Check routing\n\nSolution:\nAllow DNS port 53 in firewall\n\nSteps to Resolve:\n1. Take screenshots\n2. Allow DNS port 53 in firewall\n3. Check performance\n4. Verify logs\n5. Notify users\n\nVerification:\n- traceroute google.com\n- Verify throughput\n\nPrevention:\n- Monitor network metrics\n- Keep firmware updated\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "NET-TICKET-068",
+      "category": "network",
+      "subcategory": "dns",
+      "component": "dns",
+      "issue_type": "configuration",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2025-12-13",
+      "resolved_date": "2026-03-02",
+      "affected_users": 265,
+      "resolution_type": "restart"
+    }
+  },
+  {
+    "id": "NET-TICKET-069",
+    "content": "Issue: DNS cache poisoning suspected\n\nSymptoms:\n- Component: DNS\n- Issue type: security\n- Degraded performance\n- All devices affected\n\nRoot Cause:\nInvalid nameserver configuration in resolv.conf\n\nDiagnostic Steps:\n1. Test connectivity\n2. Review logs\n3. Run network diagnostics\n\nSolution:\nFix DNS forwarder configuration\n\nSteps to Resolve:\n1. Take screenshots\n2. Fix DNS forwarder configuration\n3. Verify resolution\n4. Monitor for issues\n5. Document solution\n\nVerification:\n- traceroute google.com\n- Verify throughput\n\nPrevention:\n- Regular health checks\n- Review quarterly\n\nStatus: Resolved\nResolution Time: 2 hours",
+    "metadata": {
+      "ticket_id": "NET-TICKET-069",
+      "category": "network",
+      "subcategory": "dns",
+      "component": "dns",
+      "issue_type": "security",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-02-24",
+      "resolved_date": "2026-02-14",
+      "affected_users": 214,
+      "resolution_type": "configuration"
+    }
+  }
+]

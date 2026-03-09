@@ -1,0 +1,147 @@
+# Default values for partner-agent
+
+# Global log level for all services (DEBUG, INFO, WARNING, ERROR)
+logLevel: "INFO"
+
+# Custom images (built via GitHub Actions)
+image:
+  registry: ghcr.io/ccamacho/agentic-partners-integration
+  agentService: agent-service
+  requestManager: request-manager
+  ragApi: rag-api
+  webUi: web-ui
+  pullPolicy: Always
+  tag: "latest"
+
+# Service account
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+# Database configuration
+database:
+  # Expected Alembic migration version
+  expectedMigrationVersion: "006"
+
+# PostgreSQL with pgvector
+postgresql:
+  image: pgvector/pgvector:pg16
+  user: postgres
+  password: rag_password
+  database: partner_agent
+  storage: 5Gi
+  storageClass: ""
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+# ChromaDB vector database
+chromadb:
+  image: chromadb/chroma:latest
+  storage: 5Gi
+  storageClass: ""
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+# RAG API service
+ragApi:
+  replicas: 1
+  embeddingModel: "models/gemini-embedding-001"
+  llmModel: "gemini-2.5-flash"
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+# LLM credentials (set via --set or external secret)
+llm:
+  backend: "gemini"
+  # Gemini
+  googleApiKey: ""
+  geminiModel: "gemini-2.5-flash"
+  # OpenAI
+  openaiApiKey: ""
+  openaiModel: "gpt-4"
+  # Ollama
+  ollamaBaseUrl: "http://ollama:11434"
+  ollamaModel: "llama3.1"
+
+# Request Manager
+requestManager:
+  replicas: 1
+  uvicornWorkers: 4
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "1Gi"
+      cpu: "1"
+  externalAccess:
+    enabled: false
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 10
+    targetCPUUtilization: 70
+    targetMemoryUtilization: 80
+
+# Agent Service
+agentService:
+  replicas: 1
+  uvicornWorkers: 4
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "1Gi"
+      cpu: "1"
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 5
+    targetCPUUtilization: 70
+    targetMemoryUtilization: 80
+
+# Web UI (nginx serving PatternFly chat interface)
+webUi:
+  replicas: 1
+  resources:
+    requests:
+      memory: "64Mi"
+      cpu: "50m"
+    limits:
+      memory: "128Mi"
+      cpu: "200m"
+
+# Database migration job
+dbMigration:
+  enabled: true
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "300m"
+
+# Network policies
+networkPolicies:
+  enabled: true
+  # Platform: "openshift", "kind", or "none"
+  platform: "openshift"

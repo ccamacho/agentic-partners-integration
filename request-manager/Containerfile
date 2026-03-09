@@ -1,0 +1,80 @@
+# Containerfile for request-manager
+# Uses multi-stage build template
+
+ARG SERVICE_NAME=request-manager
+ARG MODULE_NAME=request_manager.main
+ARG BUILD_CONTEXT=.
+ARG USE_PIP_INSTALL=false
+ARG UV_VERSION=0.8.9
+
+# Builder stage
+FROM registry.access.redhat.com/ubi9/python-312:latest as builder
+
+USER root
+ARG UV_VERSION
+RUN pip3 install --no-cache-dir uv==${UV_VERSION}
+
+WORKDIR /app
+
+# Copy shared dependencies
+COPY shared-models ./shared-models/
+
+# Copy agent-service (needed by request-manager)
+COPY agent-service ./agent-service/
+
+# Copy service files
+ARG SERVICE_NAME
+ARG USE_PIP_INSTALL
+COPY ${SERVICE_NAME}/pyproject.toml ${SERVICE_NAME}/uv.lock ${SERVICE_NAME}/requirements.txt ./${SERVICE_NAME}/
+WORKDIR /app/${SERVICE_NAME}
+
+# Install dependencies
+RUN if [ "$USE_PIP_INSTALL" = "true" ]; then \
+        python3 -m venv .venv && \
+        grep -E "^(-e |\.\./)" requirements.txt | grep -v "^#" > /tmp/editable-requirements.txt 2>/dev/null || true && \
+        grep -vE "^(-e |\.\./)" requirements.txt | grep -v "^#" > /tmp/non-editable-requirements.txt && \
+        if [ -s /tmp/editable-requirements.txt ]; then \
+            .venv/bin/pip install --no-cache-dir --no-deps -r /tmp/editable-requirements.txt; \
+        fi && \
+        .venv/bin/pip install --no-cache-dir --require-hashes --extra-index-url https://download.pytorch.org/whl/cpu -r /tmp/non-editable-requirements.txt && \
+        rm -f /tmp/*-requirements.txt; \
+    else \
+        uv sync --frozen --no-cache --no-dev; \
+    fi
+
+# Production stage
+FROM registry.access.redhat.com/ubi9/python-312-minimal:latest
+
+WORKDIR /app
+
+# Copy shared dependencies
+COPY --from=builder /app/shared-models /app/shared-models
+COPY --from=builder /app/agent-service /app/agent-service
+
+# Copy virtual environment
+ARG SERVICE_NAME
+ENV OTEL_SERVICE_NAME=${SERVICE_NAME}
+ENV OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED=true
+COPY --from=builder /app/${SERVICE_NAME}/.venv /app/.venv
+
+# Copy application source
+ARG MODULE_NAME
+COPY ${SERVICE_NAME}/src/ ./src/
+COPY ${SERVICE_NAME}/pyproject.toml ./
+
+# Copy initialization scripts
+COPY scripts/setup_aaa_users.py ./scripts/
+
+# Set environment variables
+ENV VIRTUAL_ENV=/app/.venv
+ENV PATH="/usr/bin:${VIRTUAL_ENV}/bin:$PATH"
+ENV PYTHONPATH="/usr/lib64/python3.12:${VIRTUAL_ENV}/lib/python3.12/site-packages:/app/agent-service/src:/app/shared-models/src:/app/src:$PYTHONPATH"
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV MODULE_NAME=${MODULE_NAME}
+
+# Expose port
+EXPOSE 8080
+
+# Run the application
+CMD python3 -m uvicorn $MODULE_NAME:app --host 0.0.0.0 --port 8080

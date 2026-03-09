@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en" class="pf-v6-theme-dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit Log - Partner Agent</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@patternfly/patternfly@6/patternfly.min.css">
+    <style>
+        :root {
+            --pf-bg-base:       #292929;
+            --pf-bg-raised:     #151515;
+            --pf-bg-elevated:   #383838;
+            --pf-text:          #f2f2f2;
+            --pf-text-subtle:   #c7c7c7;
+            --pf-text-muted:    #a3a3a3;
+            --pf-border:        #4d4d4d;
+            --pf-border-subtle: #383838;
+            --pf-brand:         #92c5f9;
+            --pf-brand-bg:      #06c;
+            --pf-success:       #87bb62;
+            --pf-success-bg:    rgba(135,187,98,0.10);
+            --pf-danger:        #f56e6e;
+            --pf-danger-bg:     rgba(245,110,110,0.10);
+            --pf-purple:        #b6a6e9;
+            --pf-font-body:     'RedHatText', 'Helvetica Neue', helvetica, arial, sans-serif;
+            --pf-font-heading:  'RedHatDisplay', 'Helvetica Neue', helvetica, arial, sans-serif;
+            --pf-radius-sm:     4px;
+            --pf-radius-md:     8px;
+            --pf-radius-lg:     12px;
+        }
+
+        html:not(.pf-v6-theme-dark) {
+            --pf-bg-base:       #ffffff;
+            --pf-bg-raised:     #f2f2f2;
+            --pf-bg-elevated:   #e0e0e0;
+            --pf-text:          #151515;
+            --pf-text-subtle:   #4d4d4d;
+            --pf-text-muted:    #707070;
+            --pf-border:        #e0e0e0;
+            --pf-brand:         #06c;
+            --pf-brand-bg:      #06c;
+            --pf-success:       #3d7317;
+            --pf-success-bg:    rgba(61,115,23,0.08);
+            --pf-danger:        #a60000;
+            --pf-danger-bg:     rgba(166,0,0,0.06);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html, body {
+            margin: 0; padding: 0; height: 100%;
+            font-family: var(--pf-font-body);
+        }
+
+        body {
+            background: var(--pf-bg-base);
+            color: var(--pf-text);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top bar */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px;
+            background: var(--pf-bg-raised);
+            border-bottom: 1px solid var(--pf-border);
+            flex-shrink: 0;
+        }
+
+        .top-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .top-bar h1 {
+            font-family: var(--pf-font-heading);
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .top-bar-right button,
+        .top-bar-right a {
+            background: transparent;
+            border: 1px solid var(--pf-border);
+            border-radius: var(--pf-radius-sm);
+            color: var(--pf-text-muted);
+            padding: 6px 12px;
+            font-size: 13px;
+            font-family: var(--pf-font-body);
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s;
+        }
+
+        .top-bar-right button:hover,
+        .top-bar-right a:hover {
+            background: var(--pf-bg-elevated);
+            color: var(--pf-text);
+            border-color: var(--pf-text-muted);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: capitalize;
+        }
+
+        .badge-admin {
+            background: rgba(182,166,233,0.15);
+            color: var(--pf-purple);
+        }
+
+        .badge-user {
+            background: var(--pf-success-bg);
+            color: var(--pf-success);
+        }
+
+        /* Main content */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 24px;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: var(--pf-bg-raised);
+            border: 1px solid var(--pf-border);
+            border-radius: var(--pf-radius-md);
+            padding: 10px 16px;
+            min-width: 120px;
+        }
+
+        .stat-card-label {
+            font-size: 10px;
+            color: var(--pf-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .stat-card-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--pf-text);
+        }
+
+        /* Table */
+        .audit-table-wrap {
+            background: var(--pf-bg-raised);
+            border: 1px solid var(--pf-border);
+            border-radius: var(--pf-radius-md);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        thead th {
+            text-align: left;
+            padding: 8px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--pf-text-muted);
+            background: var(--pf-bg-elevated);
+            border-bottom: 1px solid var(--pf-border);
+            white-space: nowrap;
+        }
+
+        tbody td {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--pf-border-subtle);
+            vertical-align: middle;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: rgba(146,197,249,0.04);
+        }
+
+        .col-time { width: 160px; white-space: nowrap; color: var(--pf-text-muted); }
+        .col-agent { width: 130px; }
+        .col-ms { width: 90px; text-align: right; white-space: nowrap; }
+        .col-message { max-width: 300px; }
+        .col-response { max-width: 350px; }
+
+        .cell-truncate {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 300px;
+        }
+
+        .agent-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            background: rgba(146,197,249,0.12);
+            color: var(--pf-brand);
+        }
+
+        .ms-value {
+            font-variant-numeric: tabular-nums;
+        }
+
+        .ms-fast { color: var(--pf-success); }
+        .ms-mid  { color: #e4a832; }
+        .ms-slow { color: var(--pf-danger); }
+
+        /* Empty & loading states */
+        .state-message {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--pf-text-muted);
+        }
+
+        .state-message h3 {
+            margin: 0 0 8px;
+            font-size: 16px;
+            color: var(--pf-text-subtle);
+        }
+
+        .state-message p {
+            margin: 0;
+            font-size: 13px;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px; height: 20px;
+            border: 2px solid transparent;
+            border-top-color: var(--pf-brand);
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            margin-bottom: 12px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Expandable row */
+        .row-detail {
+            display: none;
+            background: var(--pf-bg-base);
+            border-bottom: 1px solid var(--pf-border-subtle);
+        }
+
+        .row-detail.active { display: table-row; }
+
+        .row-detail td { padding: 0 !important; }
+
+        .detail-content {
+            padding: 8px 16px;
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--pf-text-subtle);
+            word-break: break-word;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px 24px;
+        }
+
+        .detail-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--pf-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .detail-section {
+            margin-bottom: 0;
+        }
+
+        .expand-btn {
+            background: transparent;
+            border: none;
+            color: var(--pf-text-muted);
+            cursor: pointer;
+            font-size: 14px;
+            padding: 2px 6px;
+            border-radius: var(--pf-radius-sm);
+        }
+
+        .expand-btn:hover {
+            background: var(--pf-bg-elevated);
+            color: var(--pf-text);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-top: 1px solid var(--pf-border);
+            font-size: 12px;
+            color: var(--pf-text-muted);
+        }
+
+        .pagination button {
+            background: transparent;
+            border: 1px solid var(--pf-border);
+            border-radius: var(--pf-radius-sm);
+            color: var(--pf-text-muted);
+            padding: 6px 12px;
+            font-size: 12px;
+            font-family: var(--pf-font-body);
+            cursor: pointer;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background: var(--pf-bg-elevated);
+            color: var(--pf-text);
+        }
+
+        .pagination button:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <h1>Audit Log</h1>
+            <span class="badge" id="roleBadge"></span>
+        </div>
+        <div class="top-bar-right">
+            <a href="/chat.html" id="backLink" aria-label="Return to chat interface">Back to Chat</a>
+            <button onclick="toggleTheme()" id="themeBtn" title="Toggle theme" aria-label="Toggle dark/light theme"></button>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="stats-bar" id="statsBar" style="display:none;">
+            <div class="stat-card">
+                <div class="stat-card-label">Total Requests</div>
+                <div class="stat-card-value" id="statTotal">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">Avg Response Time</div>
+                <div class="stat-card-value" id="statAvgTime">--</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-label">Agents Used</div>
+                <div class="stat-card-value" id="statAgents">0</div>
+            </div>
+        </div>
+
+        <div class="audit-table-wrap">
+            <div id="tableContent">
+                <div class="state-message" role="status" aria-live="polite">
+                    <div class="loading-spinner" aria-hidden="true"></div>
+                    <h3>Loading audit log...</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.hostname === 'localhost'
+            ? 'http://localhost:8000'
+            : '';
+
+        let currentLimit = 50;
+        let pfIcons = null;
+
+        function pfIcon(name, size) {
+            if (!pfIcons || !pfIcons[name]) return '';
+            const icon = pfIcons[name];
+            const s = size || 14;
+            return `<svg width="${s}" height="${s}" viewBox="0 0 ${icon.width} ${icon.height}" fill="currentColor" style="vertical-align:-2px"><path d="${icon.svgPathData}"/></svg>`;
+        }
+
+        function getAuth() {
+            const token = localStorage.getItem('jwt_token');
+            const email = localStorage.getItem('user_email');
+            if (!token || !email) {
+                window.location.href = '/login.html';
+                return null;
+            }
+            return { token, email };
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains('pf-v6-theme-dark');
+            if (isDark) {
+                html.classList.remove('pf-v6-theme-dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('pf-v6-theme-dark');
+                localStorage.setItem('theme', 'dark');
+            }
+            document.getElementById('themeBtn').innerHTML = pfIcon('asleep', 14);
+        }
+
+        function formatTimestamp(iso) {
+            if (!iso) return '--';
+            const d = new Date(iso);
+            return d.toLocaleString('en-US', {
+                month: 'short', day: 'numeric',
+                hour: '2-digit', minute: '2-digit', second: '2-digit',
+                hour12: false
+            });
+        }
+
+        function formatMs(ms) {
+            if (ms == null) return '<span class="ms-value" style="color:var(--pf-text-muted)">--</span>';
+            let cls = 'ms-fast';
+            if (ms > 5000) cls = 'ms-slow';
+            else if (ms > 2000) cls = 'ms-mid';
+            if (ms >= 1000) {
+                return `<span class="ms-value ${cls}">${(ms / 1000).toFixed(1)}s</span>`;
+            }
+            return `<span class="ms-value ${cls}">${ms}ms</span>`;
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function toggleRow(id) {
+            const row = document.getElementById('detail-' + id);
+            if (!row) return;
+            const isExpanding = !row.classList.contains('active');
+            row.classList.toggle('active');
+            const btn = row.previousElementSibling?.querySelector('.expand-btn');
+            if (btn) {
+                btn.setAttribute('aria-expanded', String(isExpanding));
+                btn.innerHTML = isExpanding ? '&#x25BC;' : '&#x25B6;';
+            }
+        }
+
+        async function loadAudit(limit) {
+            const auth = getAuth();
+            if (!auth) return;
+
+            try {
+                const resp = await fetch(`${API_BASE}/adk/audit?limit=${limit}`, {
+                    headers: {
+                        'Authorization': `Bearer ${auth.token}`,
+                        'X-User-Email': auth.email
+                    }
+                });
+
+                if (resp.status === 401 || resp.status === 403) {
+                    localStorage.clear();
+                    window.location.href = '/login.html';
+                    return;
+                }
+
+                if (!resp.ok) {
+                    const err = await resp.json().catch(() => ({}));
+                    throw new Error(err.detail || `HTTP ${resp.status}`);
+                }
+
+                const data = await resp.json();
+                renderAudit(data);
+            } catch (e) {
+                document.getElementById('tableContent').innerHTML = `
+                    <div class="state-message">
+                        <h3>Failed to load audit log</h3>
+                        <p>${escapeHtml(e.message)}</p>
+                    </div>`;
+            }
+        }
+
+        function renderAudit(data) {
+            // Role badge
+            const badge = document.getElementById('roleBadge');
+            const safeRole = ['admin', 'user', 'manager'].includes(data.user_role) ? data.user_role : 'user';
+            badge.textContent = safeRole;
+            badge.className = 'badge badge-' + (safeRole === 'admin' ? 'admin' : 'user');
+
+            // Stats
+            const statsBar = document.getElementById('statsBar');
+            statsBar.style.display = 'flex';
+            document.getElementById('statTotal').textContent = data.total;
+
+            const timings = data.entries.filter(e => e.processing_time_ms != null).map(e => e.processing_time_ms);
+            if (timings.length > 0) {
+                const avg = timings.reduce((a, b) => a + b, 0) / timings.length;
+                document.getElementById('statAvgTime').textContent = avg >= 1000
+                    ? (avg / 1000).toFixed(1) + 's'
+                    : Math.round(avg) + 'ms';
+            }
+
+            const agents = new Set(data.entries.filter(e => e.agent).map(e => e.agent));
+            document.getElementById('statAgents').textContent = agents.size;
+
+            if (data.entries.length === 0) {
+                document.getElementById('tableContent').innerHTML = `
+                    <div class="state-message">
+                        <h3>No requests yet</h3>
+                        <p>Your request history will appear here after you start chatting with agents.</p>
+                    </div>`;
+                return;
+            }
+
+            let html = `<table aria-label="Audit log entries">
+                <thead>
+                    <tr>
+                        <th scope="col" style="width:30px"><span class="sr-only">Expand</span></th>
+                        <th scope="col" class="col-time">Time</th>
+                        <th scope="col" class="col-message">Message</th>
+                        <th scope="col" class="col-agent">Agent</th>
+                        <th scope="col" class="col-response">Response</th>
+                        <th scope="col" class="col-ms">Duration</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            data.entries.forEach((entry, i) => {
+                const agent = entry.agent
+                    ? `<span class="agent-badge">${escapeHtml(entry.agent)}</span>`
+                    : '<span style="color:var(--pf-text-muted)">--</span>';
+
+                html += `
+                    <tr onclick="toggleRow(${i})" style="cursor:pointer">
+                        <td><button class="expand-btn" aria-expanded="false" aria-controls="detail-${i}" aria-label="Expand row details">&#x25B6;</button></td>
+                        <td class="col-time">${formatTimestamp(entry.timestamp)}</td>
+                        <td><div class="cell-truncate">${escapeHtml(entry.message)}</div></td>
+                        <td>${agent}</td>
+                        <td><div class="cell-truncate">${escapeHtml(entry.response_preview || '--')}</div></td>
+                        <td class="col-ms">${formatMs(entry.processing_time_ms)}</td>
+                    </tr>
+                    <tr class="row-detail" id="detail-${i}">
+                        <td colspan="6">
+                            <div class="detail-content">
+                                <div class="detail-section">
+                                    <div class="detail-label">Full Message</div>
+                                    ${escapeHtml(entry.message)}
+                                </div>
+                                <div class="detail-section">
+                                    <div class="detail-label">Full Response</div>
+                                    ${escapeHtml(entry.response_preview || 'No response recorded')}
+                                </div>
+                                <div class="detail-section">
+                                    <div class="detail-label">Request ID</div>
+                                    <code style="font-size:11px;color:var(--pf-text-muted)">${escapeHtml(entry.request_id)}</code>
+                                </div>
+                                <div class="detail-section">
+                                    <div class="detail-label">Session ID</div>
+                                    <code style="font-size:11px;color:var(--pf-text-muted)">${escapeHtml(entry.session_id)}</code>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>`;
+            });
+
+            html += '</tbody></table>';
+
+            // Pagination
+            html += `<div class="pagination">
+                <span>Showing ${data.entries.length} of ${data.total} entries</span>
+                <div>
+                    ${data.entries.length < data.total
+                        ? `<button onclick="loadMore()">Load more</button>`
+                        : ''}
+                </div>
+            </div>`;
+
+            document.getElementById('tableContent').innerHTML = html;
+        }
+
+        function loadMore() {
+            currentLimit += 50;
+            loadAudit(currentLimit);
+        }
+
+        // Init
+        window.addEventListener('load', async () => {
+            try {
+                const mod = await import('https://cdn.jsdelivr.net/npm/@patternfly/patternfly@6/icons/pficons.mjs');
+                pfIcons = mod.pfIcons;
+            } catch (e) {
+                console.warn('Failed to load PF icons:', e);
+            }
+
+            document.getElementById('themeBtn').innerHTML = pfIcon('asleep', 14);
+            document.getElementById('backLink').innerHTML = pfIcon('arrow', 14) + ' Back to Chat';
+
+            const saved = localStorage.getItem('theme') || 'dark';
+            if (saved === 'light') {
+                document.documentElement.classList.remove('pf-v6-theme-dark');
+            }
+            loadAudit(currentLimit);
+        });
+    </script>
+</body>
+</html>

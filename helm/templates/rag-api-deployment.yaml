@@ -1,0 +1,101 @@
+{{- $fullName := include "partner-agent.fullname" . -}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $fullName }}-rag-api
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "partner-agent.labels" . | nindent 4 }}
+    app: {{ $fullName }}-rag-api
+    component: rag-api
+spec:
+  replicas: {{ .Values.ragApi.replicas | default 1 }}
+  selector:
+    matchLabels:
+      {{- include "partner-agent.selectorLabels" . | nindent 6 }}
+      app: {{ $fullName }}-rag-api
+  template:
+    metadata:
+      labels:
+        {{- include "partner-agent.labels" . | nindent 8 }}
+        app: {{ $fullName }}-rag-api
+        component: rag-api
+    spec:
+      serviceAccountName: {{ include "partner-agent.serviceAccountName" . }}
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: rag-api
+        image: "{{ .Values.image.registry }}/{{ .Values.image.ragApi }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+          name: http
+        env:
+        - name: GOOGLE_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ $fullName }}-llm-credentials
+              key: google-api-key
+              optional: true
+        - name: CHROMA_HOST
+          value: "{{ $fullName }}-chromadb"
+        - name: CHROMA_PORT
+          value: "8000"
+        - name: EMBEDDING_MODEL
+          value: {{ .Values.ragApi.embeddingModel | default "text-embedding-004" | quote }}
+        - name: LLM_MODEL
+          value: {{ .Values.ragApi.llmModel | default "gemini-2.0-flash-exp" | quote }}
+        - name: PORT
+          value: "8080"
+        {{- if .Values.ragApi.resources }}
+        resources:
+          {{- toYaml .Values.ragApi.resources | nindent 10 }}
+        {{- end }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $fullName }}-rag-api
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "partner-agent.labels" . | nindent 4 }}
+    app: {{ $fullName }}-rag-api
+spec:
+  type: ClusterIP
+  selector:
+    {{- include "partner-agent.selectorLabels" . | nindent 4 }}
+    app: {{ $fullName }}-rag-api
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+    protocol: TCP

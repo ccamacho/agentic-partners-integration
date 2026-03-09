@@ -1,0 +1,45 @@
+{{- if .Values.dbMigration.enabled }}
+{{- $fullName := include "partner-agent.fullname" . -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ $fullName }}-db-migration
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "partner-agent.labels" . | nindent 4 }}
+    app: {{ $fullName }}-db-migration
+spec:
+  backoffLimit: 3
+  activeDeadlineSeconds: 300
+  template:
+    metadata:
+      labels:
+        {{- include "partner-agent.labels" . | nindent 8 }}
+        app: {{ $fullName }}-db-migration
+    spec:
+      restartPolicy: OnFailure
+      serviceAccountName: {{ include "partner-agent.serviceAccountName" . }}
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: db-migration
+        image: "{{ .Values.image.registry }}/{{ .Values.image.requestManager }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: ["python3", "shared-models/scripts/migrate.py"]
+        env:
+        {{- include "partner-agent.dbEnvVars" . | nindent 8 }}
+        {{- if .Values.dbMigration.resources }}
+        resources:
+          {{- toYaml .Values.dbMigration.resources | nindent 10 }}
+        {{- end }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+{{- end }}

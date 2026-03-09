@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en" class="pf-v6-theme-dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partner Agent Chat</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@patternfly/patternfly@6/patternfly.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@patternfly/chatbot@6/dist/css/main.min.css">
+    <style>
+        /*
+         * PatternFly 6 color palette (explicit values for reliable rendering)
+         * Dark theme: gray-95 (#151515) base, gray-80 (#292929) elevated
+         * Light theme: white (#fff) base, gray-10 (#f2f2f2) elevated
+         */
+        :root {
+            --pf-bg-base:       #292929;  /* gray-80 */
+            --pf-bg-raised:     #151515;  /* gray-95 */
+            --pf-bg-elevated:   #383838;  /* gray-70 */
+            --pf-text:          #f2f2f2;  /* gray-10 */
+            --pf-text-subtle:   #c7c7c7;  /* gray-30 */
+            --pf-text-muted:    #a3a3a3;  /* gray-40 */
+            --pf-border:        #4d4d4d;  /* gray-60 */
+            --pf-border-subtle: #383838;  /* gray-70 */
+            --pf-brand:         #92c5f9;  /* blue-30 (dark brand) */
+            --pf-brand-bg:      #06c;     /* blue-50 (button bg) */
+            --pf-success:       #87bb62;  /* green-40 */
+            --pf-success-bg:    rgba(135,187,98,0.10);
+            --pf-danger:        #f56e6e;  /* red-40 */
+            --pf-danger-bg:     rgba(245,110,110,0.10);
+            --pf-purple:        #b6a6e9;  /* purple-30 */
+            --pf-font-body:     'RedHatText', 'Helvetica Neue', helvetica, arial, sans-serif;
+            --pf-font-heading:  'RedHatDisplay', 'Helvetica Neue', helvetica, arial, sans-serif;
+            --pf-font-mono:     'RedHatMono', 'Liberation Mono', consolas, 'SFMono-Regular', monospace;
+            --pf-radius-sm:     4px;
+            --pf-radius-md:     8px;
+            --pf-radius-lg:     12px;
+            --pf-radius-pill:   9999px;
+        }
+
+        html:not(.pf-v6-theme-dark) {
+            --pf-bg-base:       #ffffff;
+            --pf-bg-raised:     #f2f2f2;  /* gray-10 */
+            --pf-bg-elevated:   #e0e0e0;  /* gray-20 */
+            --pf-text:          #151515;  /* gray-95 */
+            --pf-text-subtle:   #4d4d4d;  /* gray-60 */
+            --pf-text-muted:    #707070;  /* gray-50 */
+            --pf-border:        #e0e0e0;  /* gray-20 */
+            --pf-border-subtle: #f2f2f2;  /* gray-10 */
+            --pf-brand:         #06c;     /* blue-50 */
+            --pf-brand-bg:      #06c;
+            --pf-success:       #3d7317;  /* green-60 */
+            --pf-success-bg:    rgba(61,115,23,0.08);
+            --pf-danger:        #a60000;  /* red-60 */
+            --pf-danger-bg:     rgba(166,0,0,0.06);
+            --pf-purple:        #5e40be;  /* purple-50 */
+        }
+
+        /* ── Reset & base ── */
+        *, *::before, *::after { box-sizing: border-box; }
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: var(--pf-font-body);
+            background: var(--pf-bg-base);
+            color: var(--pf-text);
+        }
+
+        .app-layout {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* ══════════════════════════════════════════
+           SIDEBAR
+           ══════════════════════════════════════════ */
+        .app-sidebar {
+            width: 280px;
+            min-width: 280px;
+            background: var(--pf-bg-raised);
+            border-right: 1px solid var(--pf-border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            padding: 20px 20px 14px;
+            border-bottom: 1px solid var(--pf-border);
+        }
+
+        .sidebar-header h3 {
+            font-family: var(--pf-font-heading);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--pf-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin: 0;
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+        }
+
+        .agent-card {
+            padding: 12px 14px;
+            border-radius: var(--pf-radius-md);
+            margin-bottom: 8px;
+            border: 1px solid var(--pf-border);
+            background: var(--pf-bg-base);
+        }
+
+        .agent-card.agent-routing {
+            border-color: var(--pf-brand);
+            border-width: 2px;
+            background: rgba(0,102,204,0.08);
+        }
+
+        .agent-card.agent-active {
+            border-color: var(--pf-success);
+            background: var(--pf-success-bg);
+        }
+
+        .agent-card.agent-locked {
+            opacity: 0.40;
+            background: transparent;
+        }
+
+        .agent-card-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--pf-text);
+            margin: 0 0 2px;
+        }
+
+        .agent-card-desc {
+            font-size: 11px;
+            color: var(--pf-text-muted);
+            margin: 0;
+        }
+
+        .agent-card-status {
+            margin-top: 6px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .agent-card.agent-routing .agent-card-status { color: var(--pf-brand); }
+        .agent-card.agent-active .agent-card-status  { color: var(--pf-success); }
+
+        /* Sidebar footer: user info */
+        .sidebar-footer {
+            padding: 12px 16px;
+            border-top: 1px solid var(--pf-border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-footer-avatar {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: var(--pf-brand-bg);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px; color: #fff; font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .sidebar-footer-info { flex: 1; min-width: 0; }
+
+        .sidebar-footer-email {
+            font-size: 12px;
+            color: var(--pf-text);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+
+        .sidebar-footer-role {
+            font-size: 10px;
+            color: var(--pf-text-muted);
+            text-transform: capitalize;
+        }
+
+        .sidebar-footer-actions {
+            display: flex;
+            gap: 4px;
+        }
+
+        .sidebar-footer-actions button {
+            background: transparent;
+            border: 1px solid var(--pf-border);
+            border-radius: var(--pf-radius-sm);
+            color: var(--pf-text-muted);
+            cursor: pointer;
+            padding: 4px 8px;
+            font-size: 14px;
+            transition: all 0.15s;
+        }
+
+        .sidebar-footer-actions button:hover {
+            background: var(--pf-bg-elevated);
+            color: var(--pf-text);
+            border-color: var(--pf-text-muted);
+        }
+
+        /* ══════════════════════════════════════════
+           CHATBOT (main area)
+           ══════════════════════════════════════════ */
+        .chatbot {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            min-width: 0;
+            background: var(--pf-bg-base);
+        }
+
+        /* ── Header ── */
+        .chatbot-header {
+            display: flex;
+            align-items: center;
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--pf-border);
+            background: var(--pf-bg-raised);
+            gap: 14px;
+        }
+
+        .chatbot-header-icon {
+            width: 40px; height: 40px;
+            border-radius: var(--pf-radius-md);
+            background: var(--pf-brand-bg);
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .chatbot-header h1 {
+            font-family: var(--pf-font-heading);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--pf-text);
+            margin: 0;
+        }
+
+        .chatbot-header p {
+            font-size: 12px;
+            color: var(--pf-text-muted);
+            margin: 0;
+        }
+
+        /* ── Messages area ── */
+        .chatbot-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 48px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .chatbot-messages::-webkit-scrollbar { width: 6px; }
+        .chatbot-messages::-webkit-scrollbar-track { background: transparent; }
+        .chatbot-messages::-webkit-scrollbar-thumb {
+            background: var(--pf-border);
+            border-radius: 3px;
+        }
+
+        /* ── Message row ── */
+        .msg {
+            display: flex;
+            gap: 12px;
+            animation: msgIn 0.2s ease;
+            max-width: 85%;
+        }
+
+        @keyframes msgIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .msg--user  { align-self: flex-end; flex-direction: row-reverse; }
+        .msg--bot   { align-self: flex-start; }
+        .msg--error { align-self: center; max-width: 90%; }
+
+        .msg-avatar {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .msg--bot .msg-avatar   { background: var(--pf-brand-bg); color: #fff; }
+        .msg--user .msg-avatar  { background: var(--pf-purple);   color: #fff; }
+
+        .msg-body {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 0;
+            max-width: 100%;
+        }
+
+        /* ── Message bubble ── */
+        .msg-text {
+            padding: 12px 16px;
+            border-radius: var(--pf-radius-lg);
+            line-height: 1.6;
+            font-size: 14px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .msg--bot .msg-text {
+            background: var(--pf-bg-raised);
+            color: var(--pf-text);
+            border: 1px solid var(--pf-border);
+            border-bottom-left-radius: 2px;
+        }
+
+        .msg--user .msg-text {
+            background: var(--pf-brand-bg);
+            color: #fff;
+            border-bottom-right-radius: 2px;
+        }
+
+        .msg--error .msg-text {
+            background: var(--pf-danger-bg);
+            color: var(--pf-danger);
+            border: 1px solid var(--pf-danger);
+        }
+
+        /* ── Markdown inside message bubbles ── */
+        .msg-text h2, .msg-text h3, .msg-text h4 {
+            margin: 14px 0 6px;
+            color: var(--pf-text);
+        }
+        .msg-text h2 { font-size: 16px; font-family: var(--pf-font-heading); }
+        .msg-text h3 { font-size: 15px; font-family: var(--pf-font-heading); }
+        .msg-text h4 { font-size: 14px; font-family: var(--pf-font-heading); }
+
+        .msg-text p         { margin: 6px 0; }
+        .msg-text ul        { margin: 8px 0; padding-left: 20px; list-style: disc; }
+        .msg-text ol        { margin: 8px 0; padding-left: 20px; list-style: decimal; }
+        .msg-text li        { margin: 3px 0; }
+        .msg-text strong    { font-weight: 700; color: var(--pf-text); }
+
+        .msg-text code {
+            font-family: var(--pf-font-mono);
+            font-size: 12px;
+            background: rgba(255,255,255,0.08);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        .msg-text pre {
+            background: rgba(0,0,0,0.30);
+            padding: 12px;
+            border-radius: var(--pf-radius-md);
+            overflow-x: auto;
+            margin: 8px 0;
+        }
+
+        .msg-text pre code { background: none; padding: 0; }
+
+        .msg-text hr {
+            border: none;
+            border-top: 1px solid var(--pf-border);
+            margin: 12px 0;
+        }
+
+        /* Light mode overrides for code */
+        html:not(.pf-v6-theme-dark) .msg-text code {
+            background: rgba(0,0,0,0.06);
+        }
+        html:not(.pf-v6-theme-dark) .msg-text pre {
+            background: rgba(0,0,0,0.04);
+        }
+
+        /* ── Message meta line ── */
+        .msg-meta {
+            font-size: 11px;
+            color: var(--pf-text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding-top: 2px;
+        }
+
+        /* ══════════════════════════════════════════
+           ROUTING BANNER
+           ══════════════════════════════════════════ */
+        .routing-banner {
+            margin-bottom: 6px;
+            padding: 10px 14px;
+            background: rgba(0,102,204,0.08);
+            border-left: 3px solid var(--pf-brand);
+            border-radius: var(--pf-radius-md);
+            font-size: 12px;
+        }
+
+        .routing-banner-title {
+            color: var(--pf-brand);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .routing-banner-details {
+            color: var(--pf-text-subtle);
+            line-height: 1.7;
+        }
+
+        .routing-banner-label {
+            font-weight: 700;
+            color: var(--pf-text);
+        }
+
+        .routing-banner-agent {
+            color: var(--pf-brand);
+            font-weight: 700;
+            text-transform: capitalize;
+        }
+
+        /* ══════════════════════════════════════════
+           COLLAPSIBLE SECTIONS (reasoning, RAG)
+           ══════════════════════════════════════════ */
+        .collapse-section {
+            margin-top: 6px;
+            padding: 10px 12px;
+            border-radius: var(--pf-radius-md);
+            font-size: 12px;
+        }
+
+        .collapse-header {
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .collapse-toggle {
+            font-size: 10px;
+            opacity: 0.6;
+        }
+
+        .collapse-body {
+            line-height: 1.6;
+            padding-top: 8px;
+        }
+
+        /* Reasoning section (brand/blue tinted) */
+        .section-reasoning {
+            background: rgba(0,102,204,0.06);
+            border-left: 3px solid var(--pf-brand);
+        }
+        .section-reasoning .collapse-header { color: var(--pf-brand); }
+        .section-reasoning .collapse-body   { color: var(--pf-text-subtle); }
+        .section-reasoning .collapse-body strong { color: var(--pf-text); }
+        .section-reasoning .collapse-body h2,
+        .section-reasoning .collapse-body h3,
+        .section-reasoning .collapse-body h4 { margin: 10px 0 4px; color: var(--pf-text); font-size: 12px; }
+        .section-reasoning .collapse-body p  { margin: 4px 0; }
+        .section-reasoning .collapse-body ul { margin: 6px 0; padding-left: 18px; list-style: disc; }
+        .section-reasoning .collapse-body li { margin: 2px 0; }
+        .section-reasoning .collapse-body code {
+            background: rgba(255,255,255,0.06);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-family: var(--pf-font-mono);
+            font-size: 11px;
+        }
+
+        /* RAG sources section (success/green tinted) */
+        .section-rag {
+            background: var(--pf-success-bg);
+            border-left: 3px solid var(--pf-success);
+        }
+        .section-rag .collapse-header { color: var(--pf-success); }
+        .section-rag .collapse-body   { color: var(--pf-text-subtle); }
+
+        .rag-source-tag {
+            display: inline-block;
+            padding: 2px 10px;
+            margin: 3px 4px;
+            border: 1px solid var(--pf-success);
+            border-radius: var(--pf-radius-pill);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--pf-success);
+            font-family: var(--pf-font-mono);
+            background: var(--pf-success-bg);
+        }
+
+        /* ══════════════════════════════════════════
+           FOOTER / INPUT BAR
+           ══════════════════════════════════════════ */
+        .chatbot-footer {
+            padding: 16px 48px 20px;
+            border-top: 1px solid var(--pf-border);
+            background: var(--pf-bg-raised);
+        }
+
+        .chatbot-input-bar {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .chatbot-input-bar textarea {
+            flex: 1;
+            padding: 12px 18px;
+            border: 1px solid var(--pf-border);
+            border-radius: var(--pf-radius-pill);
+            font-size: 14px;
+            font-family: var(--pf-font-body);
+            background: var(--pf-bg-base);
+            color: var(--pf-text);
+            resize: none;
+            min-height: 48px;
+            max-height: 200px;
+            transition: border-color 0.15s;
+        }
+
+        .chatbot-input-bar textarea:focus {
+            outline: none;
+            border-color: var(--pf-brand);
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.25);
+        }
+
+        .chatbot-input-bar textarea::placeholder {
+            color: var(--pf-text-muted);
+        }
+
+        .btn-send {
+            height: 48px;
+            padding: 0 22px;
+            border: none;
+            border-radius: var(--pf-radius-pill);
+            background: var(--pf-brand-bg);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: var(--pf-font-body);
+            cursor: pointer;
+            transition: filter 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-send:hover:not(:disabled) { filter: brightness(1.15); }
+        .btn-send:disabled { opacity: 0.35; cursor: not-allowed; }
+
+        .chatbot-footnote {
+            margin-top: 8px;
+            text-align: center;
+            font-size: 11px;
+            color: var(--pf-text-muted);
+        }
+
+        /* ── Typing indicator ── */
+        .typing-dots {
+            display: inline-flex;
+            gap: 5px;
+            padding: 4px 0;
+        }
+
+        .typing-dots span {
+            width: 8px; height: 8px;
+            background: var(--pf-text-muted);
+            border-radius: 50%;
+            animation: dotBounce 1.4s infinite;
+        }
+
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes dotBounce {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-8px); opacity: 1; }
+        }
+
+        /* ══════════════════════════════════════════
+           MODAL (PF6-styled)
+           ══════════════════════════════════════════ */
+        .pf-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.60);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: modalFadeIn 0.15s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        .pf-modal {
+            background: var(--pf-bg-raised);
+            border: 1px solid var(--pf-border);
+            border-radius: var(--pf-radius-lg);
+            width: 100%;
+            max-width: 420px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.40);
+            animation: modalSlideIn 0.2s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(-12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .pf-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--pf-border);
+        }
+
+        .pf-modal-title {
+            font-family: var(--pf-font-heading);
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--pf-text);
+            margin: 0;
+        }
+
+        .pf-modal-close {
+            background: transparent;
+            border: none;
+            color: var(--pf-text-muted);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: var(--pf-radius-sm);
+        }
+
+        .pf-modal-close:hover {
+            background: var(--pf-bg-elevated);
+            color: var(--pf-text);
+        }
+
+        .pf-modal-body {
+            padding: 20px;
+            font-size: 14px;
+            color: var(--pf-text-subtle);
+            line-height: 1.6;
+        }
+
+        .pf-modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding: 14px 20px;
+            border-top: 1px solid var(--pf-border);
+        }
+
+        .pf-modal-btn {
+            padding: 8px 20px;
+            border-radius: var(--pf-radius-sm);
+            font-size: 14px;
+            font-weight: 700;
+            font-family: var(--pf-font-body);
+            cursor: pointer;
+            border: 1px solid var(--pf-border);
+            background: var(--pf-bg-base);
+            color: var(--pf-text);
+        }
+
+        .pf-modal-btn:hover {
+            background: var(--pf-bg-elevated);
+        }
+
+        .pf-modal-btn--primary {
+            background: var(--pf-brand-bg);
+            color: #fff;
+            border-color: var(--pf-brand-bg);
+        }
+
+        .pf-modal-btn--primary:hover {
+            filter: brightness(1.15);
+            background: var(--pf-brand-bg);
+        }
+
+        .pf-modal-btn--danger {
+            background: #a60000;
+            color: #fff;
+            border-color: #a60000;
+        }
+
+        .pf-modal-btn--danger:hover {
+            filter: brightness(1.15);
+            background: #a60000;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .app-sidebar { display: none; }
+            .chatbot-messages { padding: 16px; }
+            .chatbot-footer { padding: 12px 16px 16px; }
+            .msg { max-width: 95%; }
+            .pf-modal { max-width: calc(100% - 32px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="app-sidebar">
+            <div class="sidebar-header">
+                <h3>Available Agents</h3>
+            </div>
+            <div class="sidebar-content" id="agentList">
+                <p style="color:var(--pf-text-muted);padding:16px 4px;font-size:13px;">Loading agents...</p>
+            </div>
+            <div class="sidebar-footer">
+                <div class="sidebar-footer-avatar" id="userAvatar">?</div>
+                <div class="sidebar-footer-info">
+                    <div class="sidebar-footer-email" id="userEmail">Loading...</div>
+                    <div class="sidebar-footer-role" id="userRole"></div>
+                </div>
+                <div class="sidebar-footer-actions">
+                    <button onclick="window.location.href='/audit.html'" title="Audit log" aria-label="View audit log" id="auditIcon"></button>
+                    <button onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle dark/light theme" id="themeBtn"></button>
+                    <button onclick="logout()" title="Logout" aria-label="Sign out" id="logoutIcon"></button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main chatbot -->
+        <main class="chatbot">
+            <div class="chatbot-header">
+                <div class="chatbot-header-icon" id="headerIcon"></div>
+                <div>
+                    <h1>Partner Agent System</h1>
+                    <p>Intelligent routing to specialist agents based on your permissions</p>
+                </div>
+            </div>
+
+            <div class="chatbot-messages" id="messages" role="log" aria-live="polite" aria-label="Chat messages">
+                <div class="msg msg--bot">
+                    <div class="msg-avatar">RA</div>
+                    <div class="msg-body">
+                        <div class="msg-text">
+                            <p>Welcome! I'm your routing agent. I'll intelligently direct your questions to the right specialist based on your permissions and the nature of your request.</p>
+                        </div>
+                        <div class="msg-meta">
+                            <span>Routing Agent</span>
+                            <span>&middot;</span>
+                            <span id="welcomeTime"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chatbot-footer">
+                <div class="chatbot-input-bar">
+                    <textarea id="messageInput" placeholder="Send a message..." rows="1"
+                        aria-label="Type your message" oninput="autoResize(this)" onkeydown="handleKeyDown(event)"></textarea>
+                    <button class="btn-send" id="sendBtn" onclick="sendMessage()" aria-label="Send message">
+                        <span id="sendBtnText">Send</span>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M14.5 1.5L7 9M14.5 1.5L10 14.5L7 9M14.5 1.5L1.5 6L7 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                </div>
+                <div class="chatbot-footnote">
+                    Routing uses LLM classification with RAG-augmented specialist responses &middot; Authorization enforced server-side
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const API_ENDPOINT = window.location.hostname === 'localhost'
+            ? 'http://localhost:8000'
+            : '';
+
+        let token = null;
+        let userEmail = null;
+        let sessionId = generateSessionId();
+
+        document.getElementById('welcomeTime').textContent = new Date().toLocaleTimeString();
+
+        // ── PatternFly Icons ──
+        // Dynamically imported from @patternfly/patternfly/icons/pficons.mjs on load
+        let pfIcons = null;
+
+        function pfIcon(name, size) {
+            if (!pfIcons || !pfIcons[name]) return '';
+            const icon = pfIcons[name];
+            const s = size || 14;
+            return `<svg width="${s}" height="${s}" viewBox="0 0 ${icon.width} ${icon.height}" fill="currentColor" style="vertical-align:-2px"><path d="${icon.svgPathData}"/></svg>`;
+        }
+
+        // ── Theme ──
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains('pf-v6-theme-dark');
+            if (isDark) {
+                html.classList.remove('pf-v6-theme-dark');
+                localStorage.setItem('theme', 'light');
+                document.getElementById('themeBtn').innerHTML = pfIcon('asleep', 14);
+            } else {
+                html.classList.add('pf-v6-theme-dark');
+                localStorage.setItem('theme', 'dark');
+                document.getElementById('themeBtn').innerHTML = pfIcon('asleep', 14);
+            }
+        }
+
+        // ── Token refresh ──
+        let refreshInterval = null;
+
+        async function refreshToken() {
+            try {
+                const r = await fetch(`${API_ENDPOINT}/auth/refresh`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!r.ok) throw new Error('fail');
+                const d = await r.json();
+                token = d.token;
+                localStorage.setItem('jwt_token', token);
+            } catch (e) {
+                clearInterval(refreshInterval);
+                showModal({
+                    title: 'Session Expired',
+                    body: 'Your session has expired. Please log in again to continue.',
+                    confirmText: 'Log In',
+                    confirmClass: 'pf-modal-btn--primary',
+                    hideCancel: true,
+                    onConfirm: () => {
+                        localStorage.clear();
+                        window.location.href = '/login.html';
+                    }
+                });
+            }
+        }
+
+        function startTokenRefresh() {
+            refreshInterval = setInterval(refreshToken, 4 * 60 * 1000);
+        }
+
+        // ── Init ──
+        window.addEventListener('load', async () => {
+            // Load PatternFly icons from CDN
+            try {
+                const mod = await import('https://cdn.jsdelivr.net/npm/@patternfly/patternfly@6/icons/pficons.mjs');
+                pfIcons = mod.pfIcons;
+            } catch (e) {
+                console.warn('Failed to load PF icons:', e);
+            }
+
+            // Populate static icon placeholders
+            document.getElementById('headerIcon').innerHTML = pfIcon('process-automation', 20);
+            document.getElementById('auditIcon').innerHTML = pfIcon('history', 14);
+            document.getElementById('themeBtn').innerHTML = pfIcon('asleep', 14);
+            document.getElementById('logoutIcon').innerHTML = pfIcon('export', 14);
+
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            if (savedTheme === 'light') {
+                document.documentElement.classList.remove('pf-v6-theme-dark');
+            }
+
+            token = localStorage.getItem('jwt_token');
+            userEmail = localStorage.getItem('user_email');
+
+            if (!token || !userEmail) { window.location.href = '/login.html'; return; }
+
+            try {
+                const r = await fetch(`${API_ENDPOINT}/auth/me`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!r.ok) throw new Error('expired');
+                const u = await r.json();
+                updateUserInfo(u);
+                loadAgents(u.allowed_agents, u.role);
+                startTokenRefresh();
+            } catch (e) {
+                localStorage.clear();
+                window.location.href = '/login.html';
+            }
+        });
+
+        function updateUserInfo(u) {
+            document.getElementById('userAvatar').textContent = (u.email||'?')[0].toUpperCase();
+            document.getElementById('userEmail').textContent = u.email;
+            document.getElementById('userRole').textContent = u.role;
+        }
+
+        function loadAgents(allowedAgents, userRole) {
+            const el = document.getElementById('agentList');
+            const info = {
+                'routing-agent':    { name: 'Routing Agent',    desc: 'Analyzes queries & delegates to specialists' },
+                'software-support': { name: 'Software Support', desc: 'Bugs, errors, crashes, installations' },
+                'network-support':  { name: 'Network Support',  desc: 'VPN, DNS, connectivity, firewall' }
+            };
+
+            let html = `
+                <div class="agent-card agent-routing">
+                    <p class="agent-card-title">${pfIcon('globe-route')} ${info['routing-agent'].name}</p>
+                    <p class="agent-card-desc">${info['routing-agent'].desc}</p>
+                    <div class="agent-card-status">${pfIcon('ok', 12)} Always active</div>
+                </div>`;
+
+            const specs = ['software-support', 'network-support'];
+            const isAdmin = userRole === 'admin' || userRole === 'manager';
+            const effective = isAdmin ? specs : (allowedAgents || []).filter(a => specs.includes(a));
+            const icons = {
+                'software-support': pfIcon('screen'),
+                'network-support': pfIcon('network')
+            };
+
+            for (const a of effective) {
+                html += `
+                    <div class="agent-card agent-active">
+                        <p class="agent-card-title">${icons[a]} ${info[a].name}</p>
+                        <p class="agent-card-desc">${info[a].desc}</p>
+                        <div class="agent-card-status">${pfIcon('ok', 12)} Accessible</div>
+                    </div>`;
+            }
+
+            if (!isAdmin) {
+                for (const a of specs) {
+                    if (!effective.includes(a)) {
+                        html += `
+                            <div class="agent-card agent-locked">
+                                <p class="agent-card-title">${pfIcon('locked')} ${info[a].name}</p>
+                                <p class="agent-card-desc">No access</p>
+                            </div>`;
+                    }
+                }
+            }
+
+            el.innerHTML = html;
+        }
+
+        // ── Input ──
+        function autoResize(ta) {
+            ta.style.height = 'auto';
+            ta.style.height = Math.min(ta.scrollHeight, 200) + 'px';
+        }
+
+        function handleKeyDown(e) {
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+        }
+
+        // ── Send ──
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const msg = input.value.trim();
+            const btn = document.getElementById('sendBtn');
+            const btnT = document.getElementById('sendBtnText');
+
+            if (!msg) return;
+
+            input.disabled = true; btn.disabled = true; btnT.textContent = 'Sending...';
+            addMessage(msg, 'user', 'You', null);
+            input.value = ''; input.style.height = 'auto';
+
+            const tid = showTyping();
+
+            try {
+                let td;
+                try { td = JSON.parse(atob(token.split('.')[1])); }
+                catch { throw new Error('Invalid session token — please log in again'); }
+                const r = await fetch(`${API_ENDPOINT}/adk/chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-User-Email': td.email },
+                    body: JSON.stringify({ message: msg, session_id: sessionId, user: { email: td.email } })
+                });
+
+                removeTyping(tid);
+
+                if (!r.ok) {
+                    const err = await r.json();
+                    throw new Error(err.error || err.detail || 'Request failed');
+                }
+
+                const d = await r.json();
+                // Use server-assigned session_id for subsequent requests
+                if (d.session_id) sessionId = d.session_id;
+                addMessage(d.response || '(No response)', 'agent', d.agent || 'routing-agent', d.metadata || null);
+            } catch (err) {
+                removeTyping(tid);
+                addMessage('Error: ' + err.message, 'error', 'System', null);
+            } finally {
+                input.disabled = false; btn.disabled = false; btnT.textContent = 'Send'; input.focus();
+            }
+        }
+
+        // ── Typing indicator ──
+        function showTyping() {
+            const el = document.getElementById('messages');
+            const d = document.createElement('div');
+            const id = 'typ_' + Date.now();
+            d.id = id;
+            d.className = 'msg msg--bot';
+            d.innerHTML = `
+                <div class="msg-avatar">AI</div>
+                <div class="msg-body">
+                    <div class="msg-text"><div class="typing-dots"><span></span><span></span><span></span></div></div>
+                </div>`;
+            el.appendChild(d);
+            el.scrollTop = el.scrollHeight;
+            return id;
+        }
+
+        function removeTyping(id) {
+            const e = document.getElementById(id);
+            if (e) e.remove();
+        }
+
+        // ── Add message ──
+        function addMessage(text, type, sender, metadata) {
+            const container = document.getElementById('messages');
+            const div = document.createElement('div');
+            const time = new Date().toLocaleTimeString();
+            const fmtSender = sender.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+
+            // Parse <thinking> tags
+            let thinking = '', main = text;
+            const parts = [];
+            const rx = /<thinking>([\s\S]*?)<\/thinking>/g;
+            let m;
+            while ((m = rx.exec(text)) !== null) parts.push(m[1].trim());
+            if (parts.length > 0) {
+                thinking = parts.join('\n\n');
+                main = text.replace(/<thinking>[\s\S]*?<\/thinking>/g, '').trim();
+            }
+
+            if (type === 'user') {
+                div.className = 'msg msg--user';
+                div.innerHTML = `
+                    <div class="msg-avatar">${(userEmail||'?')[0].toUpperCase()}</div>
+                    <div class="msg-body">
+                        <div class="msg-text">${escapeHtml(main)}</div>
+                        <div class="msg-meta"><span>You</span><span>&middot;</span><span>${time}</span></div>
+                    </div>`;
+            } else if (type === 'error') {
+                div.className = 'msg msg--error';
+                div.innerHTML = `<div class="msg-body"><div class="msg-text">${escapeHtml(main)}</div></div>`;
+            } else {
+                div.className = 'msg msg--bot';
+                const av = sender === 'routing-agent' ? 'RA' : sender === 'software-support' ? 'SW' : sender === 'network-support' ? 'NW' : 'AI';
+
+                let routeHTML = '';
+                if (metadata && metadata.routing_reason) {
+                    routeHTML = `
+                        <div class="routing-banner">
+                            <div class="routing-banner-title">${pfIcon('globe-route')} Routing Agent Decision</div>
+                            <div class="routing-banner-details">
+                                <span class="routing-banner-label">Delegated to:</span>
+                                <span class="routing-banner-agent">${escapeHtml(fmtSender)}</span><br>
+                                <span class="routing-banner-label">Reason:</span> ${escapeHtml(metadata.routing_reason)}
+                            </div>
+                        </div>`;
+                }
+
+                let thinkHTML = '';
+                if (thinking) {
+                    const rid = 'r_' + Date.now();
+                    thinkHTML = `
+                        <div class="collapse-section section-reasoning">
+                            <div class="collapse-header" onclick="toggleCollapse('${rid}')">
+                                ${pfIcon('chat')} Agent Reasoning
+                                <span class="collapse-toggle" id="${rid}_t">&#x25BC; Show</span>
+                            </div>
+                            <div class="collapse-body" id="${rid}" style="display:none">${renderMarkdown(thinking)}</div>
+                        </div>`;
+                }
+
+                let ragHTML = '';
+                if (metadata && metadata.rag_used && metadata.rag_sources && metadata.rag_sources.length > 0) {
+                    const rid = 'g_' + Date.now();
+                    const cnt = metadata.rag_source_count || metadata.rag_sources.length;
+                    const tags = metadata.rag_sources.map(s => `<span class="rag-source-tag">${escapeHtml(s)}</span>`).join('');
+                    ragHTML = `
+                        <div class="collapse-section section-rag">
+                            <div class="collapse-header" onclick="toggleCollapse('${rid}')">
+                                ${pfIcon('folder-open')} Knowledge Base Sources (${cnt})
+                                <span class="collapse-toggle" id="${rid}_t">&#x25BC; Show</span>
+                            </div>
+                            <div class="collapse-body" id="${rid}" style="display:none">
+                                <div style="margin-bottom:6px">Retrieved from RAG knowledge base (ChromaDB + Gemini embeddings):</div>
+                                <div>${tags}</div>
+                            </div>
+                        </div>`;
+                }
+
+                div.innerHTML = `
+                    <div class="msg-avatar">${av}</div>
+                    <div class="msg-body">
+                        ${routeHTML}
+                        <div class="msg-text">${renderMarkdown(main)}</div>
+                        ${thinkHTML}
+                        ${ragHTML}
+                        <div class="msg-meta"><span>${escapeHtml(fmtSender)}</span><span>&middot;</span><span>${time}</span></div>
+                    </div>`;
+            }
+
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function toggleCollapse(id) {
+            const b = document.getElementById(id);
+            const t = document.getElementById(id + '_t');
+            const header = t.closest('.collapse-header');
+            if (b.style.display === 'none') {
+                b.style.display = 'block';
+                t.innerHTML = '&#x25B2; Hide';
+                if (header) header.setAttribute('aria-expanded', 'true');
+            } else {
+                b.style.display = 'none';
+                t.innerHTML = '&#x25BC; Show';
+                if (header) header.setAttribute('aria-expanded', 'false');
+            }
+        }
+
+        function logout() {
+            showModal({
+                title: 'Sign Out',
+                body: 'Are you sure you want to sign out? You will need to log in again to continue.',
+                confirmText: 'Sign Out',
+                confirmClass: 'pf-modal-btn--danger',
+                onConfirm: () => {
+                    if (refreshInterval) clearInterval(refreshInterval);
+                    localStorage.clear();
+                    window.location.href = '/login.html';
+                }
+            });
+        }
+
+        function generateSessionId() {
+            return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        function escapeHtml(t) {
+            if (t == null) return '';
+            const d = document.createElement('div');
+            d.textContent = t;
+            return d.innerHTML;
+        }
+
+        function renderMarkdown(text) {
+            let h = escapeHtml(text);
+            h = h.replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
+            h = h.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+            h = h.replace(/`([^`]+)`/g, '<code>$1</code>');
+            h = h.replace(/^### (.+)$/gm, '<h4>$1</h4>');
+            h = h.replace(/^## (.+)$/gm, '<h3>$1</h3>');
+            h = h.replace(/^# (.+)$/gm, '<h2>$1</h2>');
+            h = h.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+            h = h.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            h = h.replace(/\*(.+?)\*/g, '<em>$1</em>');
+            h = h.replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>');
+            h = h.replace(/^[-] (.+)$/gm, '<li>$1</li>');
+            h = h.replace(/((?:<li>.*<\/li>\n?)+)/g, '<ul>$1</ul>');
+            h = h.replace(/^---$/gm, '<hr>');
+            h = h.replace(/\n\n/g, '</p><p>');
+            h = h.replace(/\n/g, '<br>');
+            h = '<p>' + h + '</p>';
+            h = h.replace(/<p>\s*<\/p>/g, '');
+            return h;
+        }
+
+        // ── PF6-styled modal ──
+        let _modalTrigger = null;
+
+        function showModal({ title, body, confirmText, confirmClass, hideCancel, onConfirm }) {
+            closeModal();
+            _modalTrigger = document.activeElement;
+            const overlay = document.createElement('div');
+            overlay.className = 'pf-modal-overlay';
+            overlay.id = 'pfModal';
+            overlay.setAttribute('role', 'dialog');
+            overlay.setAttribute('aria-modal', 'true');
+            overlay.setAttribute('aria-label', title);
+            overlay.innerHTML = `
+                <div class="pf-modal">
+                    <div class="pf-modal-header">
+                        <h2 class="pf-modal-title">${escapeHtml(title)}</h2>
+                        <button class="pf-modal-close" onclick="closeModal()" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="pf-modal-body">${escapeHtml(body)}</div>
+                    <div class="pf-modal-footer">
+                        ${hideCancel ? '' : '<button class="pf-modal-btn" onclick="closeModal()">Cancel</button>'}
+                        <button class="pf-modal-btn ${confirmClass || 'pf-modal-btn--primary'}" id="pfModalConfirm">${escapeHtml(confirmText || 'OK')}</button>
+                    </div>
+                </div>`;
+            document.body.appendChild(overlay);
+
+            const confirmBtn = document.getElementById('pfModalConfirm');
+            confirmBtn.focus();
+
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+            confirmBtn.addEventListener('click', () => {
+                closeModal();
+                if (onConfirm) onConfirm();
+            });
+            overlay.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') { closeModal(); return; }
+                if (e.key !== 'Tab') return;
+                const focusable = overlay.querySelectorAll('button, [tabindex]:not([tabindex="-1"])');
+                const first = focusable[0], last = focusable[focusable.length - 1];
+                if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+                else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+            });
+        }
+
+        function closeModal() {
+            const m = document.getElementById('pfModal');
+            if (m) m.remove();
+            if (_modalTrigger) { _modalTrigger.focus(); _modalTrigger = null; }
+        }
+    </script>
+</body>
+</html>

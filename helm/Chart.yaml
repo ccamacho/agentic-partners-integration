@@ -1,0 +1,9 @@
+apiVersion: v2
+name: partner-agent
+description: Helm chart for the Partner Agent Integration Framework
+
+type: application
+
+version: 0.1.0
+
+appVersion: "latest"

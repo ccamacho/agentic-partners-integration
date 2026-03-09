@@ -1,0 +1,14 @@
+name: OC Inspect
+description: Inspect k8s cluster to obtain debugging data in the event of failure
+
+inputs:
+  artifactPrefix:
+    description: 'The prefix to be applied to all artifacts uploaded by this action'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Inspect Cluster
+      run: echo "inspect disabled"
+      shell: bash

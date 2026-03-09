@@ -1,0 +1,15 @@
+Partner Agent Integration Framework has been deployed!
+
+Services:
+- Request Manager: {{ include "partner-agent.fullname" . }}-request-manager (port 80)
+- Agent Service:   {{ include "partner-agent.fullname" . }}-agent-service (port 80)
+- RAG API:         {{ include "partner-agent.fullname" . }}-rag-api (port 80)
+- Web UI:          {{ include "partner-agent.fullname" . }}-web-ui (port 3000)
+- PostgreSQL:      {{ include "partner-agent.fullname" . }}-postgresql (port 5432)
+- ChromaDB:        {{ include "partner-agent.fullname" . }}-chromadb (port 8000)
+
+To access the Web UI:
+  kubectl port-forward -n {{ .Release.Namespace }} svc/{{ include "partner-agent.fullname" . }}-web-ui 3000:3000
+
+To access the API directly:
+  kubectl port-forward -n {{ .Release.Namespace }} svc/{{ include "partner-agent.fullname" . }}-request-manager 8000:80

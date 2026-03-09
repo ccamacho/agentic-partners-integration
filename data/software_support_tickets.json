@@ -1,0 +1,1082 @@
+[
+  {
+    "id": "SW-TICKET-010",
+    "content": "Issue: Deployment failures, rollback required\n\nSymptoms:\n- Application error 403\n- Version 3.0 affected\n- Consistent occurrence\n- Some users affected\n\nRoot Cause:\nHealth check failing\n\nSolution:\nUpdate health check\n\nSteps to Resolve:\n1. Put app in maintenance mode\n2. Backup database\n3. Update health check\n4. Verify fix\n5. Deploy to production\n6. Monitor logs\n\nPrevention:\n- Improve testing\n- Security audit\n\nStatus: Resolved\nResolution Time: 15 minutes",
+    "metadata": {
+      "ticket_id": "SW-TICKET-010",
+      "category": "software",
+      "subcategory": "deployment",
+      "product": "MyApp",
+      "version": "3.0",
+      "error_code": "403",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2026-02-21",
+      "resolved_date": "2026-02-28",
+      "affected_users": 44,
+      "resolution_type": "patch"
+    }
+  },
+  {
+    "id": "SW-TICKET-011",
+    "content": "Issue: Upgrade from 2.1 to 2.2 failed\n\nSymptoms:\n- Application error 503\n- Version 2.2 affected\n- Random occurrence\n- All users affected\n\nRoot Cause:\nDependency version conflict\n\nSolution:\nRun schema migration\n\nSteps to Resolve:\n1. Stop the application\n2. Export data\n3. Run schema migration\n4. Run smoke tests\n5. Restart application\n6. Monitor logs\n\nPrevention:\n- Update documentation\n- Security audit\n\nStatus: Resolved\nResolution Time: 15 minutes",
+    "metadata": {
+      "ticket_id": "SW-TICKET-011",
+      "category": "software",
+      "subcategory": "upgrade",
+      "product": "MyApp",
+      "version": "2.2",
+      "error_code": "503",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2025-12-09",
+      "resolved_date": "2026-02-11",
+      "affected_users": 376,
+      "resolution_type": "hotfix"
+    }
+  },
+  {
+    "id": "SW-TICKET-012",
+    "content": "Issue: Application crashes with error 502\n\nSymptoms:\n- Application error 502\n- Version 1.5 affected\n- Random occurrence\n- Some users affected\n\nRoot Cause:\nMemory leak in version 1.5\n\nSolution:\nFix code and redeploy\n\nSteps to Resolve:\n1. Put app in maintenance mode\n2. Export data\n3. Fix code and redeploy\n4. Test in staging\n5. Scale up replicas\n6. Verify metrics\n\nPrevention:\n- Improve testing\n- Code review\n\nStatus: Resolved\nResolution Time: 2 hours",
+    "metadata": {
+      "ticket_id": "SW-TICKET-012",
+      "category": "software",
+      "subcategory": "crash",
+      "product": "MyApp",
+      "version": "1.5",
+      "error_code": "502",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2026-02-18",
+      "resolved_date": "2026-03-05",
+      "affected_users": 411,
+      "resolution_type": "workaround"
+    }
+  },
+  {
+    "id": "SW-TICKET-013",
+    "content": "Issue: Deployment failures, rollback required\n\nSymptoms:\n- Application error 404\n- Version 1.5 affected\n- Consistent occurrence\n- Some users affected\n\nRoot Cause:\nDatabase migration timeout\n\nSolution:\nUpdate health check\n\nSteps to Resolve:\n1. Put app in maintenance mode\n2. Backup database\n3. Update health check\n4. Run smoke tests\n5. Deploy to production\n6. Monitor logs\n\nPrevention:\n- Improve testing\n- Security audit\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "SW-TICKET-013",
+      "category": "software",
+      "subcategory": "deployment",
+      "product": "MyApp",
+      "version": "1.5",
+      "error_code": "404",
+      "severity": "critical",
+      "status": "resolved",
+      "created_date": "2026-01-31",
+      "resolved_date": "2026-02-16",
+      "affected_users": 356,
+      "resolution_type": "upgrade"
+    }
+  },
+  {
+    "id": "SW-TICKET-014",
+    "content": "Issue: Upgrade from 2.1999999999999997 to 2.3 failed\n\nSymptoms:\n- Application error 401\n- Version 2.3 affected\n- Consistent occurrence\n- Some users affected\n\nRoot Cause:\nDatabase schema incompatibility\n\nSolution:\nUpdate API calls\n\nSteps to Resolve:\n1. Stop the application\n2. Take snapshot\n3. Update API calls\n4. Test in staging\n5. Scale up replicas\n6. Check health\n\nPrevention:\n- Improve testing\n- Load testing\n\nStatus: Resolved\nResolution Time: 4 hours",
+    "metadata": {
+      "ticket_id": "SW-TICKET-014",
+      "category": "software",
+      "subcategory": "upgrade",
+      "product": "MyApp",
+      "version": "2.3",
+      "error_code": "401",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2026-02-05",
+      "resolved_date": "2026-02-06",
+      "affected_users": 366,
+      "resolution_type": "workaround"
+    }
+  },
+  {
+    "id": "SW-TICKET-015",
+    "content": "Issue: Upgrade from 1.7 to 1.8 failed\n\nSymptoms:\n- Application error 404\n- Version 1.8 affected\n- Consistent occurrence\n- All users affected\n\nRoot Cause:\nBreaking changes in API\n\nSolution:\nUpdate config format\n\nSteps to Resolve:\n1. Scale down replicas\n2. Backup database\n3. Update config format\n4. Run smoke tests\n5. Restart application\n6. Check health\n\nPrevention:\n- Add validation\n- Code review\n\nStatus: Resolved\nResolution Time: 4 hours",
+    "metadata": {
+      "ticket_id": "SW-TICKET-015",
+      "category": "software",
+      "subcategory": "upgrade",
+      "product": "MyApp",
+      "version": "1.8",
+      "error_code": "404",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-01-11",
+      "resolved_date": "2026-03-01",
+      "affected_users": 61,
+      "resolution_type": "hotfix"
+    }
+  },
+  {
+    "id": "SW-TICKET-016",
+    "content": "Issue: Deployment failures, rollback required\n\nSymptoms:\n- Application error 503\n- Version 2.1 affected\n- Random occurrence\n- New users only affected\n\nRoot Cause:\nEnvironment variable missing\n\nSolution:\nFix Dockerfile\n\nSteps to Resolve:\n1. Scale down replicas\n2. Take snapshot\n3. Fix Dockerfile\n4. Test in staging\n5. Deploy to production\n6. Monitor logs\n\nPrevention:\n- Add monitoring alerts\n- Security audit\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "SW-TICKET-016",
+      "category": "software",
+      "subcategory": "deployment",
+      "product": "MyApp",
+      "version": "2.1",
+      "error_code": "503",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-02-16",
+      "resolved_date": "2026-02-14",
+      "affected_users": 445,
+      "resolution_type": "patch"
+    }
+  },
+  {
+    "id": "SW-TICKET-017",
+    "content": "Issue: Upgrade from 2.9 to 3.0 failed\n\nSymptoms:\n- Application error 404\n- Version 3.0 affected\n- Random occurrence\n- Admin users only affected\n\nRoot Cause:\nDependency version conflict\n\nSolution:\nResolve dependencies\n\nSteps to Resolve:\n1. Put app in maintenance mode\n2. Backup database\n3. Resolve dependencies\n4. Run smoke tests\n5. Deploy to production\n6. Verify metrics\n\nPrevention:\n- Add validation\n- Load testing\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "SW-TICKET-017",
+      "category": "software",
+      "subcategory": "upgrade",
+      "product": "MyApp",
+      "version": "3.0",
+      "error_code": "404",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-01-12",
+      "resolved_date": "2026-03-02",
+      "affected_users": 242,
+      "resolution_type": "workaround"
+    }
+  },
+  {
+    "id": "SW-TICKET-018",
+    "content": "Issue: Application crashes with error 401\n\nSymptoms:\n- Application error 401\n- Version 1.8 affected\n- Random occurrence\n- All users affected\n\nRoot Cause:\nMemory leak in version 1.8\n\nSolution:\nUpgrade to version 1.9000000000000001\n\nSteps to Resolve:\n1. Stop the application\n2. Export data\n3. Upgrade to version 1.9000000000000001\n4. Run smoke tests\n5. Deploy to production\n6. Verify metrics\n\nPrevention:\n- Add validation\n- Regular updates\n\nStatus: Resolved\nResolution Time: 4 hours",
+    "metadata": {
+      "ticket_id": "SW-TICKET-018",
+      "category": "software",
+      "subcategory": "crash",
+      "product": "MyApp",
+      "version": "1.8",
+      "error_code": "401",
+      "severity": "critical",
+      "status": "resolved",
+      "created_date": "2026-01-02",
+      "resolved_date": "2026-02-07",
+      "affected_users": 306,
+      "resolution_type": "configuration"
+    }
+  },
+  {
+    "id": "SW-TICKET-019",
+    "content": "Issue: Upgrade from 1.9 to 2.0 failed\n\nSymptoms:\n- Application error 404\n- Version 2.0 affected\n- Intermittent occurrence\n- Some users affected\n\nRoot Cause:\nDependency version conflict\n\nSolution:\nMigrate data first\n\nSteps to Resolve:\n1. Put app in maintenance mode\n2. Export data\n3. Migrate data first\n4. Verify fix\n5. Restart application\n6. Check health\n\nPrevention:\n- Improve testing\n- Load testing\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "SW-TICKET-019",
+      "category": "software",
+      "subcategory": "upgrade",
+      "product": "MyApp",
+      "version": "2.0",
+      "error_code": "404",
+      "severity": "critical",
+      "status": "resolved",
+      "created_date": "2026-02-15",
+      "resolved_date": "2026-03-05",
+      "affected_users": 51,
+      "resolution_type": "hotfix"
+    }
+  },
+  {
+    "id": "SW-TICKET-020",
+    "content": "Issue: Upgrade from 2.1 to 2.2 failed\n\nSymptoms:\n- Application error 503\n- Version 2.2 affected\n- Consistent occurrence\n- All users affected\n\nRoot Cause:\nData migration required\n\nSolution:\nUpdate config format\n\nSteps to Resolve:\n1. Stop the application\n2. Export data\n3. Update config format\n4. Run smoke tests\n5. Scale up replicas\n6. Monitor logs\n\nPrevention:\n- Add validation\n- Regular updates\n\nStatus: Resolved\nResolution Time: 15 minutes",
+    "metadata": {
+      "ticket_id": "SW-TICKET-020",
+      "category": "software",
+      "subcategory": "upgrade",
+      "product": "MyApp",
+      "version": "2.2",
+      "error_code": "503",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-01-01",
+      "resolved_date": "2026-02-28",
+      "affected_users": 134,
+      "resolution_type": "hotfix"
+    }
+  },
+  {
+    "id": "SW-TICKET-021",
+    "content": "Issue: Application crashes with error 503\n\nSymptoms:\n- Application error 503\n- Version 2.0 affected\n- Random occurrence\n- New users only affected\n\nRoot Cause:\nUnhandled exception in worker service\n\nSolution:\nApply hotfix patch\n\nSteps to Resolve:\n1. Put app in maintenance mode\n2. Export data\n3. Apply hotfix patch\n4. Run smoke tests\n5. Restart application\n6. Verify metrics\n\nPrevention:\n- Add validation\n- Code review\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "SW-TICKET-021",
+      "category": "software",
+      "subcategory": "crash",
+      "product": "MyApp",
+      "version": "2.0",
+      "error_code": "503",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-02-13",
+      "resolved_date": "2026-02-18",
+      "affected_users": 148,
+      "resolution_type": "upgrade"
+    }
+  },
+  {
+    "id": "SW-TICKET-022",
+    "content": "Issue: Deployment failures, rollback required\n\nSymptoms:\n- Application error 404\n- Version 3.1 affected\n- Random occurrence\n- All users affected\n\nRoot Cause:\nDatabase migration timeout\n\nSolution:\nAdd missing env vars\n\nSteps to Resolve:\n1. Scale down replicas\n2. Take snapshot\n3. Add missing env vars\n4. Verify fix\n5. Restart application\n6. Monitor logs\n\nPrevention:\n- Add monitoring alerts\n- Regular updates\n\nStatus: Resolved\nResolution Time: 2 hours",
+    "metadata": {
+      "ticket_id": "SW-TICKET-022",
+      "category": "software",
+      "subcategory": "deployment",
+      "product": "MyApp",
+      "version": "3.1",
+      "error_code": "404",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-02-15",
+      "resolved_date": "2026-02-23",
+      "affected_users": 182,
+      "resolution_type": "hotfix"
+    }
+  },
+  {
+    "id": "SW-TICKET-023",
+    "content": "Issue: Application misconfigured, not starting\n\nSymptoms:\n- Application error 404\n- Version 3.1 affected\n- Intermittent occurrence\n- All users affected\n\nRoot Cause:\nFile permission denied\n\nSolution:\nCreate config file\n\nSteps to Resolve:\n1. Put app in maintenance mode\n2. Backup database\n3. Create config file\n4. Test in staging\n5. Scale up replicas\n6. Verify metrics\n\nPrevention:\n- Update documentation\n- Code review\n\nStatus: Resolved\nResolution Time: 2 hours",
+    "metadata": {
+      "ticket_id": "SW-TICKET-023",
+      "category": "software",
+      "subcategory": "configuration",
+      "product": "MyApp",
+      "version": "3.1",
+      "error_code": "404",
+      "severity": "critical",
+      "status": "resolved",
+      "created_date": "2025-12-14",
+      "resolved_date": "2026-02-27",
+      "affected_users": 334,
+      "resolution_type": "configuration"
+    }
+  },
+  {
+    "id": "SW-TICKET-024",
+    "content": "Issue: Upgrade from 2.9 to 3.0 failed\n\nSymptoms:\n- Application error 403\n- Version 3.0 affected\n- Intermittent occurrence\n- All users affected\n\nRoot Cause:\nConfiguration format changed\n\nSolution:\nUpdate config format\n\nSteps to Resolve:\n1. Stop the application\n2. Backup database\n3. Update config format\n4. Test in staging\n5. Scale up replicas\n6. Monitor logs\n\nPrevention:\n- Add validation\n- Code review\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "SW-TICKET-024",
+      "category": "software",
+      "subcategory": "upgrade",
+      "product": "MyApp",
+      "version": "3.0",
+      "error_code": "403",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2026-01-30",
+      "resolved_date": "2026-02-18",
+      "affected_users": 165,
+      "resolution_type": "upgrade"
+    }
+  },
+  {
+    "id": "SW-TICKET-025",
+    "content": "Issue: Upgrade from 2.9 to 3.0 failed\n\nSymptoms:\n- Application error 502\n- Version 3.0 affected\n- Intermittent occurrence\n- All users affected\n\nRoot Cause:\nBreaking changes in API\n\nSolution:\nMigrate data first\n\nSteps to Resolve:\n1. Stop the application\n2. Export data\n3. Migrate data first\n4. Run smoke tests\n5. Scale up replicas\n6. Monitor logs\n\nPrevention:\n- Update documentation\n- Load testing\n\nStatus: Resolved\nResolution Time: 15 minutes",
+    "metadata": {
+      "ticket_id": "SW-TICKET-025",
+      "category": "software",
+      "subcategory": "upgrade",
+      "product": "MyApp",
+      "version": "3.0",
+      "error_code": "502",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2026-02-10",
+      "resolved_date": "2026-02-24",
+      "affected_users": 10,
+      "resolution_type": "patch"
+    }
+  },
+  {
+    "id": "SW-TICKET-026",
+    "content": "Issue: Upgrade from 1.7 to 1.8 failed\n\nSymptoms:\n- Application error 502\n- Version 1.8 affected\n- Random occurrence\n- Some users affected\n\nRoot Cause:\nData migration required\n\nSolution:\nRun schema migration\n\nSteps to Resolve:\n1. Put app in maintenance mode\n2. Backup database\n3. Run schema migration\n4. Test in staging\n5. Scale up replicas\n6. Check health\n\nPrevention:\n- Improve testing\n- Load testing\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "SW-TICKET-026",
+      "category": "software",
+      "subcategory": "upgrade",
+      "product": "MyApp",
+      "version": "1.8",
+      "error_code": "502",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2025-12-07",
+      "resolved_date": "2026-02-16",
+      "affected_users": 228,
+      "resolution_type": "workaround"
+    }
+  },
+  {
+    "id": "SW-TICKET-027",
+    "content": "Issue: Database connection errors, data access failures\n\nSymptoms:\n- Application error 504\n- Version 3.0 affected\n- Random occurrence\n- Some users affected\n\nRoot Cause:\nSchema version mismatch\n\nSolution:\nFix connection configuration\n\nSteps to Resolve:\n1. Put app in maintenance mode\n2. Backup database\n3. Fix connection configuration\n4. Test in staging\n5. Deploy to production\n6. Check health\n\nPrevention:\n- Update documentation\n- Code review\n\nStatus: Resolved\nResolution Time: 15 minutes",
+    "metadata": {
+      "ticket_id": "SW-TICKET-027",
+      "category": "software",
+      "subcategory": "database",
+      "product": "MyApp",
+      "version": "3.0",
+      "error_code": "504",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-02-01",
+      "resolved_date": "2026-03-05",
+      "affected_users": 169,
+      "resolution_type": "upgrade"
+    }
+  },
+  {
+    "id": "SW-TICKET-028",
+    "content": "Issue: Application misconfigured, not starting\n\nSymptoms:\n- Application error timeout\n- Version 3.1 affected\n- Intermittent occurrence\n- Some users affected\n\nRoot Cause:\nInvalid YAML syntax\n\nSolution:\nCreate config file\n\nSteps to Resolve:\n1. Stop the application\n2. Take snapshot\n3. Create config file\n4. Run smoke tests\n5. Deploy to production\n6. Monitor logs\n\nPrevention:\n- Improve testing\n- Code review\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "SW-TICKET-028",
+      "category": "software",
+      "subcategory": "configuration",
+      "product": "MyApp",
+      "version": "3.1",
+      "error_code": "timeout",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2026-01-26",
+      "resolved_date": "2026-03-05",
+      "affected_users": 295,
+      "resolution_type": "upgrade"
+    }
+  },
+  {
+    "id": "SW-TICKET-029",
+    "content": "Issue: Application crashes with error 504\n\nSymptoms:\n- Application error 504\n- Version 1.8 affected\n- Intermittent occurrence\n- Some users affected\n\nRoot Cause:\nNull pointer exception in auth module\n\nSolution:\nIncrease resource limits\n\nSteps to Resolve:\n1. Put app in maintenance mode\n2. Backup database\n3. Increase resource limits\n4. Test in staging\n5. Restart application\n6. Check health\n\nPrevention:\n- Add validation\n- Code review\n\nStatus: Resolved\nResolution Time: 4 hours",
+    "metadata": {
+      "ticket_id": "SW-TICKET-029",
+      "category": "software",
+      "subcategory": "crash",
+      "product": "MyApp",
+      "version": "1.8",
+      "error_code": "504",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-01-21",
+      "resolved_date": "2026-02-12",
+      "affected_users": 95,
+      "resolution_type": "configuration"
+    }
+  },
+  {
+    "id": "SW-TICKET-030",
+    "content": "Issue: Slow response times, requests timing out\n\nSymptoms:\n- Application error 403\n- Version 2.1 affected\n- Consistent occurrence\n- New users only affected\n\nRoot Cause:\nConnection pool exhaustion\n\nSolution:\nOptimize queries\n\nSteps to Resolve:\n1. Stop the application\n2. Take snapshot\n3. Optimize queries\n4. Test in staging\n5. Restart application\n6. Verify metrics\n\nPrevention:\n- Add monitoring alerts\n- Regular updates\n\nStatus: Resolved\nResolution Time: 2 hours",
+    "metadata": {
+      "ticket_id": "SW-TICKET-030",
+      "category": "software",
+      "subcategory": "performance",
+      "product": "MyApp",
+      "version": "2.1",
+      "error_code": "403",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2026-01-13",
+      "resolved_date": "2026-02-07",
+      "affected_users": 328,
+      "resolution_type": "hotfix"
+    }
+  },
+  {
+    "id": "SW-TICKET-031",
+    "content": "Issue: API endpoints returning error 403\n\nSymptoms:\n- Application error 403\n- Version 2.3 affected\n- Intermittent occurrence\n- Some users affected\n\nRoot Cause:\nCORS configuration issue\n\nSolution:\nUpdate CORS policy\n\nSteps to Resolve:\n1. Put app in maintenance mode\n2. Take snapshot\n3. Update CORS policy\n4. Run smoke tests\n5. Scale up replicas\n6. Verify metrics\n\nPrevention:\n- Add validation\n- Code review\n\nStatus: Resolved\nResolution Time: 4 hours",
+    "metadata": {
+      "ticket_id": "SW-TICKET-031",
+      "category": "software",
+      "subcategory": "api",
+      "product": "MyApp",
+      "version": "2.3",
+      "error_code": "403",
+      "severity": "critical",
+      "status": "resolved",
+      "created_date": "2025-12-14",
+      "resolved_date": "2026-03-03",
+      "affected_users": 18,
+      "resolution_type": "upgrade"
+    }
+  },
+  {
+    "id": "SW-TICKET-032",
+    "content": "Issue: Application misconfigured, not starting\n\nSymptoms:\n- Application error 403\n- Version 1.8 affected\n- Random occurrence\n- Some users affected\n\nRoot Cause:\nRequired parameter missing\n\nSolution:\nFix file permissions\n\nSteps to Resolve:\n1. Scale down replicas\n2. Export data\n3. Fix file permissions\n4. Verify fix\n5. Restart application\n6. Check health\n\nPrevention:\n- Add monitoring alerts\n- Regular updates\n\nStatus: Resolved\nResolution Time: 15 minutes",
+    "metadata": {
+      "ticket_id": "SW-TICKET-032",
+      "category": "software",
+      "subcategory": "configuration",
+      "product": "MyApp",
+      "version": "1.8",
+      "error_code": "403",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2026-01-09",
+      "resolved_date": "2026-02-11",
+      "affected_users": 65,
+      "resolution_type": "configuration"
+    }
+  },
+  {
+    "id": "SW-TICKET-033",
+    "content": "Issue: Slow response times, requests timing out\n\nSymptoms:\n- Application error 400\n- Version 2.2 affected\n- Intermittent occurrence\n- All users affected\n\nRoot Cause:\nMissing database indexes\n\nSolution:\nIncrease connection pool size\n\nSteps to Resolve:\n1. Stop the application\n2. Backup database\n3. Increase connection pool size\n4. Verify fix\n5. Scale up replicas\n6. Verify metrics\n\nPrevention:\n- Add validation\n- Load testing\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "SW-TICKET-033",
+      "category": "software",
+      "subcategory": "performance",
+      "product": "MyApp",
+      "version": "2.2",
+      "error_code": "400",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2025-12-11",
+      "resolved_date": "2026-02-10",
+      "affected_users": 376,
+      "resolution_type": "workaround"
+    }
+  },
+  {
+    "id": "SW-TICKET-034",
+    "content": "Issue: Application misconfigured, not starting\n\nSymptoms:\n- Application error 403\n- Version 1.8 affected\n- Random occurrence\n- New users only affected\n\nRoot Cause:\nConfig file not found\n\nSolution:\nFix file permissions\n\nSteps to Resolve:\n1. Put app in maintenance mode\n2. Export data\n3. Fix file permissions\n4. Test in staging\n5. Scale up replicas\n6. Check health\n\nPrevention:\n- Improve testing\n- Regular updates\n\nStatus: Resolved\nResolution Time: 4 hours",
+    "metadata": {
+      "ticket_id": "SW-TICKET-034",
+      "category": "software",
+      "subcategory": "configuration",
+      "product": "MyApp",
+      "version": "1.8",
+      "error_code": "403",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2026-02-25",
+      "resolved_date": "2026-02-19",
+      "affected_users": 414,
+      "resolution_type": "hotfix"
+    }
+  },
+  {
+    "id": "SW-TICKET-035",
+    "content": "Issue: API endpoints returning error 404\n\nSymptoms:\n- Application error 404\n- Version 2.2 affected\n- Intermittent occurrence\n- Admin users only affected\n\nRoot Cause:\nRoute not registered in version 2.2\n\nSolution:\nFix request validation\n\nSteps to Resolve:\n1. Scale down replicas\n2. Backup database\n3. Fix request validation\n4. Test in staging\n5. Restart application\n6. Check health\n\nPrevention:\n- Improve testing\n- Regular updates\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "SW-TICKET-035",
+      "category": "software",
+      "subcategory": "api",
+      "product": "MyApp",
+      "version": "2.2",
+      "error_code": "404",
+      "severity": "critical",
+      "status": "resolved",
+      "created_date": "2025-12-19",
+      "resolved_date": "2026-02-07",
+      "affected_users": 176,
+      "resolution_type": "upgrade"
+    }
+  },
+  {
+    "id": "SW-TICKET-036",
+    "content": "Issue: Application misconfigured, not starting\n\nSymptoms:\n- Application error 504\n- Version 1.8 affected\n- Consistent occurrence\n- Some users affected\n\nRoot Cause:\nInvalid YAML syntax\n\nSolution:\nCreate config file\n\nSteps to Resolve:\n1. Stop the application\n2. Take snapshot\n3. Create config file\n4. Run smoke tests\n5. Restart application\n6. Check health\n\nPrevention:\n- Add validation\n- Regular updates\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "SW-TICKET-036",
+      "category": "software",
+      "subcategory": "configuration",
+      "product": "MyApp",
+      "version": "1.8",
+      "error_code": "504",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2025-12-15",
+      "resolved_date": "2026-02-13",
+      "affected_users": 20,
+      "resolution_type": "patch"
+    }
+  },
+  {
+    "id": "SW-TICKET-037",
+    "content": "Issue: Application crashes with error 404\n\nSymptoms:\n- Application error 404\n- Version 2.1 affected\n- Random occurrence\n- Admin users only affected\n\nRoot Cause:\nResource exhaustion (CPU/memory) under load\n\nSolution:\nApply hotfix patch\n\nSteps to Resolve:\n1. Stop the application\n2. Backup database\n3. Apply hotfix patch\n4. Test in staging\n5. Deploy to production\n6. Check health\n\nPrevention:\n- Add monitoring alerts\n- Regular updates\n\nStatus: Resolved\nResolution Time: 15 minutes",
+    "metadata": {
+      "ticket_id": "SW-TICKET-037",
+      "category": "software",
+      "subcategory": "crash",
+      "product": "MyApp",
+      "version": "2.1",
+      "error_code": "404",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2026-01-25",
+      "resolved_date": "2026-02-07",
+      "affected_users": 45,
+      "resolution_type": "workaround"
+    }
+  },
+  {
+    "id": "SW-TICKET-038",
+    "content": "Issue: Application crashes with error 500\n\nSymptoms:\n- Application error 500\n- Version 2.3 affected\n- Random occurrence\n- Some users affected\n\nRoot Cause:\nUnhandled exception in API service\n\nSolution:\nUpgrade to version 2.4\n\nSteps to Resolve:\n1. Stop the application\n2. Backup database\n3. Upgrade to version 2.4\n4. Test in staging\n5. Scale up replicas\n6. Verify metrics\n\nPrevention:\n- Add validation\n- Code review\n\nStatus: Resolved\nResolution Time: 4 hours",
+    "metadata": {
+      "ticket_id": "SW-TICKET-038",
+      "category": "software",
+      "subcategory": "crash",
+      "product": "MyApp",
+      "version": "2.3",
+      "error_code": "500",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2025-12-19",
+      "resolved_date": "2026-02-19",
+      "affected_users": 467,
+      "resolution_type": "hotfix"
+    }
+  },
+  {
+    "id": "SW-TICKET-039",
+    "content": "Issue: Application misconfigured, not starting\n\nSymptoms:\n- Application error timeout\n- Version 2.2 affected\n- Random occurrence\n- All users affected\n\nRoot Cause:\nRequired parameter missing\n\nSolution:\nChange port number\n\nSteps to Resolve:\n1. Put app in maintenance mode\n2. Take snapshot\n3. Change port number\n4. Run smoke tests\n5. Scale up replicas\n6. Monitor logs\n\nPrevention:\n- Improve testing\n- Code review\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "SW-TICKET-039",
+      "category": "software",
+      "subcategory": "configuration",
+      "product": "MyApp",
+      "version": "2.2",
+      "error_code": "timeout",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2026-01-17",
+      "resolved_date": "2026-03-03",
+      "affected_users": 139,
+      "resolution_type": "patch"
+    }
+  },
+  {
+    "id": "SW-TICKET-040",
+    "content": "Issue: Application misconfigured, not starting\n\nSymptoms:\n- Application error timeout\n- Version 3.0 affected\n- Intermittent occurrence\n- Admin users only affected\n\nRoot Cause:\nRequired parameter missing\n\nSolution:\nFix YAML syntax\n\nSteps to Resolve:\n1. Scale down replicas\n2. Export data\n3. Fix YAML syntax\n4. Verify fix\n5. Restart application\n6. Check health\n\nPrevention:\n- Improve testing\n- Load testing\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "SW-TICKET-040",
+      "category": "software",
+      "subcategory": "configuration",
+      "product": "MyApp",
+      "version": "3.0",
+      "error_code": "timeout",
+      "severity": "critical",
+      "status": "resolved",
+      "created_date": "2025-12-14",
+      "resolved_date": "2026-02-23",
+      "affected_users": 134,
+      "resolution_type": "hotfix"
+    }
+  },
+  {
+    "id": "SW-TICKET-041",
+    "content": "Issue: Deployment failures, rollback required\n\nSymptoms:\n- Application error 403\n- Version 2.1 affected\n- Consistent occurrence\n- New users only affected\n\nRoot Cause:\nResource quota exceeded\n\nSolution:\nRequest quota increase\n\nSteps to Resolve:\n1. Put app in maintenance mode\n2. Backup database\n3. Request quota increase\n4. Run smoke tests\n5. Restart application\n6. Verify metrics\n\nPrevention:\n- Update documentation\n- Load testing\n\nStatus: Resolved\nResolution Time: 4 hours",
+    "metadata": {
+      "ticket_id": "SW-TICKET-041",
+      "category": "software",
+      "subcategory": "deployment",
+      "product": "MyApp",
+      "version": "2.1",
+      "error_code": "403",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-01-26",
+      "resolved_date": "2026-02-10",
+      "affected_users": 286,
+      "resolution_type": "workaround"
+    }
+  },
+  {
+    "id": "SW-TICKET-042",
+    "content": "Issue: Upgrade from 2.9 to 3.0 failed\n\nSymptoms:\n- Application error 401\n- Version 3.0 affected\n- Random occurrence\n- All users affected\n\nRoot Cause:\nData migration required\n\nSolution:\nResolve dependencies\n\nSteps to Resolve:\n1. Put app in maintenance mode\n2. Export data\n3. Resolve dependencies\n4. Run smoke tests\n5. Deploy to production\n6. Check health\n\nPrevention:\n- Update documentation\n- Code review\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "SW-TICKET-042",
+      "category": "software",
+      "subcategory": "upgrade",
+      "product": "MyApp",
+      "version": "3.0",
+      "error_code": "401",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2025-12-23",
+      "resolved_date": "2026-02-05",
+      "affected_users": 27,
+      "resolution_type": "hotfix"
+    }
+  },
+  {
+    "id": "SW-TICKET-043",
+    "content": "Issue: Application misconfigured, not starting\n\nSymptoms:\n- Application error 504\n- Version 3.1 affected\n- Intermittent occurrence\n- All users affected\n\nRoot Cause:\nFile permission denied\n\nSolution:\nAdd required parameters\n\nSteps to Resolve:\n1. Put app in maintenance mode\n2. Export data\n3. Add required parameters\n4. Test in staging\n5. Restart application\n6. Verify metrics\n\nPrevention:\n- Add monitoring alerts\n- Security audit\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "SW-TICKET-043",
+      "category": "software",
+      "subcategory": "configuration",
+      "product": "MyApp",
+      "version": "3.1",
+      "error_code": "504",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2026-01-01",
+      "resolved_date": "2026-03-05",
+      "affected_users": 59,
+      "resolution_type": "hotfix"
+    }
+  },
+  {
+    "id": "SW-TICKET-044",
+    "content": "Issue: Application misconfigured, not starting\n\nSymptoms:\n- Application error 401\n- Version 2.0 affected\n- Consistent occurrence\n- New users only affected\n\nRoot Cause:\nInvalid YAML syntax\n\nSolution:\nFix file permissions\n\nSteps to Resolve:\n1. Scale down replicas\n2. Backup database\n3. Fix file permissions\n4. Run smoke tests\n5. Deploy to production\n6. Check health\n\nPrevention:\n- Add monitoring alerts\n- Regular updates\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "SW-TICKET-044",
+      "category": "software",
+      "subcategory": "configuration",
+      "product": "MyApp",
+      "version": "2.0",
+      "error_code": "401",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2026-01-03",
+      "resolved_date": "2026-03-04",
+      "affected_users": 79,
+      "resolution_type": "workaround"
+    }
+  },
+  {
+    "id": "SW-TICKET-045",
+    "content": "Issue: Authentication failures, users cannot log in\n\nSymptoms:\n- Application error timeout\n- Version 1.8 affected\n- Random occurrence\n- All users affected\n\nRoot Cause:\nLDAP connection failure\n\nSolution:\nRegenerate JWT secrets\n\nSteps to Resolve:\n1. Put app in maintenance mode\n2. Take snapshot\n3. Regenerate JWT secrets\n4. Verify fix\n5. Restart application\n6. Monitor logs\n\nPrevention:\n- Add validation\n- Regular updates\n\nStatus: Resolved\nResolution Time: 15 minutes",
+    "metadata": {
+      "ticket_id": "SW-TICKET-045",
+      "category": "software",
+      "subcategory": "authentication",
+      "product": "MyApp",
+      "version": "1.8",
+      "error_code": "timeout",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-01-25",
+      "resolved_date": "2026-02-13",
+      "affected_users": 417,
+      "resolution_type": "workaround"
+    }
+  },
+  {
+    "id": "SW-TICKET-046",
+    "content": "Issue: Slow response times, requests timing out\n\nSymptoms:\n- Application error 403\n- Version 2.1 affected\n- Random occurrence\n- Admin users only affected\n\nRoot Cause:\nConnection pool exhaustion\n\nSolution:\nImplement query caching\n\nSteps to Resolve:\n1. Stop the application\n2. Backup database\n3. Implement query caching\n4. Test in staging\n5. Deploy to production\n6. Verify metrics\n\nPrevention:\n- Improve testing\n- Load testing\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "SW-TICKET-046",
+      "category": "software",
+      "subcategory": "performance",
+      "product": "MyApp",
+      "version": "2.1",
+      "error_code": "403",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2025-12-18",
+      "resolved_date": "2026-02-14",
+      "affected_users": 308,
+      "resolution_type": "patch"
+    }
+  },
+  {
+    "id": "SW-TICKET-047",
+    "content": "Issue: Database connection errors, data access failures\n\nSymptoms:\n- Application error 500\n- Version 2.3 affected\n- Intermittent occurrence\n- Admin users only affected\n\nRoot Cause:\nConnection string misconfiguration\n\nSolution:\nRun database migrations\n\nSteps to Resolve:\n1. Stop the application\n2. Take snapshot\n3. Run database migrations\n4. Test in staging\n5. Deploy to production\n6. Verify metrics\n\nPrevention:\n- Add monitoring alerts\n- Regular updates\n\nStatus: Resolved\nResolution Time: 15 minutes",
+    "metadata": {
+      "ticket_id": "SW-TICKET-047",
+      "category": "software",
+      "subcategory": "database",
+      "product": "MyApp",
+      "version": "2.3",
+      "error_code": "500",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-02-26",
+      "resolved_date": "2026-02-12",
+      "affected_users": 116,
+      "resolution_type": "upgrade"
+    }
+  },
+  {
+    "id": "SW-TICKET-048",
+    "content": "Issue: API endpoints returning error 401\n\nSymptoms:\n- Application error 401\n- Version 1.8 affected\n- Consistent occurrence\n- Admin users only affected\n\nRoot Cause:\nCORS configuration issue\n\nSolution:\nUpdate CORS policy\n\nSteps to Resolve:\n1. Put app in maintenance mode\n2. Export data\n3. Update CORS policy\n4. Test in staging\n5. Deploy to production\n6. Monitor logs\n\nPrevention:\n- Add validation\n- Regular updates\n\nStatus: Resolved\nResolution Time: 4 hours",
+    "metadata": {
+      "ticket_id": "SW-TICKET-048",
+      "category": "software",
+      "subcategory": "api",
+      "product": "MyApp",
+      "version": "1.8",
+      "error_code": "401",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2025-12-16",
+      "resolved_date": "2026-02-15",
+      "affected_users": 390,
+      "resolution_type": "patch"
+    }
+  },
+  {
+    "id": "SW-TICKET-049",
+    "content": "Issue: API endpoints returning error 503\n\nSymptoms:\n- Application error 503\n- Version 1.8 affected\n- Consistent occurrence\n- Some users affected\n\nRoot Cause:\nRoute not registered in version 1.8\n\nSolution:\nUpdate CORS policy\n\nSteps to Resolve:\n1. Put app in maintenance mode\n2. Export data\n3. Update CORS policy\n4. Test in staging\n5. Scale up replicas\n6. Monitor logs\n\nPrevention:\n- Update documentation\n- Regular updates\n\nStatus: Resolved\nResolution Time: 15 minutes",
+    "metadata": {
+      "ticket_id": "SW-TICKET-049",
+      "category": "software",
+      "subcategory": "api",
+      "product": "MyApp",
+      "version": "1.8",
+      "error_code": "503",
+      "severity": "critical",
+      "status": "resolved",
+      "created_date": "2026-02-11",
+      "resolved_date": "2026-02-25",
+      "affected_users": 449,
+      "resolution_type": "patch"
+    }
+  },
+  {
+    "id": "SW-TICKET-050",
+    "content": "Issue: Application misconfigured, not starting\n\nSymptoms:\n- Application error 502\n- Version 2.1 affected\n- Random occurrence\n- Some users affected\n\nRoot Cause:\nInvalid YAML syntax\n\nSolution:\nAdd required parameters\n\nSteps to Resolve:\n1. Put app in maintenance mode\n2. Backup database\n3. Add required parameters\n4. Verify fix\n5. Deploy to production\n6. Verify metrics\n\nPrevention:\n- Add validation\n- Regular updates\n\nStatus: Resolved\nResolution Time: 2 hours",
+    "metadata": {
+      "ticket_id": "SW-TICKET-050",
+      "category": "software",
+      "subcategory": "configuration",
+      "product": "MyApp",
+      "version": "2.1",
+      "error_code": "502",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-01-07",
+      "resolved_date": "2026-02-28",
+      "affected_users": 133,
+      "resolution_type": "upgrade"
+    }
+  },
+  {
+    "id": "SW-TICKET-051",
+    "content": "Issue: Application misconfigured, not starting\n\nSymptoms:\n- Application error 500\n- Version 2.3 affected\n- Random occurrence\n- Some users affected\n\nRoot Cause:\nPort already in use\n\nSolution:\nChange port number\n\nSteps to Resolve:\n1. Stop the application\n2. Backup database\n3. Change port number\n4. Verify fix\n5. Restart application\n6. Monitor logs\n\nPrevention:\n- Add validation\n- Code review\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "SW-TICKET-051",
+      "category": "software",
+      "subcategory": "configuration",
+      "product": "MyApp",
+      "version": "2.3",
+      "error_code": "500",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2026-01-15",
+      "resolved_date": "2026-02-17",
+      "affected_users": 387,
+      "resolution_type": "configuration"
+    }
+  },
+  {
+    "id": "SW-TICKET-052",
+    "content": "Issue: Authentication failures, users cannot log in\n\nSymptoms:\n- Application error 400\n- Version 3.0 affected\n- Consistent occurrence\n- Admin users only affected\n\nRoot Cause:\nJWT signature mismatch\n\nSolution:\nMigrate password hashes\n\nSteps to Resolve:\n1. Stop the application\n2. Take snapshot\n3. Migrate password hashes\n4. Verify fix\n5. Deploy to production\n6. Check health\n\nPrevention:\n- Improve testing\n- Load testing\n\nStatus: Resolved\nResolution Time: 4 hours",
+    "metadata": {
+      "ticket_id": "SW-TICKET-052",
+      "category": "software",
+      "subcategory": "authentication",
+      "product": "MyApp",
+      "version": "3.0",
+      "error_code": "400",
+      "severity": "critical",
+      "status": "resolved",
+      "created_date": "2025-12-28",
+      "resolved_date": "2026-02-04",
+      "affected_users": 258,
+      "resolution_type": "patch"
+    }
+  },
+  {
+    "id": "SW-TICKET-053",
+    "content": "Issue: Upgrade from 2.1 to 2.2 failed\n\nSymptoms:\n- Application error 403\n- Version 2.2 affected\n- Intermittent occurrence\n- All users affected\n\nRoot Cause:\nConfiguration format changed\n\nSolution:\nRun schema migration\n\nSteps to Resolve:\n1. Scale down replicas\n2. Take snapshot\n3. Run schema migration\n4. Run smoke tests\n5. Restart application\n6. Monitor logs\n\nPrevention:\n- Update documentation\n- Code review\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "SW-TICKET-053",
+      "category": "software",
+      "subcategory": "upgrade",
+      "product": "MyApp",
+      "version": "2.2",
+      "error_code": "403",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-01-09",
+      "resolved_date": "2026-02-09",
+      "affected_users": 399,
+      "resolution_type": "workaround"
+    }
+  },
+  {
+    "id": "SW-TICKET-054",
+    "content": "Issue: Slow response times, requests timing out\n\nSymptoms:\n- Application error 504\n- Version 2.1 affected\n- Random occurrence\n- Some users affected\n\nRoot Cause:\nMissing database indexes\n\nSolution:\nApply performance patch\n\nSteps to Resolve:\n1. Put app in maintenance mode\n2. Backup database\n3. Apply performance patch\n4. Test in staging\n5. Deploy to production\n6. Monitor logs\n\nPrevention:\n- Add monitoring alerts\n- Security audit\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "SW-TICKET-054",
+      "category": "software",
+      "subcategory": "performance",
+      "product": "MyApp",
+      "version": "2.1",
+      "error_code": "504",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2025-12-26",
+      "resolved_date": "2026-02-24",
+      "affected_users": 46,
+      "resolution_type": "upgrade"
+    }
+  },
+  {
+    "id": "SW-TICKET-055",
+    "content": "Issue: Deployment failures, rollback required\n\nSymptoms:\n- Application error 503\n- Version 2.3 affected\n- Consistent occurrence\n- New users only affected\n\nRoot Cause:\nHealth check failing\n\nSolution:\nRequest quota increase\n\nSteps to Resolve:\n1. Put app in maintenance mode\n2. Export data\n3. Request quota increase\n4. Verify fix\n5. Deploy to production\n6. Check health\n\nPrevention:\n- Improve testing\n- Security audit\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "SW-TICKET-055",
+      "category": "software",
+      "subcategory": "deployment",
+      "product": "MyApp",
+      "version": "2.3",
+      "error_code": "503",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2026-02-12",
+      "resolved_date": "2026-02-26",
+      "affected_users": 83,
+      "resolution_type": "upgrade"
+    }
+  },
+  {
+    "id": "SW-TICKET-056",
+    "content": "Issue: Application misconfigured, not starting\n\nSymptoms:\n- Application error 504\n- Version 2.0 affected\n- Random occurrence\n- Admin users only affected\n\nRoot Cause:\nInvalid YAML syntax\n\nSolution:\nCreate config file\n\nSteps to Resolve:\n1. Stop the application\n2. Backup database\n3. Create config file\n4. Verify fix\n5. Deploy to production\n6. Check health\n\nPrevention:\n- Add monitoring alerts\n- Regular updates\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "SW-TICKET-056",
+      "category": "software",
+      "subcategory": "configuration",
+      "product": "MyApp",
+      "version": "2.0",
+      "error_code": "504",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-01-22",
+      "resolved_date": "2026-02-08",
+      "affected_users": 379,
+      "resolution_type": "hotfix"
+    }
+  },
+  {
+    "id": "SW-TICKET-057",
+    "content": "Issue: Application crashes with error 404\n\nSymptoms:\n- Application error 404\n- Version 3.1 affected\n- Intermittent occurrence\n- Admin users only affected\n\nRoot Cause:\nMemory leak in version 3.1\n\nSolution:\nFix code and redeploy\n\nSteps to Resolve:\n1. Stop the application\n2. Backup database\n3. Fix code and redeploy\n4. Run smoke tests\n5. Restart application\n6. Verify metrics\n\nPrevention:\n- Add validation\n- Regular updates\n\nStatus: Resolved\nResolution Time: 4 hours",
+    "metadata": {
+      "ticket_id": "SW-TICKET-057",
+      "category": "software",
+      "subcategory": "crash",
+      "product": "MyApp",
+      "version": "3.1",
+      "error_code": "404",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2026-02-03",
+      "resolved_date": "2026-02-24",
+      "affected_users": 480,
+      "resolution_type": "configuration"
+    }
+  },
+  {
+    "id": "SW-TICKET-058",
+    "content": "Issue: API endpoints returning error 401\n\nSymptoms:\n- Application error 401\n- Version 2.3 affected\n- Intermittent occurrence\n- New users only affected\n\nRoot Cause:\nRoute not registered in version 2.3\n\nSolution:\nUpdate CORS policy\n\nSteps to Resolve:\n1. Scale down replicas\n2. Backup database\n3. Update CORS policy\n4. Verify fix\n5. Deploy to production\n6. Check health\n\nPrevention:\n- Improve testing\n- Code review\n\nStatus: Resolved\nResolution Time: 2 hours",
+    "metadata": {
+      "ticket_id": "SW-TICKET-058",
+      "category": "software",
+      "subcategory": "api",
+      "product": "MyApp",
+      "version": "2.3",
+      "error_code": "401",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-02-04",
+      "resolved_date": "2026-02-25",
+      "affected_users": 360,
+      "resolution_type": "upgrade"
+    }
+  },
+  {
+    "id": "SW-TICKET-059",
+    "content": "Issue: Slow response times, requests timing out\n\nSymptoms:\n- Application error 403\n- Version 2.3 affected\n- Consistent occurrence\n- Some users affected\n\nRoot Cause:\nInefficient caching strategy\n\nSolution:\nOptimize queries\n\nSteps to Resolve:\n1. Stop the application\n2. Backup database\n3. Optimize queries\n4. Verify fix\n5. Restart application\n6. Verify metrics\n\nPrevention:\n- Add validation\n- Code review\n\nStatus: Resolved\nResolution Time: 2 hours",
+    "metadata": {
+      "ticket_id": "SW-TICKET-059",
+      "category": "software",
+      "subcategory": "performance",
+      "product": "MyApp",
+      "version": "2.3",
+      "error_code": "403",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2025-12-05",
+      "resolved_date": "2026-02-22",
+      "affected_users": 351,
+      "resolution_type": "workaround"
+    }
+  },
+  {
+    "id": "SW-TICKET-060",
+    "content": "Issue: Authentication failures, users cannot log in\n\nSymptoms:\n- Application error 404\n- Version 2.1 affected\n- Random occurrence\n- Admin users only affected\n\nRoot Cause:\nSession timeout configuration issue\n\nSolution:\nFix OAuth implementation\n\nSteps to Resolve:\n1. Stop the application\n2. Take snapshot\n3. Fix OAuth implementation\n4. Test in staging\n5. Restart application\n6. Verify metrics\n\nPrevention:\n- Improve testing\n- Code review\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "SW-TICKET-060",
+      "category": "software",
+      "subcategory": "authentication",
+      "product": "MyApp",
+      "version": "2.1",
+      "error_code": "404",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2025-12-15",
+      "resolved_date": "2026-02-17",
+      "affected_users": 56,
+      "resolution_type": "patch"
+    }
+  },
+  {
+    "id": "SW-TICKET-061",
+    "content": "Issue: Application misconfigured, not starting\n\nSymptoms:\n- Application error timeout\n- Version 2.2 affected\n- Intermittent occurrence\n- All users affected\n\nRoot Cause:\nConfig file not found\n\nSolution:\nAdd required parameters\n\nSteps to Resolve:\n1. Put app in maintenance mode\n2. Take snapshot\n3. Add required parameters\n4. Verify fix\n5. Deploy to production\n6. Monitor logs\n\nPrevention:\n- Add validation\n- Security audit\n\nStatus: Resolved\nResolution Time: 15 minutes",
+    "metadata": {
+      "ticket_id": "SW-TICKET-061",
+      "category": "software",
+      "subcategory": "configuration",
+      "product": "MyApp",
+      "version": "2.2",
+      "error_code": "timeout",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2026-03-01",
+      "resolved_date": "2026-03-03",
+      "affected_users": 192,
+      "resolution_type": "patch"
+    }
+  },
+  {
+    "id": "SW-TICKET-062",
+    "content": "Issue: Upgrade from 2.0 to 2.1 failed\n\nSymptoms:\n- Application error 404\n- Version 2.1 affected\n- Random occurrence\n- All users affected\n\nRoot Cause:\nDependency version conflict\n\nSolution:\nUpdate API calls\n\nSteps to Resolve:\n1. Stop the application\n2. Export data\n3. Update API calls\n4. Run smoke tests\n5. Scale up replicas\n6. Check health\n\nPrevention:\n- Update documentation\n- Code review\n\nStatus: Resolved\nResolution Time: 2 hours",
+    "metadata": {
+      "ticket_id": "SW-TICKET-062",
+      "category": "software",
+      "subcategory": "upgrade",
+      "product": "MyApp",
+      "version": "2.1",
+      "error_code": "404",
+      "severity": "high",
+      "status": "resolved",
+      "created_date": "2026-02-25",
+      "resolved_date": "2026-02-17",
+      "affected_users": 488,
+      "resolution_type": "workaround"
+    }
+  },
+  {
+    "id": "SW-TICKET-063",
+    "content": "Issue: Application crashes with error 504\n\nSymptoms:\n- Application error 504\n- Version 2.0 affected\n- Consistent occurrence\n- New users only affected\n\nRoot Cause:\nResource exhaustion (CPU/memory) under load\n\nSolution:\nIncrease resource limits\n\nSteps to Resolve:\n1. Put app in maintenance mode\n2. Export data\n3. Increase resource limits\n4. Run smoke tests\n5. Deploy to production\n6. Monitor logs\n\nPrevention:\n- Add monitoring alerts\n- Code review\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "SW-TICKET-063",
+      "category": "software",
+      "subcategory": "crash",
+      "product": "MyApp",
+      "version": "2.0",
+      "error_code": "504",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2026-01-18",
+      "resolved_date": "2026-03-05",
+      "affected_users": 431,
+      "resolution_type": "patch"
+    }
+  },
+  {
+    "id": "SW-TICKET-064",
+    "content": "Issue: API endpoints returning error 401\n\nSymptoms:\n- Application error 401\n- Version 3.0 affected\n- Random occurrence\n- Admin users only affected\n\nRoot Cause:\nRequest validation failing\n\nSolution:\nVerify API key setup\n\nSteps to Resolve:\n1. Stop the application\n2. Backup database\n3. Verify API key setup\n4. Verify fix\n5. Deploy to production\n6. Check health\n\nPrevention:\n- Update documentation\n- Code review\n\nStatus: Resolved\nResolution Time: 4 hours",
+    "metadata": {
+      "ticket_id": "SW-TICKET-064",
+      "category": "software",
+      "subcategory": "api",
+      "product": "MyApp",
+      "version": "3.0",
+      "error_code": "401",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2026-01-23",
+      "resolved_date": "2026-02-03",
+      "affected_users": 261,
+      "resolution_type": "hotfix"
+    }
+  },
+  {
+    "id": "SW-TICKET-065",
+    "content": "Issue: Deployment failures, rollback required\n\nSymptoms:\n- Application error 503\n- Version 2.0 affected\n- Random occurrence\n- All users affected\n\nRoot Cause:\nResource quota exceeded\n\nSolution:\nUpdate health check\n\nSteps to Resolve:\n1. Scale down replicas\n2. Export data\n3. Update health check\n4. Run smoke tests\n5. Scale up replicas\n6. Check health\n\nPrevention:\n- Update documentation\n- Load testing\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "SW-TICKET-065",
+      "category": "software",
+      "subcategory": "deployment",
+      "product": "MyApp",
+      "version": "2.0",
+      "error_code": "503",
+      "severity": "low",
+      "status": "resolved",
+      "created_date": "2026-02-18",
+      "resolved_date": "2026-02-25",
+      "affected_users": 335,
+      "resolution_type": "upgrade"
+    }
+  },
+  {
+    "id": "SW-TICKET-066",
+    "content": "Issue: Slow response times, requests timing out\n\nSymptoms:\n- Application error 404\n- Version 2.3 affected\n- Random occurrence\n- Some users affected\n\nRoot Cause:\nConnection pool exhaustion\n\nSolution:\nIncrease connection pool size\n\nSteps to Resolve:\n1. Scale down replicas\n2. Export data\n3. Increase connection pool size\n4. Verify fix\n5. Deploy to production\n6. Monitor logs\n\nPrevention:\n- Add monitoring alerts\n- Regular updates\n\nStatus: Resolved\nResolution Time: 15 minutes",
+    "metadata": {
+      "ticket_id": "SW-TICKET-066",
+      "category": "software",
+      "subcategory": "performance",
+      "product": "MyApp",
+      "version": "2.3",
+      "error_code": "404",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2026-02-15",
+      "resolved_date": "2026-02-25",
+      "affected_users": 436,
+      "resolution_type": "hotfix"
+    }
+  },
+  {
+    "id": "SW-TICKET-067",
+    "content": "Issue: Authentication failures, users cannot log in\n\nSymptoms:\n- Application error 500\n- Version 2.0 affected\n- Intermittent occurrence\n- Some users affected\n\nRoot Cause:\nLDAP connection failure\n\nSolution:\nVerify LDAP settings\n\nSteps to Resolve:\n1. Put app in maintenance mode\n2. Export data\n3. Verify LDAP settings\n4. Run smoke tests\n5. Deploy to production\n6. Verify metrics\n\nPrevention:\n- Improve testing\n- Code review\n\nStatus: Resolved\nResolution Time: 1 hour",
+    "metadata": {
+      "ticket_id": "SW-TICKET-067",
+      "category": "software",
+      "subcategory": "authentication",
+      "product": "MyApp",
+      "version": "2.0",
+      "error_code": "500",
+      "severity": "critical",
+      "status": "resolved",
+      "created_date": "2025-12-26",
+      "resolved_date": "2026-02-25",
+      "affected_users": 337,
+      "resolution_type": "configuration"
+    }
+  },
+  {
+    "id": "SW-TICKET-068",
+    "content": "Issue: Application crashes with error 400\n\nSymptoms:\n- Application error 400\n- Version 3.1 affected\n- Intermittent occurrence\n- Some users affected\n\nRoot Cause:\nNull pointer exception in logging module\n\nSolution:\nIncrease resource limits\n\nSteps to Resolve:\n1. Stop the application\n2. Take snapshot\n3. Increase resource limits\n4. Run smoke tests\n5. Restart application\n6. Verify metrics\n\nPrevention:\n- Improve testing\n- Security audit\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "SW-TICKET-068",
+      "category": "software",
+      "subcategory": "crash",
+      "product": "MyApp",
+      "version": "3.1",
+      "error_code": "400",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2025-12-20",
+      "resolved_date": "2026-02-16",
+      "affected_users": 55,
+      "resolution_type": "upgrade"
+    }
+  },
+  {
+    "id": "SW-TICKET-069",
+    "content": "Issue: Application misconfigured, not starting\n\nSymptoms:\n- Application error 404\n- Version 2.1 affected\n- Intermittent occurrence\n- New users only affected\n\nRoot Cause:\nInvalid YAML syntax\n\nSolution:\nFix file permissions\n\nSteps to Resolve:\n1. Scale down replicas\n2. Take snapshot\n3. Fix file permissions\n4. Run smoke tests\n5. Restart application\n6. Check health\n\nPrevention:\n- Update documentation\n- Code review\n\nStatus: Resolved\nResolution Time: 30 minutes",
+    "metadata": {
+      "ticket_id": "SW-TICKET-069",
+      "category": "software",
+      "subcategory": "configuration",
+      "product": "MyApp",
+      "version": "2.1",
+      "error_code": "404",
+      "severity": "medium",
+      "status": "resolved",
+      "created_date": "2026-01-23",
+      "resolved_date": "2026-02-11",
+      "affected_users": 402,
+      "resolution_type": "upgrade"
+    }
+  }
+]
