@@ -98,7 +98,6 @@ services:
       - LLM_BACKEND=gemini
       - GOOGLE_API_KEY=${GOOGLE_API_KEY}
       - GEMINI_MODEL=gemini-2.5-flash
-      - COMMUNICATION_MODE=http
       - LOG_LEVEL=INFO
       - RAG_API_ENDPOINT=http://rag-api:8080/answer
     ports:
@@ -127,7 +126,6 @@ services:
       - LLM_BACKEND=gemini
       - GOOGLE_API_KEY=${GOOGLE_API_KEY}
       - GEMINI_MODEL=gemini-2.5-flash
-      - COMMUNICATION_MODE=http
       - AGENT_SERVICE_URL=http://agent-service:8080
       - AGENT_TIMEOUT=120
       - LOG_LEVEL=INFO
@@ -199,10 +197,10 @@ services:
         condition: service_healthy
     restart: "no"
 
-  # ADK Web UI
-  adk-web-ui:
+  # PF Chat UI
+  pf-chat-ui:
     image: nginx:alpine
-    container_name: partner-adk-web-ui
+    container_name: partner-pf-chat-ui
     volumes:
       - ./pf-chat-ui/static:/usr/share/nginx/html:ro
       - ./pf-chat-ui/nginx.conf:/etc/nginx/nginx.conf:ro

@@ -21,7 +21,7 @@ async def create_request_log_entry_unified(
 
     Args:
         set_pod_name: If True, set pod_name for requests that wait for responses (request-manager endpoints).
-                     If False, don't set pod_name (e.g., CloudEvent requests from external services).
+                     If False, don't set pod_name.
     """
     try:
         from shared_models.models import RequestLog
@@ -54,8 +54,6 @@ async def create_request_log_entry_unified(
             processing_time_ms=None,  # Will be set by Agent Service
             response_content=None,  # Will be set by Agent Service
             response_metadata=None,  # Will be set by Agent Service
-            cloudevent_id=None,  # Will be set when CloudEvent is sent
-            cloudevent_type=None,  # Will be set when CloudEvent is sent
             completed_at=None,  # Will be set by Agent Service
             pod_name=pod_name,  # Track which pod initiated this request
         )
@@ -95,57 +93,6 @@ async def create_request_log_entry_unified(
             error=str(e),
         )
         # Don't raise exception - RequestLog creation failure shouldn't stop request processing
-
-
-async def try_claim_event_for_processing(
-    db: AsyncSession,
-    event_id: str,
-    event_type: str,
-    event_source: str,
-    processed_by: str,
-) -> bool:
-    """Atomically claim an event for processing (check-and-set pattern).
-
-    This provides 100% guarantee against duplicate processing by using
-    database unique constraint as a distributed lock.
-
-    Returns:
-        True if this pod successfully claimed the event (can process it)
-        False if another pod already claimed it (must skip processing)
-    """
-    from shared_models import DatabaseUtils
-
-    return await DatabaseUtils.try_claim_event_for_processing(
-        db, event_id, event_type, event_source, processed_by
-    )
-
-
-async def record_processed_event(
-    db: AsyncSession,
-    event_id: str,
-    event_type: str,
-    event_source: str,
-    request_id: Optional[str],
-    session_id: Optional[str],
-    processed_by: str,
-    processing_result: str,
-    error_message: Optional[str] = None,
-) -> None:
-    """Record that an event has been processed to prevent duplicate processing.
-
-    Note: For atomic claiming, use try_claim_event_for_processing first.
-    This function updates the event record after processing completes.
-    """
-    from shared_models import DatabaseUtils
-
-    await DatabaseUtils.update_processed_event(
-        db,
-        event_id,
-        request_id=request_id,
-        session_id=session_id,
-        processing_result=processing_result,
-        error_message=error_message,
-    )
 
 
 async def cleanup_old_sessions(

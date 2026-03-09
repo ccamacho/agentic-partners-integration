@@ -3,24 +3,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ $fullName }}-web-ui
+  name: {{ $fullName }}-pf-chat-ui
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "partner-agent.labels" . | nindent 4 }}
-    app: {{ $fullName }}-web-ui
-    component: web-ui
+    app: {{ $fullName }}-pf-chat-ui
+    component: pf-chat-ui
 spec:
-  replicas: {{ .Values.webUi.replicas | default 1 }}
+  replicas: {{ .Values.pfChatUi.replicas | default 1 }}
   selector:
     matchLabels:
       {{- include "partner-agent.selectorLabels" . | nindent 6 }}
-      app: {{ $fullName }}-web-ui
+      app: {{ $fullName }}-pf-chat-ui
   template:
     metadata:
       labels:
         {{- include "partner-agent.labels" . | nindent 8 }}
-        app: {{ $fullName }}-web-ui
-        component: web-ui
+        app: {{ $fullName }}-pf-chat-ui
+        component: pf-chat-ui
     spec:
       serviceAccountName: {{ include "partner-agent.serviceAccountName" . }}
       securityContext:
@@ -28,8 +28,8 @@ spec:
         seccompProfile:
           type: RuntimeDefault
       containers:
-      - name: web-ui
-        image: "{{ .Values.image.registry }}/{{ .Values.image.webUi }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+      - name: pf-chat-ui
+        image: "{{ .Values.image.registry }}/{{ .Values.image.pfChatUi }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
         - containerPort: 8080
@@ -38,9 +38,9 @@ spec:
         env:
         - name: API_ENDPOINT
           value: "http://{{ $fullName }}-request-manager:80"
-        {{- if .Values.webUi.resources }}
+        {{- if .Values.pfChatUi.resources }}
         resources:
-          {{- toYaml .Values.webUi.resources | nindent 10 }}
+          {{- toYaml .Values.pfChatUi.resources | nindent 10 }}
         {{- end }}
         securityContext:
           allowPrivilegeEscalation: false
@@ -70,16 +70,16 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ $fullName }}-web-ui
+  name: {{ $fullName }}-pf-chat-ui
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "partner-agent.labels" . | nindent 4 }}
-    app: {{ $fullName }}-web-ui
+    app: {{ $fullName }}-pf-chat-ui
 spec:
   type: ClusterIP
   selector:
     {{- include "partner-agent.selectorLabels" . | nindent 4 }}
-    app: {{ $fullName }}-web-ui
+    app: {{ $fullName }}-pf-chat-ui
   ports:
   - name: http
     port: 3000

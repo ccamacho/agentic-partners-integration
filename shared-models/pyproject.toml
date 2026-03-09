@@ -15,7 +15,7 @@ dependencies = [
     "structlog>=23.2.0",
     "fastapi>=0.104.0,<0.117.0",
     "pydantic>=2.5.0",
-    "cloudevents>=1.10.0",
+
     "httpx>=0.25.0",
     "langgraph-checkpoint-postgres>=2.0.0",
     "bcrypt>=4.0.0",

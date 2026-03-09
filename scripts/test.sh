@@ -449,7 +449,7 @@ test_endpoint "Allowed agents stored" \
 # Test alembic migrations
 test_endpoint "Alembic version table" \
     "docker exec partner-postgres-full psql -U user -d partner_agent -c 'SELECT version_num FROM alembic_version;'" \
-    "006"
+    "007"
 
 # ============================================
 # 9. ERROR HANDLING & EDGE CASES

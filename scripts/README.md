@@ -13,7 +13,7 @@ bash scripts/setup.sh
 **What it does:**
 - Builds all container images
 - Starts PostgreSQL, ChromaDB
-- Starts agent-service, request-manager, rag-api, web-ui
+- Starts agent-service, request-manager, rag-api, pf-chat-ui
 - **Auto-initializes all data** (users, passwords, RAG knowledge)
 
 ---

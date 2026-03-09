@@ -58,13 +58,13 @@ build:
 .PHONY: stop
 stop:
 	@echo "Stopping all containers..."
-	@docker stop partner-adk-web-ui partner-request-manager-full partner-agent-service-full partner-rag-api-full partner-chromadb-full partner-postgres-full 2>/dev/null || true
+	@docker stop partner-pf-chat-ui partner-request-manager-full partner-agent-service-full partner-rag-api-full partner-chromadb-full partner-postgres-full 2>/dev/null || true
 	@echo "All containers stopped."
 
 .PHONY: clean
 clean: stop
 	@echo "Removing containers..."
-	@docker rm partner-adk-web-ui partner-request-manager-full partner-agent-service-full partner-rag-api-full partner-chromadb-full partner-postgres-full 2>/dev/null || true
+	@docker rm partner-pf-chat-ui partner-request-manager-full partner-agent-service-full partner-rag-api-full partner-chromadb-full partner-postgres-full 2>/dev/null || true
 	@echo "Removing network..."
 	@docker network rm partner-agent-network 2>/dev/null || true
 	@echo "Clean complete."

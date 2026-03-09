@@ -44,10 +44,10 @@ jobs:
             context: .
             image: partner-rag-api
             build-args: ""
-          - name: web-ui
+          - name: pf-chat-ui
             containerfile: pf-chat-ui/Containerfile
             context: pf-chat-ui
-            image: partner-web-ui
+            image: partner-pf-chat-ui
             build-args: ""
 
     steps:

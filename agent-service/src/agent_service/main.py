@@ -1,24 +1,17 @@
-"""CloudEvent-driven Agent Service."""
+"""Agent Service for Partner Agent Integration."""
 
 import os
-import uuid
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
 import httpx
-from cloudevents.http import CloudEvent, to_structured
-from fastapi import Depends, FastAPI, HTTPException, Request, status
+from fastapi import Depends, FastAPI, HTTPException, status
 from shared_models import (
     BaseSessionManager,
-    CloudEventBuilder,
-    CloudEventHandler,
-    EventTypes,
     configure_logging,
-    create_cloudevent_response,
     create_shared_lifespan,
     get_database_manager,
     get_db_session_dependency,
-    parse_cloudevent_from_request,
     simple_health_check,
 )
 from shared_models.models import (
@@ -40,16 +33,7 @@ class AgentConfig:
     """Configuration for agent service."""
 
     def __init__(self) -> None:
-        self.broker_url = os.getenv("BROKER_URL")
-        self.communication_mode = os.getenv("COMMUNICATION_MODE", "eventing")
-
-        # BROKER_URL is required only for eventing-based communication
-        if self.communication_mode == "eventing" and not self.broker_url:
-            raise ValueError(
-                "BROKER_URL environment variable is required for eventing mode. "
-                "Configure BROKER_URL to point to your Knative broker, "
-                "or set COMMUNICATION_MODE=http to use direct HTTP communication."
-            )
+        pass
 
 
 class AgentService:
@@ -57,7 +41,6 @@ class AgentService:
 
     def __init__(self, config: AgentConfig) -> None:
         self.config = config
-        self.http_client = httpx.AsyncClient(timeout=30.0)
 
     def _is_reset_command(self, content: str) -> bool:
         """Check if the content is a reset command."""
@@ -208,9 +191,6 @@ class AgentService:
             if self._is_tokens_command(request.content):
                 return await self._handle_tokens_command(request)
 
-            # Publish processing started event for user notification
-            await self._publish_processing_event(request)
-
             return await self._handle_responses_mode_request(request, start_time)
 
         except Exception as e:
@@ -224,91 +204,6 @@ class AgentService:
                 content=f"I apologize, but I encountered an error processing your request: {str(e)}",
                 agent_id="unknown",
             )
-
-    async def publish_response(self, response: AgentResponse) -> bool:
-        """Publish agent response as CloudEvent and update database."""
-        try:
-            # Debug log the response object to see what values it has
-            logger.debug(
-                "AgentResponse object details",
-                request_id=response.request_id,
-                session_id=response.session_id,
-                user_id=response.user_id,
-                agent_id=response.agent_id,
-                content_preview=response.content[:100] if response.content else "None",
-                response_type=response.response_type,
-                processing_time_ms=response.processing_time_ms,
-            )
-
-            # Update RequestLog in database
-            logger.info(
-                "Updating RequestLog in database", request_id=response.request_id
-            )
-            await self._update_request_log(response)
-            logger.info(
-                "RequestLog updated successfully", request_id=response.request_id
-            )
-
-            event_data = {
-                "request_id": response.request_id,
-                "session_id": response.session_id,
-                "user_id": response.user_id,
-                "agent_id": response.agent_id,
-                "content": response.content,
-                "response_type": response.response_type,
-                "metadata": response.metadata,
-                "processing_time_ms": response.processing_time_ms,
-                "requires_followup": response.requires_followup,
-                "followup_actions": response.followup_actions,
-                "created_at": response.created_at.isoformat(),
-            }
-
-            # Debug log the event_data to see what values are being sent
-            logger.debug(
-                "Event data being published",
-                event_data_keys=list(event_data.keys()),
-                event_data_values={
-                    key: value
-                    for key, value in event_data.items()
-                    if key
-                    in ["request_id", "session_id", "user_id", "agent_id", "content"]
-                },
-                response_id=response.request_id,
-            )
-
-            logger.debug(
-                "Publishing agent response event",
-                event_data=event_data,
-                response_id=response.request_id,
-            )
-
-            # Use shared CloudEvent builder with correct event type
-            builder = CloudEventBuilder("agent-service")
-            event = builder.create_response_event(
-                event_data,
-                response.request_id,
-                response.agent_id,
-                response.session_id,
-            )
-
-            headers, body = to_structured(event)
-
-            if self.config.broker_url is None:
-                logger.error("Broker URL not configured")
-                return False
-
-            response_http = await self.http_client.post(
-                self.config.broker_url,
-                headers=headers,
-                content=body,
-            )
-
-            response_http.raise_for_status()
-            return True
-
-        except Exception as e:
-            logger.error("Failed to publish response event", exc_info=e)
-            return False
 
     def _create_agent_response(
         self,
@@ -389,25 +284,6 @@ class AgentService:
             agent_id="system",
             processing_time_ms=0,
             start_time=start_time,
-        )
-
-    async def _update_request_log(self, response: AgentResponse) -> None:
-        """Update RequestLog in database with response content."""
-        if response.agent_id is None:
-            logger.error(
-                "Cannot update request log - response missing agent_id",
-                request_id=response.request_id,
-                session_id=response.session_id,
-            )
-            return
-
-        await _update_request_log_unified(
-            request_id=response.request_id,
-            response_content=response.content,
-            agent_id=response.agent_id,
-            response_metadata=response.metadata,
-            processing_time_ms=response.processing_time_ms,
-            db=None,  # Will create its own database session
         )
 
     async def _handle_responses_mode_request(
@@ -494,67 +370,9 @@ class AgentService:
                 content=f"Failed to process responses mode request: {str(e)}",
             )
 
-    async def _publish_processing_event(self, request: NormalizedRequest) -> bool:
-        """Publish processing started event for user notification."""
-        try:
-            event_data = {
-                "request_id": request.request_id,
-                "session_id": request.session_id,
-                "user_id": request.user_id,
-                "integration_type": request.integration_type,
-                "request_type": request.request_type,
-                "content_preview": (
-                    request.content[:100] + "..."
-                    if len(request.content) > 100
-                    else request.content
-                ),
-                "target_agent_id": request.target_agent_id,
-                "started_at": datetime.now(timezone.utc).isoformat(),
-            }
-
-            event = CloudEvent(
-                {
-                    "specversion": "1.0",
-                    "type": EventTypes.REQUEST_PROCESSING,
-                    "source": "agent-service",
-                    "id": str(uuid.uuid4()),
-                    "time": datetime.now(timezone.utc).isoformat(),
-                    "subject": f"session/{request.session_id}",
-                    "datacontenttype": "application/json",
-                },
-                event_data,
-            )
-
-            headers, body = to_structured(event)
-
-            if self.config.broker_url is None:
-                logger.error("Broker URL not configured")
-                return False
-
-            response = await self.http_client.post(
-                self.config.broker_url,
-                headers=headers,
-                content=body,
-            )
-
-            response.raise_for_status()
-
-            logger.info(
-                "Processing event published",
-                request_id=request.request_id,
-                session_id=request.session_id,
-                user_id=request.user_id,
-            )
-
-            return True
-
-        except Exception as e:
-            logger.error("Failed to publish processing event", exc_info=e)
-            return False
-
     async def close(self) -> None:
-        """Close HTTP client."""
-        await self.http_client.aclose()
+        """Cleanup resources."""
+        pass
 
     async def _handle_session_management(
         self, session_id: str, request_id: str
@@ -649,42 +467,6 @@ async def detailed_health_check(
             db=db,
         )
     )
-
-
-@app.post("/api/v1/events/cloudevents")
-async def handle_cloudevent(request: Request) -> Dict[str, Any]:
-    """Handle incoming CloudEvents."""
-    if not _agent_service:
-        raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Agent service not initialized",
-        )
-
-    try:
-        # Parse CloudEvent from request using shared utility
-        event_data = await parse_cloudevent_from_request(request)
-
-        event_type = event_data.get("type")
-
-        # Handle request events
-        if event_type == EventTypes.REQUEST_CREATED:
-            return await _handle_request_event_from_data(event_data, _agent_service)
-
-        logger.warning("Unhandled CloudEvent type", event_type=event_type)
-        return dict(
-            await create_cloudevent_response(
-                status="ignored",
-                message="Unhandled event type",
-                details={"event_type": event_type},
-            )
-        )
-
-    except Exception as e:
-        logger.error("Failed to handle CloudEvent", exc_info=e)
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Failed to process CloudEvent",
-        )
 
 
 @app.post("/api/v1/agents/{agent_name}/invoke", response_model=AgentInvokeResponse)
@@ -1037,164 +819,6 @@ If the knowledge base doesn't have relevant information, say so explicitly."""}
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Agent invocation failed: {str(e)}",
         )
-
-
-def _create_normalized_request_from_data(
-    request_data: Dict[str, Any],
-) -> NormalizedRequest:
-    """Create a NormalizedRequest from request data with proper validation."""
-    # Validate required fields
-    required_fields = [
-        "request_id",
-        "session_id",
-        "user_id",
-        "integration_type",
-        "request_type",
-        "content",
-    ]
-    missing_fields = [field for field in required_fields if not request_data.get(field)]
-
-    if missing_fields:
-        raise ValueError(f"Missing required fields in request data: {missing_fields}")
-
-    return NormalizedRequest(
-        request_id=request_data["request_id"],
-        session_id=request_data["session_id"],
-        user_id=request_data["user_id"],
-        integration_type=request_data["integration_type"],
-        request_type=request_data["request_type"],
-        content=request_data["content"],
-        integration_context=request_data.get("integration_context", {}),
-        user_context=request_data.get("user_context", {}),
-        target_agent_id=request_data.get("target_agent_id"),
-        requires_routing=request_data.get("requires_routing", True),
-        created_at=datetime.fromisoformat(
-            request_data.get("created_at", datetime.now().isoformat())
-        ),
-    )
-
-
-async def _handle_request_event_from_data(
-    event_data: Dict[str, Any], agent_service: AgentService
-) -> Dict[str, Any]:
-    """Handle request CloudEvent using pre-parsed event data."""
-    try:
-        # Extract event data using common utility
-        request_data = CloudEventHandler.extract_event_data(event_data)
-
-        # Parse normalized request with proper error handling
-        try:
-            request = _create_normalized_request_from_data(request_data)
-
-            logger.debug(
-                "Created NormalizedRequest",
-                request_id=request.request_id,
-                session_id=request.session_id,
-                user_id=request.user_id,
-                content_preview=request.content[:100] if request.content else "empty",
-            )
-        except Exception as e:
-            logger.error(
-                "Failed to parse normalized request",
-                error=str(e),
-                event_data=event_data,
-            )
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Invalid request data: {str(e)}",
-            )
-
-        # Process the request
-        logger.debug("Calling agent_service.process_request")
-        response = await agent_service.process_request(request)
-
-        logger.debug(
-            "Agent response created",
-            response_id=response.request_id if response else "None",
-            response_type=type(response).__name__ if response else "None",
-        )
-
-        # Publish response event
-        logger.debug("Publishing response event")
-        success = await agent_service.publish_response(response)
-
-        logger.info(
-            "Request processed",
-            request_id=request.request_id,
-            session_id=request.session_id,
-            agent_id=response.agent_id,
-            response_published=success,
-        )
-
-        return {
-            "request_id": response.request_id,
-            "session_id": response.session_id,
-            "user_id": response.user_id,
-            "agent_id": response.agent_id,
-            "content": response.content,
-            "response_type": response.response_type,
-            "metadata": response.metadata,
-            "processing_time_ms": response.processing_time_ms,
-            "requires_followup": response.requires_followup,
-            "followup_actions": response.followup_actions,
-            "created_at": response.created_at.isoformat(),
-        }
-
-    except Exception as e:
-        logger.error("Failed to handle request event", exc_info=e)
-        raise
-
-
-async def _update_request_log_unified(
-    request_id: str,
-    response_content: str,
-    agent_id: str,
-    response_metadata: dict[str, Any] | None = None,
-    processing_time_ms: int | None = None,
-    db: AsyncSession | None = None,
-) -> None:
-    """Update RequestLog for any API type."""
-    try:
-        from shared_models.models import RequestLog
-        from sqlalchemy import update
-
-        # Update the RequestLog with response content
-        stmt = (
-            update(RequestLog)
-            .where(RequestLog.request_id == request_id)
-            .values(
-                response_content=response_content,
-                response_metadata=response_metadata or {},
-                agent_id=agent_id,
-                processing_time_ms=processing_time_ms,
-                completed_at=datetime.now(timezone.utc),
-            )
-        )
-
-        if db:
-            await db.execute(stmt)
-            await db.commit()
-        else:
-            # For backward compatibility with existing code that doesn't pass db
-            db_manager = get_database_manager()
-            async with db_manager.get_session() as session:
-                await session.execute(stmt)
-                await session.commit()
-
-        logger.info(
-            "RequestLog updated",
-            request_id=request_id,
-            agent_id=agent_id,
-            content_length=len(response_content),
-        )
-
-    except Exception as e:
-        logger.error(
-            "Failed to update RequestLog",
-            request_id=request_id,
-            error=str(e),
-        )
-        # Don't raise exception - RequestLog update failure shouldn't stop response
 
 
 if __name__ == "__main__":

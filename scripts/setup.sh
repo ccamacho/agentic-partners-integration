@@ -153,9 +153,8 @@ docker run -d \
     -e LLM_BACKEND=gemini \
     -e GOOGLE_API_KEY="${GOOGLE_API_KEY}" \
     -e GEMINI_MODEL=gemini-2.5-flash \
-    -e COMMUNICATION_MODE=http \
     -e LOG_LEVEL=INFO \
-    -e EXPECTED_MIGRATION_VERSION=006 \
+    -e EXPECTED_MIGRATION_VERSION=007 \
     -e RAG_API_ENDPOINT=http://partner-rag-api-full:8080/answer \
     -p 8001:8080 \
     partner-agent-service:latest
@@ -170,13 +169,12 @@ docker run -d \
     -e LLM_BACKEND=gemini \
     -e GOOGLE_API_KEY="${GOOGLE_API_KEY}" \
     -e GEMINI_MODEL=gemini-2.5-flash \
-    -e COMMUNICATION_MODE=http \
     -e AGENT_SERVICE_URL=http://partner-agent-service-full:8080 \
     -e AGENT_TIMEOUT=120 \
     -e LOG_LEVEL=INFO \
     -e STRUCTURED_CONTEXT_ENABLED=true \
     -e JWT_EXPIRATION_MINUTES=5 \
-    -e EXPECTED_MIGRATION_VERSION=006 \
+    -e EXPECTED_MIGRATION_VERSION=007 \
     -p 8000:8080 \
     partner-request-manager:latest
 echo "  ✓ Request manager starting (JWT tokens expire in 5 minutes)..."
@@ -250,15 +248,15 @@ echo "  📚 Ingesting RAG knowledge..."
 docker exec -e GOOGLE_API_KEY="${GOOGLE_API_KEY}" partner-rag-api-full python /app/ingest_knowledge.py > /dev/null 2>&1 || true
 echo "  ✓ RAG knowledge ingested"
 
-# Start Web UI
-echo "  🌐 Starting Web UI..."
-docker rm -f partner-adk-web-ui 2>/dev/null || true
+# Start PF Chat UI
+echo "  🌐 Starting PF Chat UI..."
+docker rm -f partner-pf-chat-ui 2>/dev/null || true
 docker run -d \
-    --name partner-adk-web-ui \
+    --name partner-pf-chat-ui \
     --network partner-agent-network \
     -p 3000:8080 \
-    partner-web-ui:latest
-echo "  ✓ Web UI started"
+    partner-pf-chat-ui:latest
+echo "  ✓ PF Chat UI started"
 
 # ============================================
 # 6. DONE
@@ -283,5 +281,5 @@ echo ""
 echo "🧪 Next Steps:"
 echo "  • Test: bash scripts/test.sh"
 echo "  • Logs: docker logs -f partner-request-manager-full"
-echo "  • Stop: docker stop partner-{postgres,chromadb,agent-service,request-manager,rag-api,adk-web-ui}-full"
+echo "  • Stop: docker stop partner-{postgres,chromadb,agent-service,request-manager,rag-api,pf-chat-ui}-full"
 echo ""

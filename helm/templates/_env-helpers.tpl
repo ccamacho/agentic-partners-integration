@@ -41,7 +41,7 @@ Common environment variables for all services
 - name: LOG_LEVEL
   value: {{ .Values.logLevel | default "INFO" | quote }}
 - name: EXPECTED_MIGRATION_VERSION
-  value: {{ .Values.database.expectedMigrationVersion | default "006" | quote }}
+  value: {{ .Values.database.expectedMigrationVersion | default "007" | quote }}
 - name: PORT
   value: "8080"
 - name: HOST

@@ -23,17 +23,17 @@ User → ADK Web UI → Request Manager → AAA Middleware → Routing Agent →
 
 ### 1. Deploy ADK Web UI
 
-The ADK web UI is deployed as a separate container that communicates with the request manager.
+The PF Chat UI is deployed as a separate container that communicates with the request manager.
 
 ```bash
 docker run -d \
-  --name adk-web-ui \
+  --name partner-pf-chat-ui \
   --network partner-agent-network \
   -p 3000:3000 \
   -e API_ENDPOINT=http://partner-request-manager:8080 \
   -e AUTH_ENABLED=true \
   -e JWT_ENABLED=true \
-  adk-web-ui:latest
+  partner-pf-chat-ui:latest
 ```
 
 ### 2. Configure Authentication
@@ -168,9 +168,9 @@ SESSION_STORAGE=postgresql
 ```yaml
 # docker-compose.yaml
 services:
-  adk-web-ui:
-    image: adk-web-ui:latest
-    container_name: partner-adk-web
+  pf-chat-ui:
+    image: partner-pf-chat-ui:latest
+    container_name: partner-pf-chat-ui
     networks:
       - partner-agent-network
     ports:

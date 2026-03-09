@@ -1,5 +1,7 @@
 # Partner Agent Integration Framework
 
+> **Based on** the [IT Self-Service Agent Quickstart](https://github.com/rh-ai-quickstart/it-self-service-agent) by Red Hat AI — a production-ready framework for deploying agent-based IT processes on OpenShift with Knative Eventing, evaluations, and multi-channel integrations. This repository adapts that architecture into a standalone POC focused on partner support with Google Gemini, PatternFly UI, and simplified A2A HTTP communication.
+
 **AI-powered support routing system built on four pillars: AAA (Authentication, Authorization, Accounting), RAG-backed specialist agents, A2A (Agent-to-Agent) communication, and a PatternFly chat UI.**
 
 Users sign in, describe their issue, and the system routes them to the right specialist agent (software support or network support) based on their permissions. Agents query a knowledge base of historical support tickets via RAG to provide grounded, context-aware responses. Every request is logged with full accounting.
@@ -222,7 +224,7 @@ Request Manager                          Agent Service
 
 #### How it works
 
-1. **`COMMUNICATION_MODE=http`** (also accepts `a2a`) selects the `DirectHTTPStrategy` in `communication_strategy.py`.
+1. **`DirectHTTPStrategy`** in `communication_strategy.py` handles all A2A communication.
 2. **`EnhancedAgentClient`** (`agent_client_enhanced.py`) sends `POST /api/v1/agents/{agent_name}/invoke` to the agent-service.
 3. **`transfer_context`** carries the user's `allowed_agents`, `conversation_history`, and `previous_agent` across each A2A call, so the receiving agent has full context.
 4. **Two-hop routing:** The request-manager first invokes the routing-agent. If the response contains a `routing_decision`, the request-manager makes a second A2A call to the specialist agent. The user never calls specialist agents directly.
@@ -252,8 +254,8 @@ Response:
 
 #### Why A2A instead of an event bus
 
-- **Simplicity:** No broker infrastructure (Kafka, Knative) to deploy and manage.
-- **Synchronous responses:** The user waits for a response -- async eventing adds complexity without benefit for a request/response interaction.
+- **Simplicity:** No broker infrastructure to deploy and manage.
+- **Synchronous responses:** The user waits for a response -- direct HTTP keeps the architecture straightforward.
 - **Observability:** Each A2A call is a simple HTTP request with full accounting. No message delivery guarantees to debug.
 - **Horizontal scaling:** Agents are stateless HTTP services. Scale by adding replicas behind a load balancer.
 
@@ -533,7 +535,7 @@ Available agents:
 | `partner-agent-service:latest` | `agent-service/Containerfile` | UBI9 Python 3.12 | Agent service + shared-models |
 | `partner-request-manager:latest` | `request-manager/Containerfile` | UBI9 Python 3.12 | Request manager + shared-models |
 | `partner-rag-api:latest` | `rag-service/Containerfile` | Python 3.11 slim | RAG API (ChromaDB client + Gemini embeddings) |
-| `partner-web-ui:latest` | `pf-chat-ui/Containerfile` | nginx Alpine | Static PatternFly UI + nginx reverse proxy |
+| `partner-pf-chat-ui:latest` | `pf-chat-ui/Containerfile` | nginx Alpine | Static PatternFly UI + nginx reverse proxy |
 
 Agent service and request manager use a multi-stage build: `registry.access.redhat.com/ubi9/python-312` (builder) / `ubi9/python-312-minimal` (runtime).
 
@@ -558,7 +560,6 @@ PostgreSQL 16 with pgvector extension. Schema managed by Alembic (current versio
 |-------|---------|
 | `user_integration_configs` | Per-user integration configuration (WEB type) |
 | `user_integration_mappings` | Maps users to external integration identifiers |
-| `processed_events` | Tracks processed CloudEvents for idempotency |
 
 LangGraph checkpoint tables (`checkpoints`, `checkpoint_blobs`, `checkpoint_writes`, `checkpoint_migrations`) are created during setup for agent conversation state.
 
@@ -590,7 +591,6 @@ LangGraph checkpoint tables (`checkpoints`, `checkpoint_blobs`, `checkpoint_writ
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `COMMUNICATION_MODE` | `http` | Communication strategy: `http`, `a2a`, or `direct` (all select `DirectHTTPStrategy`) |
 | `AGENT_SERVICE_URL` | `http://agent-service:8080` | Agent service base URL |
 | `RAG_API_ENDPOINT` | `http://rag-api:8080/answer` | RAG API answer endpoint URL |
 | `AGENT_TIMEOUT` | `120` | Timeout in seconds for A2A calls |
@@ -726,7 +726,7 @@ bash scripts/build_containers.sh
 docker build -t partner-agent-service:latest -f agent-service/Containerfile .
 docker build -t partner-request-manager:latest -f request-manager/Containerfile .
 docker build -t partner-rag-api:latest -f rag-service/Containerfile .
-docker build -t partner-web-ui:latest -f pf-chat-ui/Containerfile .
+docker build -t partner-pf-chat-ui:latest -f pf-chat-ui/Containerfile .
 ```
 
 ### Deployment Options

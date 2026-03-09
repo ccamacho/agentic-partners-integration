@@ -8,10 +8,10 @@ Deploys the full Partner Agent system to Kubernetes/OpenShift.
 |---------|-------|------|
 | PostgreSQL (pgvector) | `pgvector/pgvector:pg16` | 5432 |
 | ChromaDB | `chromadb/chroma:latest` | 8000 |
-| RAG API | `ghcr.io/ccamacho/agentic-partners-integration/rag-api` | 8080 |
-| Agent Service | `ghcr.io/ccamacho/agentic-partners-integration/agent-service` | 8080 |
-| Request Manager | `ghcr.io/ccamacho/agentic-partners-integration/request-manager` | 8080 |
-| Web UI | `ghcr.io/ccamacho/agentic-partners-integration/web-ui` | 80 |
+| RAG API | `ghcr.io/ccamacho/partner-rag-api` | 8080 |
+| Agent Service | `ghcr.io/ccamacho/partner-agent-service` | 8080 |
+| Request Manager | `ghcr.io/ccamacho/partner-request-manager` | 8080 |
+| PF Chat UI | `ghcr.io/ccamacho/partner-pf-chat-ui` | 80 |
 
 ## Prerequisites
 
@@ -44,7 +44,7 @@ kubectl get pods -n partner-agent
 ### 4. Access the UI
 
 ```bash
-kubectl port-forward -n partner-agent svc/partner-agent-web-ui 3000:3000
+kubectl port-forward -n partner-agent svc/partner-agent-pf-chat-ui 3000:3000
 # Open http://localhost:3000
 ```
 
@@ -100,7 +100,7 @@ agentService:
 ragApi:
   replicas: 1
 
-webUi:
+pfChatUi:
   replicas: 1
 
 postgresql:

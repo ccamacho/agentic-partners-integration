@@ -48,9 +48,9 @@ docker build \
     .
 
 echo ""
-echo "Building Web UI..."
+echo "Building PF Chat UI..."
 docker build \
-    -t partner-web-ui:${IMAGE_TAG} \
+    -t partner-pf-chat-ui:${IMAGE_TAG} \
     -f pf-chat-ui/Containerfile \
     pf-chat-ui
 

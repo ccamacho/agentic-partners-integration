@@ -114,11 +114,8 @@ async def create_shared_lifespan(
         logger.error("Failed to verify database migration", error=str(e))
         raise
 
-    # Service client initialization removed - services use eventing for communication
     if service_client_init:
-        logger.debug(
-            "Service client initialization skipped - using eventing for inter-service communication"
-        )
+        logger.debug("Service client initialization skipped")
 
     # Call custom startup function if provided
     if custom_startup:

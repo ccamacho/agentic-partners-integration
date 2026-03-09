@@ -34,7 +34,6 @@ __all__ = [
     "RequestSession",
     "RequestLog",
     "UserIntegrationConfig",
-    "ProcessedEvent",
     "UserIntegrationMapping",
     "AgentResponse",
     "NormalizedRequest",
@@ -199,10 +198,6 @@ class RequestLog(Base, TimestampMixin):  # type: ignore[misc]
     response_content = Column(Text)
     response_metadata = Column(JSON, default=dict)
 
-    # CloudEvent tracking
-    cloudevent_id = Column(String(36))
-    cloudevent_type = Column(String(100))
-
     # Timing
     completed_at = Column(TIMESTAMP(timezone=True))
 
@@ -248,29 +243,6 @@ class UserIntegrationConfig(Base, TimestampMixin):  # type: ignore[misc]
     # Ensure one config per user per integration type
     __table_args__ = (
         UniqueConstraint("user_id", "integration_type", name="uq_user_integration"),
-    )
-
-
-class ProcessedEvent(Base, TimestampMixin):  # type: ignore[misc]
-    """Track processed CloudEvents to prevent duplicate processing."""
-
-    __tablename__ = "processed_events"
-
-    id = Column(Integer, primary_key=True)
-    event_id = Column(String(255), nullable=False, unique=True)  # ce-id
-    event_type = Column(String(255), nullable=False)  # ce-type
-    event_source = Column(String(255), nullable=False)  # ce-source
-    request_id = Column(String(255), nullable=True)  # For correlation
-    session_id = Column(String(255), nullable=True)  # For correlation
-    processed_by = Column(String(100), nullable=False)  # service name
-    processing_result = Column(String(50), nullable=False)  # success/error/skipped
-    error_message = Column(Text, nullable=True)
-
-    # Index for fast lookups
-    __table_args__ = (
-        Index("ix_processed_events_event_id", "event_id"),
-        Index("ix_processed_events_request_id", "request_id"),
-        Index("ix_processed_events_created_at", "created_at"),
     )
 
 

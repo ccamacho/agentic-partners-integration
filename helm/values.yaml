@@ -9,7 +9,7 @@ image:
   agentService: agent-service
   requestManager: request-manager
   ragApi: rag-api
-  webUi: web-ui
+  pfChatUi: pf-chat-ui
   pullPolicy: Always
   tag: "latest"
 
@@ -118,8 +118,8 @@ agentService:
     targetCPUUtilization: 70
     targetMemoryUtilization: 80
 
-# Web UI (nginx serving PatternFly chat interface)
-webUi:
+# PF Chat UI (nginx serving PatternFly chat interface)
+pfChatUi:
   replicas: 1
   resources:
     requests:
